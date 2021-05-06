@@ -8,12 +8,11 @@ rm -rf $ELEMENTS_LOG_ROOT_PATH/*
 echo ""
 echo -e "${CYAN_LIGHT}[WEB SERVER]${NCOLOR}"
 echo -e "${GREEN_LIGHT}START${NCOLOR}"
-rm  -rf ${BC_APP_LOG_DIR}/contribox-node.log
-echo "${BC_APP_LOG_DIR}/contribox-node.log"
-php -d error_reporting=E_ALL -d error_log=$BC_APP_LOG_DIR/contribox-node-php.log -S $HOST_IP:$API_PORT -t $BC_APP_API_DIR > /dev/null 2>&1 &
-chmod $BC_RIGHTS_FILES $BC_APP_LOG_DIR/contribox-node-php.log
-chown $BC_USER $BC_APP_LOG_DIR/contribox-node-php.log
-
+rm  -rf $BC_API_LOG_FILE
+php -d error_reporting=E_ALL -d error_log=$BC_API_LOG_FILE -S $HOST_IP:$API_PORT -t $BC_APP_API_DIR > /dev/null 2>&1 &
+touch $BC_RIGHTS_FILES $BC_API_LOG_FILE
+chmod $BC_RIGHTS_FILES $BC_API_LOG_FILE
+chown $BC_USER $$BC_API_LOG_FILE
 if [ ! $NEW_NODE -eq 1 ];then
 
     source $BC_APP_INSTALL_DIR/bitcoin.sh
