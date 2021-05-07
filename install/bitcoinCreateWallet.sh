@@ -146,9 +146,9 @@ EOL
   chmod $BC_RIGHTS_FILES $CODE_CONF_FILE
   chown $BC_USER $CODE_CONF_FILE
 
-  cp $CODE_CONF_FILE $BC_CONF_DIR/b_a_${NODE_PUB_ADDRESS}".json"
-  chmod $BC_RIGHTS_FILES $BC_CONF_DIR/b_a_${NODE_PUB_ADDRESS}".json"
-  chown $BC_USER $BC_CONF_DIR/b_a_${NODE_PUB_ADDRESS}".json"
+  cp $CODE_CONF_FILE $BC_CONF_DIR/b_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
+  chmod $BC_RIGHTS_FILES $BC_CONF_DIR/b_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
+  chown $BC_USER $BC_CONF_DIR/b_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
 
 }
 export -f bitcoinCreateWallet

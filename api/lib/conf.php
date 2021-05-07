@@ -2,6 +2,7 @@
 
 class Conf {
 
+    static public string $BC_ENV = '';
     static public string $HOST_IP = '';
     static public string $API_PORT = '';
     static public string $EXTERNAL_IP = '';
@@ -41,9 +42,10 @@ class Conf {
     static public int $BITCOIN_PEG_PARTICIPANT_NUMBER = 0;
     static public int $BITCOIN_BLOCK_PARTICIPANT_NUMBER = 0;
 
-    public function _construct(string $bc_env):void{
+    public function __construct(string $bc_env){
 
-        $d = file_get_contents('../' . $bc_env . '/conf/conf.json');
+        self::$BC_ENV = $bc_env;
+        $d = file_get_contents('../' . self::$BC_ENV . '/conf/conf.json');
         $d = json_decode($d);
         self::$HOST_IP = $d->HOST_IP;
         self::$API_PORT = $d->API_PORT;
@@ -86,11 +88,8 @@ class Conf {
     public static function scriptRun(string $argsString, string $method): string{
 
         $script = 'bash ' . Conf::$BC_SCRIPT_DIR . '/' . $method . '.sh ' . $argsString;
-        echo $script;
-        error_log($script, 0);
+        error_log('RUN: '.$script, 0);
         exec($script, $result, $result_code);
-        error_log(json_encode($result), 0);
-        error_log((string)$result_code, 0);
-        return implode('', $result);
+        return  implode('', $result);
     }
 }

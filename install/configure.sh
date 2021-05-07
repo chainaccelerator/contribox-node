@@ -7,9 +7,16 @@ rm -rf $ELEMENTS_LOG_ROOT_PATH/*
 
 echo ""
 echo -e "${CYAN_LIGHT}[WEB SERVER]${NCOLOR}"
+echo -e "${RED_LIGHT}STOP${NCOLOR}"
+export PHP_PID=$(pidof 'php')
+if [ ! -z $PHP_PID ];then
+  kill -9 $PHP_PID
+fi
 echo -e "${GREEN_LIGHT}START${NCOLOR}"
 rm  -rf $BC_API_LOG_FILE
 php -d error_reporting=E_ALL -d error_log=$BC_API_LOG_FILE -S $HOST_IP:$API_PORT -t $BC_APP_API_DIR > /dev/null 2>&1 &
+PHP_PID=$(pidof 'php')
+echo "new PID: $PHP_PID"
 
 if [ ! $NEW_NODE -eq 1 ];then
 

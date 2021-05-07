@@ -36,10 +36,10 @@ class Address{
         $this->type = $type;
     }
 
-    public function load(string $bc_env): bool{
+    public function load(): bool{
 
-        ini_set("error_log", '/var/www/contribox-node/' . $bc_env . '/log/api.log');
-        $path = '../' . $bc_env . '/conf/e_' . $this->type . '_' . $bc_env . '_cli*';
+        ini_set("error_log", '/var/www/contribox-node/' . Conf::BC_ENV . '/log/api.log');
+        $path = '../' . Conf::BC_ENV . '/conf/e_' . $this->type . '_' . Conf::BC_ENV . '_cli*';
         $files = glob($path);
 
         foreach ($files as $file) {

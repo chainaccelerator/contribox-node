@@ -4,7 +4,6 @@ class RPC{
 
     public string $method = '';
     public int $block = 0;
-    public string $bc_env = '';
     public Address $to;
     public Address $from;
     public string $id = '';
@@ -24,10 +23,13 @@ class RPC{
         $this->to = new Address();
         $this->from = new Address();
         $data = file_get_contents("php://input");
-        error_log($data, 0);
 
         if (empty($data) === true) {
 
+            if (empty($_GET) === true) {
+
+                exit('Request');
+            }
             error_log('GET', 0);
             $data = new stdClass();
 
@@ -36,18 +38,19 @@ class RPC{
 
             $data = json_decode($data);
         }
-        if (isset($data->jsonrpc) === false || $data->jsonrpc !== $this->jsonrpc) exit('RPC Version');
         if (isset($data->bc_env) === false) exit('Err env');
+
+        new Conf($data->bc_env);
+        error_log('RECEIVED: '.$data, 0);
+
+        if (isset($data->jsonrpc) === false || $data->jsonrpc !== $this->jsonrpc) exit('RPC Version');
         if (isset($data->id) === false) exit('Err id');
         if (isset($data->from->address) === false) exit('Err From');
-        $this->bc_env = $data->bc_env;
         $this->method = $data->method;
         $this->id = $data->id;
         $this->from->addressSet($data->from->address);
         $this->from->typeSet($data->from->type);
-        $this->from->load($this->bc_env);
-
-        new Conf($this->bc_env);
+        $this->from->load();
 
         if (isset($data->params) === true) {
 
@@ -61,59 +64,59 @@ class RPC{
         if (isset($data->to->address) === true) {
             $this->to->addressSet($data->to->address);
             $this->to->typeSet($data->to->type);
-            $this->to->load($this->bc_env);
+            $this->to->load();
         }
         switch ($data->method) {
 
             case 'askForBlockProposal':
-                $argsString = $this->bc_env;
+                $argsString = Conf::$BC_ENV;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'blockProposal':
-                $argsString = $this->bc_env . ' ' . $this->to->walletInstance . ' ' . $this->hex;
+                $argsString = Conf::$BC_ENV . ' ' . $this->to->walletInstance . ' ' . $this->hex;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'blockValidation':
-                $argsString = $this->bc_env . ' ' . $this->to->walletInstance . ' "' . $this->hex . '" "' . $this->script . '"';
+                $argsString = Conf::$BC_ENV . ' ' . $this->to->walletInstance . ' "' . $this->hex . '" "' . $this->script . '"';
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'askForPegInProposal':
-                $argsString = $this->bc_env;
+                $argsString = Conf::$BC_ENV;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'pegInProposal':
-                $argsString = $this->bc_env . ' ' . $this->to->walletInstance;
+                $argsString = Conf::$BC_ENV . ' ' . $this->to->walletInstance;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'pegInValidation':
-                $argsString = $this->bc_env . ' ' . $this->to->walletInstance . ' "' . $this->hex . '" "' . $this->script . '" "' . $this->proof . '"';
+                $argsString = Conf::$BC_ENV . ' ' . $this->to->walletInstance . ' "' . $this->hex . '" "' . $this->script . '" "' . $this->proof . '"';
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
 
             case 'pegOutProposal':
-                $argsString = $this->bc_env;
+                $argsString = Conf::$BC_ENV;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'askForPegOutValidation':
-                $argsString = $this->bc_env . ' ' . $this->to->walletInstance;
+                $argsString = Conf::$BC_ENV . ' ' . $this->to->walletInstance;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
             case 'pegOutValidation':
-                $argsString = $this->bc_env . ' ' . $this->to->walletInstance;
+                $argsString = Conf::$BC_ENV . ' ' . $this->to->walletInstance;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
 
             case 'blockcount':
-                $argsString = $this->bc_env;
+                $argsString = Conf::$BC_ENV;
                 $this->success = Conf::scriptRun($argsString, $this->method);
                 $this->ret();
                 exit();
@@ -126,7 +129,7 @@ class RPC{
                 $list = self::wallet_add('lock', 'elements', $list);
                 $list = self::wallet_add('witness', 'elements', $list);
                 $this->success->walletList = $list;
-                $list = self::node_add($this->bc_env, 'elements');
+                $list = self::node_add(Conf::$BC_ENV, 'elements');
                 $this->success->nodeList = $list;
                 $this->ret();
                 exit();
@@ -162,7 +165,7 @@ class RPC{
         $res->jsonrpc = $this->jsonrpc;
         $res->block = $this->block;
         $res->id = $this->id;
-        $res->bc_env = $this->bc_env;
+        $res->bc_env = Conf::$BC_ENV;
         $res->from = $this->to;
         $res->to = $this->from;
         $res->result = new stdClass();
@@ -172,7 +175,7 @@ class RPC{
         $res->success = $this->success;
         $output = json_encode($res, JSON_PRETTY_PRINT);
 
-        error_log($output, 0);
+        error_log('SEND: '.$output, 0);
 
         echo $output;
 
