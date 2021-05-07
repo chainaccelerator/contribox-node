@@ -9,16 +9,12 @@ apt full-upgrade -y -qq  > /dev/null 2>&1
 apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
 
 export BITCOIN_PID=$(pidof 'bitcoin-qt')
-echo "BITCOIN_PID=$BITCOIN_PID"
 if [ -n "$BITCOIN_PID" ];then
-  echo "KILL $BITCOIN_PID"
   kill -9 $BITCOIN_PID
 fi
 
 export ELEMENTS_PID=$(pidof 'elements-qt')
-echo "ELEMENTS_PID=$ELEMENTS_PID"
 if [ -n "$ELEMENTS_PID" ];then
-  echo "KILL $ELEMENTS_PID"
   kill -9 $ELEMENTS_PID
 fi
 

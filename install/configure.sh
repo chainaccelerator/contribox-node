@@ -9,9 +9,7 @@ echo ""
 echo -e "${CYAN_LIGHT}[WEB SERVER]${NCOLOR}"
 echo -e "${RED_LIGHT}STOP${NCOLOR}"
 export PHP_PID=$(pidof 'php')
-echo $PHP_PID
 if [ -n "$PHP_PID" ];then
-  echo "KILL $PHP_PID"
   kill -9 $PHP_PID
 fi
 echo -e "${GREEN_LIGHT}START${NCOLOR}"
