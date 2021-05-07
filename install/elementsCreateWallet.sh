@@ -127,15 +127,15 @@ function elementsCreateWallet() {
 
   local PEGGED_ASSET=$(eval "$E_CLI_GETBLOCKCOUNT")
 
-  if [ -z $PRIKEY ];then
+  if [ -z "$PRIKEY" ];then
     local NODE_PUB_ADDRESS=$(eval "$E_CLI_GETNEWADDRESS \"$ADDRESS\" \"legacy\"")
     local NODE_PRIV_KEY=$(eval "$E_CLI_DUMPPRIVKEY $NODE_PUB_ADDRESS")
     local NODE_PUB_KEY=$(eval "$E_CLI_GETADDRESSINFO $NODE_PUB_ADDRESS | jq -r .pubkey")
   else
     local IMPORT=$(eval "$E_CLI_IMPORTPRIVKEY $PRIKEY")
-    local NODE_PRIV_KEY=$(getWalletConfFileParam "block" $WALLET_INSTANCE "prvKey" $BC_CONF_DIR "" "" "")
-    local NODE_PUB_ADDRESS=$(getWalletConfFileParam "block" $WALLET_INSTANCE "pubAddress" $BC_CONF_DIR "" "" "")
-    local NODE_PUB_KEY=$(getWalletConfFileParam "block" $WALLET_INSTANCE "pubKey" $BC_CONF_DIR "" "" "")
+    local NODE_PRIV_KEY=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "prvKey" $BC_CONF_DIR "" "" "")
+    local NODE_PUB_ADDRESS=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "pubAddress" $BC_CONF_DIR "" "" "")
+    local NODE_PUB_KEY=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "pubKey" $BC_CONF_DIR "" "" "")
   fi
   if [ -z "$BLOCK_SIGN_PUBKEY_LIST" ];then
     BLOCK_SIGN_PUBKEY_lIST='""'
