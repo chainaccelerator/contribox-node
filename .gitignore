@@ -92,3 +92,5 @@
 /.idea/modules.xml
 /.idea/php.xml
 /.idea/vcs.xml
+/regtest/conf/elements_regtest_2.conf
+/regtest/conf/elements_regtest_3.conf
