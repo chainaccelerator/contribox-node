@@ -4,8 +4,7 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set("display_errors", "1");
 ini_set("log_errors", "1");
-ini_set("error_log", "/var/www/contribox-node/api.log");
-
+ini_set("error_log", "/var/log/api.log");
 
 class Node {
 
@@ -71,7 +70,6 @@ class Wallet {
         $c2 = file_get_contents($file);
         $c2 = json_decode($c2);
         $peer = new Wallet();
-
         $peer->selfchain = $selfchain;
         $peer->wallet_name = $c2->wallet_name;
         $peer->pubKey_name = $c2->pubKey_name;
@@ -130,6 +128,7 @@ class Address {
     }
     public function load(string $bc_env):bool{
 
+        ini_set("error_log", '/var/www/contribox-node/'.$bc_env.'/log/api.log');
         $path = '../'.$bc_env.'/conf/e_'.$this->type.'_'.$bc_env.'_cli*';
         $files = glob($path);
 
@@ -405,6 +404,7 @@ class RPC {
     public static function scriptRun(string $argsString, string $method):string{
 
         $script='bash '.self::$BC_SCRIPT_DIR.'/'.$method.'.sh '.$argsString;
+        echo $script;
         error_log($script, 0);
         exec($script, $result, $result_code);
         error_log(json_encode($result), 0);

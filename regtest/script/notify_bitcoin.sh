@@ -2,8 +2,7 @@
 
 shopt -s expand_aliases
 
-
-function pegIn() {
+function notify() {
 
     echo "" >&2
     echo -e "${CYAN_LIGHT}[PEG IN]$NCOLOR" >&2
@@ -20,7 +19,7 @@ function pegIn() {
     local ADDRESS_CONF_FILE=$(addressFind $ADDRESS $MAX_PEG $MAX_BLOCK $MAX_MAIN $MAX_BACKUP $MAX_LOCK $MAX_WITNESS $BC_CONF_DIR)
     local ADDRESS_TYPE=$(cat $ADDRESS_CONF_FILE | jq '.addressType')
 
-  cat > $BC_DATA_DIR/tx_${TXID}.json / <<EOL
+  cat > $BC_DATA_DIR/tx_${TXID}.json <<EOL
 {
     "BC_ENV": "${BC_ENV}",
     "TXID": "${TXID}",

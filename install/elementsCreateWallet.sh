@@ -143,11 +143,11 @@ function elementsCreateWallet() {
   if [ -z "$PEG_SIGN_PUBKEY_LIST" ];then
     PEG_SIGN_PUBKEY_lIST='""'
   fi
-  if [ "$ADDRESS_TYPE" = "block" ];then
+  if [ "$ADDRESS_TYPE" = "block" ] && [ -z $PRIKEY ];then
     echo "E_CLI_GENERATETOADDRESS" >&2
-    local BITCOIN_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
+    local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
   fi
-  if [ "$ADDRESS_TYPE" = "peg" ];then
+  if [ "$ADDRESS_TYPE" = "peg" ] && [ -z $PRIKEY ];then
 
     # local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 2 "creditForPegFromElementMiner")
     sleep 2

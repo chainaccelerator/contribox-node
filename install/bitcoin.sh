@@ -5,6 +5,7 @@ shopt -s expand_aliases
 echo ""
 echo -e "${CYAN_LIGHT}[NODE BITCOIN]$NCOLOR"
 
+rm -rf $BITCOIN_DEBUG_FILE_VAL
 if [ ! -d $BITCOIN_DIR ];then
 
   if [ $APT_UPDATE_UPGRADE -eq 1 ];then

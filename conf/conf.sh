@@ -292,7 +292,6 @@ function wallet_gen(){
     local BC_ENV="$7"
     local BC_CONF_DIR=$8
     
-    echo "" >&2
     # echo ADDRESS_TYPE="$1" >&2
     # echo PARTICIPANT_NUMBER=$3 >&2
     # echo BC_APP_INSTALL_DIR=$4 >&2
@@ -302,12 +301,18 @@ function wallet_gen(){
     # echo BC_ENV="$9" >&2
     # echo BC_CONF_DIR=${10} >&2
 
-    echo -e "${CYAN}[$ADDRESS_TYPE WALLETS]${NCOLOR}" >&2
     declare -a CONF_FILE_LIST
     for i in `seq 1 $PARTICIPANT_NUMBER`;
     do
         WALLET_INSTANCE=$i
-        source $BC_APP_INSTALL_DIR/elementsCreateWallet.sh $NODE_1_ELEMENTS_CONF_FILE $WALLET_INSTANCE "$ADDRESS_TYPE" "" ""
+        PRIVKEY=""
+        local CONF_FILE=$(elementsGetAddressConf $BC_ENV 1 $i $ADDRESS_TYPE $BC_CONF_DIR)
+
+        if [ -f $CONF_FILE ];then
+          echo "IMPORT KEY" >&2
+          PRIVKEY=$(getWalletConfFileParam $ADDRESS_TYPE $i "prvKey" $BC_CONF_DIR)
+        fi
+        source $BC_APP_INSTALL_DIR/elementsCreateWallet.sh $NODE_1_ELEMENTS_CONF_FILE $WALLET_INSTANCE "$ADDRESS_TYPE" $PRIVKEY ""
         CONF_FILE_LIST[$i]=$(elementsGetAddressConf "$BC_ENV" 1 $WALLET_INSTANCE "$ADDRESS_TYPE" $BC_CONF_DIR)
     done    
     local separator='","'
@@ -525,7 +530,7 @@ function askFor(){
         fi
         local addressTo=$(getWalletConfFileParam $addressType $index2 "pubAddress" $BC_CONF_DIR)
         local pubKeyTo=$(getWalletConfFileParam $addressType $index2 "pubKey" $BC_CONF_DIR)
-        echo -e "${CYAN}[$addressType $method index: $index2 $addressTo $pubKeyTo]$NCOLOR" >&2
+        echo -e "${CYAN}[$method index: $index2 $addressTo $pubKeyTo]$NCOLOR" >&2
 
         local addressTo=$(getWalletConfFileParam $addressType $index2 "pubAddress" $BC_CONF_DIR)
         local addressToType=$(getWalletConfFileParam $addressType $index2 "addressType" $BC_CONF_DIR)
@@ -556,15 +561,15 @@ function askFor(){
 EOF
 )
         echo "DATA=$DATA" >&2
-        echo ''--digest -s -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "${DATA}" "http://${HOST}:${PORT}/index.php"'' >&2
+        # echo ''--digest -s -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "${DATA}" "http://${HOST}:${PORT}/index.php"'' >&2
         local RESULT_TMP=$(curl --digest -s -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "$DATA" "http://$HOST:$PORT/index.php")
-        echo "RESULT_TMP=$RESULT_TMP" >&2
-        # echo $RESULT_TMP >&2
+        # zcho "RESULT_TMP=$RESULT_TMP" >&2
         RESULT_TMP=$(echo $RESULT_TMP | jq '.success')
-        echo "VALIDATION=$RESULT_TMP" >&2
+        # echo "VALIDATION=$RESULT_TMP" >&2
         RESULT=$RESULT$(eval echo $RESULT_TMP)
     done
     RESULT=$RESULT"]"
+    echo "VALIDATION=$RESULT" >&2
     echo $RESULT
 }
 export -f askFor
@@ -688,7 +693,6 @@ function pegBlockAddressesInfo(){
 
   local MINE=$(bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR)
   local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
-  exit
 
   for a in `seq 1 $BITCOIN_BLOCK_PARTICIPANT_NUMBER`;
   do
@@ -728,8 +732,7 @@ export CYAN_LIGHT='\033[1;36m'
 export GREY_LIGHT='\033[1;37m'
 export NCOLOR='\033[0m'
 
-export HOST_IP=$(/sbin/ip -o -4 addr list enp4s0 | awk '{print $4}' | cut -d/ -f1)
-
+confJsonGet $CONF_FILE "HOST_IP_INTERFACE"
 confJsonGet $CONF_FILE "BC_ENV"
 confJsonGet $CONF_FILE "NUMBER_NODES"
 confJsonGet $CONF_FILE "BLOCK_PARTICIPANT_NUMBER"
@@ -775,6 +778,8 @@ confJsonGet $CONF_FILE "BLOCK_PARTICIPANT_MIN"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_MAX"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_MIN"
 confJsonGet $CONF_FILE "NEW_NODE"
+
+export HOST_IP=$(/sbin/ip -o -4 addr list $HOST_IP_INTERFACE | awk '{print $4}' | cut -d/ -f1)
 
 if [ "$BC_ENV" == "main" ];then
   export BITCOIN_ENV_INDEX="1"
@@ -843,7 +848,6 @@ export BITCOIN_PORT="port=$PORT_BITCOIN"
 export BITCOIN_DATADIR_VAL=$BITCOIN_DATA_PATH
 export BITCOIN_DATADIR="datadir=$BITCOIN_DATA_PATH"
 export BITCOIN_DEBUG_FILE_VAL="$BC_APP_LOG_DIR/bitcoind_"$BC_ENV".log"
-rm -rf $BITCOIN_DEBUG_FILE_VAL
 export BITCOIN_DEBUG_FILE="debuglogfile=$BITCOIN_DEBUG_FILE_VAL"
 export BITCOIN_PARAMS="-conf="$BITCOIN_CONF_FILE
 export B_DAEMON="${BITCOIN_DIR}/bitcoind ${BITCOIN_PARAMS}"

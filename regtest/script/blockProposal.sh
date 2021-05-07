@@ -28,8 +28,6 @@ function blockProposal() {
         # echo "HEX=$HEX" >&2
     fi
     PROPOSAL=$(askFor $addressFrom 'block' $BC_CONF_DIR $BLOCK_PARTICIPANT_MAX $BLOCK_AMOUNT $BC_ENV 'block' 'blockValidation' $HEX "")
-
-    exit
     sleep 20
     exit
     # echo "PROPOSAL=$PROPOSAL" >&2

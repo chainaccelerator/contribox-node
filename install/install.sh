@@ -4,16 +4,13 @@ shopt -s expand_aliases
 
 clear
 
+apt install update -q=2 -y && apt full-upgrade -y -q=2
 apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -q=2
 
 export BASEDIR=$(dirname "$0")
 export BC_CFILE=$BASEDIR/../conf/conf.sh
 source $BC_CFILE $1
 export CONF_FILE=$BC_CONF_DIR/conf.json
-
-echo ""
-echo -e "${CYAN_LIGHT}[INSTALL]$NCOLOR"
-echo "HOST_IP=$HOST_IP";
 
 cat > $CONF_FILE <<EOL
 {
@@ -97,8 +94,6 @@ chmod $BC_RIGHTS_FILES $CONF_FILE
 chown $BC_USER $CONF_FILE
 
 if [ $APT_UPDATE_UPGRADE -eq 1 ]; then
-
-    apt update && apt full-upgrade
 
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |tee /etc/apt/sources.list.d/php.list

@@ -10,19 +10,14 @@ echo -e "${CYAN_LIGHT}[WEB SERVER]${NCOLOR}"
 echo -e "${GREEN_LIGHT}START${NCOLOR}"
 rm  -rf $BC_API_LOG_FILE
 php -d error_reporting=E_ALL -d error_log=$BC_API_LOG_FILE -S $HOST_IP:$API_PORT -t $BC_APP_API_DIR > /dev/null 2>&1 &
-touch $BC_RIGHTS_FILES $BC_API_LOG_FILE
-chmod $BC_RIGHTS_FILES $BC_API_LOG_FILE
-chown $BC_USER $BC_API_LOG_FILE
+
 if [ ! $NEW_NODE -eq 1 ];then
 
     source $BC_APP_INSTALL_DIR/bitcoin.sh
 
-    export B_BLOCK_CONF_FILE=$(bitcoinWallet_gen "main" $BITCOIN_MAIN_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE $CYAN $NCOLOR $BC_ENV $BC_CONF_DIR)
+    export B_MAIN_CONF_FILE=$(bitcoinWallet_gen "main" $BITCOIN_MAIN_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE $CYAN $NCOLOR $BC_ENV $BC_CONF_DIR)
     export B_BLOCK_CONF_FILE=$(bitcoinWallet_gen "block" $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE $CYAN $NCOLOR $BC_ENV $BC_CONF_DIR)
     export B_PEG_CONF_FILE=$(bitcoinWallet_gen "peg" $BITCOIN_PEG_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE $CYAN $NCOLOR $BC_ENV $BC_CONF_DIR)
-
-    echo "" >&2
-    echo -e "${BROWN}[TMP BLOCK WALLET]$NCOLOR" >&2
 
     source $BC_APP_INSTALL_DIR/elements.sh 1 $NODE_CONF_FILE $CODE_CONF_FILE "" "" "" ""
 
@@ -30,15 +25,11 @@ if [ ! $NEW_NODE -eq 1 ];then
     export BLOCK_PUBKEY_LIST=$(createMultisigPubKeyList $BC_ENV "block" $BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR)
     export BLOCK_REDEEMSCRIPT=$(createMultisig $BC_ENV "block" $BLOCK_PUBKEY_LIST $BLOCK_PARTICIPANT_MIN $BC_CONF_DIR)
 
-    echo "" >&2
-    echo -e "${BROWN}[TMP PEG WALLET]$NCOLOR" >&2
-
     export PEG_LIST_CONF=$(wallet_gen "peg" $PEG_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
     export PEG_PUBKEY_LIST=$(createMultisigPubKeyList $BC_ENV "peg" $PEG_PARTICIPANT_NUMBER $BC_CONF_DIR)
     export PEG_REDEEMSCRIPT=$(createMultisig $BC_ENV "peg" $PEG_PUBKEY_LIST $PEG_PARTICIPANT_MIN $BC_CONF_DIR)
 
     I=$(pegBlockAddressesInfo $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BITCOIN_PEG_PARTICIPANT_NUMBER $BLOCK_PARTICIPANT_NUMBER $PEG_PARTICIPANT_NUMBER $BC_CONF_DIR)
-    exit
 
     for a in `seq 1 $NUMBER_NODES`;
     do
@@ -46,42 +37,10 @@ if [ ! $NEW_NODE -eq 1 ];then
 
         if [ $a -eq 1 ];then
 
-            echo "" >&2
-            echo -e "${BROWN}[BLOCK WALLET]$NCOLOR" >&2
-
-            declare -a CONF_FILE_LIST
-            for i in `seq 1 $MULTISIG_PARTICIPANT_NUMBER`;
-            do
-                PRIVKEY=$(getWalletConfFileParam "block" $i "prvKey" $BC_CONF_DIR "" "" "")
-                source $BC_APP_INSTALL_DIR/elementsCreateWallet.sh $E_BLOCK_GEN_CONF $i "block" $PRIVKEY
-                CONF_FILE_LIST[$i]=$(elementsGetAddressConf "$BC_ENV" $a $i "block" $BC_CONF_DIR)
-            done
-            separator='","'
-            regex="$( printf "${separator}%s" ${CONF_FILE_LIST[@]} )"
-            regex="${regex:${#separator}}"
-            CONF=$BC_CONF_DIR/${ADDRESS_TYPE}_wallets.json
-            echo '["'$regex'"]' > $CONF
-            BLOCK_LIST_CONF=$CONF
-
-            echo "" >&2
-            echo -e "${BROWN}[PEG WALLET]$NCOLOR" >&2
-
-            declare -a CONF_FILE_LIST
-            for i in `seq 1 $PEG_PARTICIPANT_NUMBER`;
-            do
-                PRIVKEY=$(getWalletConfFileParam "peg" $i "prvKey" $BC_CONF_DIR "" "" "")
-                source $BC_APP_INSTALL_DIR/elementsCreateWallet.sh $E_BLOCK_GEN_CONF $i "peg" $PRIVKEY
-                CONF_FILE_LIST[$i]=$(elementsGetAddressConf "$BC_ENV" $a $i "peg" $BC_CONF_DIR)
-            done
-            separator='","'
-            regex="$( printf "${separator}%s" ${CONF_FILE_LIST[@]} )"
-            regex="${regex:${#separator}}"
-            CONF=$BC_CONF_DIR/${ADDRESS_TYPE}_wallets.json
-            echo '["'$regex'"]' > $CONF
-            PEG_LIST_CONF=$CONF
+            BLOCK_LIST_CONF=$(wallet_gen "block" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
+            PEG_LIST_CONF=$(wallet_gen "peg" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
         fi
     done
-
     I=$(pegBlockAddressesInfo $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BITCOIN_PEG_PARTICIPANT_NUMBER $BLOCK_PARTICIPANT_NUMBER $PEG_PARTICIPANT_NUMBER $BC_CONF_DIR)
 
     echo "" >&2
@@ -91,9 +50,8 @@ if [ ! $NEW_NODE -eq 1 ];then
     export INDEX_B_PEG=1
     export INDEX_B_BLOCK=1
 
-    NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
+    NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV $INDEX_E "none")
     exit
-
     if [ $PEG -eq 1 ];then
         echo "" >&2
         echo -e "${BROWN}[FIRST PEG IN]$NCOLOR" >&2
@@ -130,7 +88,4 @@ else
     export BACKUP_LIST_CONF=$(wallet_gen "backup" $BACKUP_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE_BACK "$CYAN" "$NCOLOR"  "$BC_ENV" $BC_CONF_DIR)
     export WITNESS_LIST_CONF=$(wallet_gen "witness" $WITNESS_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE_BACK "$CYAN" "$NCOLOR"  "$BC_ENV" $BC_CONF_DIR)
 fi
-
-if [ $APT_UPDATE_UPGRADE -eq 1 ];then
-  apt autoremove -y -q=2
-fi
+apt autoremove -y -q=2
