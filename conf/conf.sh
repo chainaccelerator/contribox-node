@@ -667,12 +667,12 @@ function elementsTxInfo(){
     local WALLET_CATEGORY=$(echo $WALLET | jq '.details[0].category')
     local WALLET_ABANDONED=$(echo $WALLET | jq '.details[0].abandoned')
     local WALLET_HEX=$(echo $WALLET | jq '.hex')
-    echo "E_WALLET: txid=${CLAIMTXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
+    echo "E_WALLET: txid=${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
     local BC=$(getWalletConfFileParamCMD $TYPE $INDEX "E_CLI_GETRAWTRANSACTION" $BC_CONF_DIR $TXID 1 "")
     local BC_CONFIRMATION=$(echo $WALLET | jq '.confirmations')
     local BC_VALUE=$(echo $WALLET | jq '.vout[0].value')
     local BC_ASSET=$(echo $WALLET | jq '.vout[0].asset')
-    echo "E_BC: txid=${BC_TXID} confirmations:${BC_CONFIRMATION} value:${BC_VALUE} asset:${BC_ASSET}" >&2
+    echo "E_BC: txid=${TXID} confirmations:${BC_CONFIRMATION} value:${BC_VALUE} asset:${BC_ASSET}" >&2
 
     echo $WALLET_HEX
 }

@@ -85,9 +85,9 @@ class Conf {
         self::$BC_CONF_DIR = $d->BC_CONF_DIR;
         self::$BC_SCRIPT_DIR = $d->BC_SCRIPT_DIR;
     }
-    public static function scriptRun(string $argsString, string $method): string{
+    public static function scriptRun(string $argsString, string $method, string $run = 'bash '): string{
 
-        $script = 'bash ' . Conf::$BC_SCRIPT_DIR . '/' . $method . '.sh ' . $argsString;
+        $script = $run . Conf::$BC_SCRIPT_DIR . '/' . $method . '.sh ' . $argsString;
         error_log('RUN: '.$script, 0);
         exec($script, $result, $result_code);
         return  implode('', $result);
