@@ -10,13 +10,15 @@ apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed
 
 export BITCOIN_PID=$(pidof 'bitcoin-qt')
 echo "BITCOIN_PID=$BITCOIN_PID"
-if [ ! -z $BITCOIN_PID ];then
+if [ -n "$BITCOIN_PID" ];then
+  echo "KILL $BITCOIN_PID"
   kill -9 $BITCOIN_PID
 fi
 
 export ELEMENTS_PID=$(pidof 'elements-qt')
 echo "ELEMENTS_PID=$ELEMENTS_PID"
-if [ ! -z $ELEMENTS_PID ];then
+if [ -n "$ELEMENTS_PID" ];then
+  echo "KILL $ELEMENTS_PID"
   kill -9 $ELEMENTS_PID
 fi
 

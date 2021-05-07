@@ -41,7 +41,7 @@ class RPC{
         if (isset($data->bc_env) === false) exit('Err env');
 
         new Conf($data->bc_env);
-        error_log('RECEIVED: '.$data, 0);
+        error_log('RECEIVED: '.json_encode($data, JSON_PRETTY_PRINT), 0);
 
         if (isset($data->jsonrpc) === false || $data->jsonrpc !== $this->jsonrpc) exit('RPC Version');
         if (isset($data->id) === false) exit('Err id');
