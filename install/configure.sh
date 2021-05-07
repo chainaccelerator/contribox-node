@@ -12,7 +12,7 @@ rm  -rf $BC_API_LOG_FILE
 php -d error_reporting=E_ALL -d error_log=$BC_API_LOG_FILE -S $HOST_IP:$API_PORT -t $BC_APP_API_DIR > /dev/null 2>&1 &
 touch $BC_RIGHTS_FILES $BC_API_LOG_FILE
 chmod $BC_RIGHTS_FILES $BC_API_LOG_FILE
-chown $BC_USER $$BC_API_LOG_FILE
+chown $BC_USER $BC_API_LOG_FILE
 if [ ! $NEW_NODE -eq 1 ];then
 
     source $BC_APP_INSTALL_DIR/bitcoin.sh

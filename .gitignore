@@ -1,6 +1,6 @@
 /regtest/conf/b_**
 /regtest/conf/e_**
-/regtest/conf/*wallet*.json
+/regtest/conf/*wallets*
 **/log/**
 **/data/**
 /regtest/conf/b_peg_regtest_cli1_wallet13.json

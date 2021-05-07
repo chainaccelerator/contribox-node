@@ -6,7 +6,7 @@
   "BC_USER": "ncantu",
   "BC_RIGHTS_FILES": 777,
   "BC_WEB_ROOT_DIR": "/var/www",
-  "BC_GIT_INSTALL": "https://github.com/chainaccelerator/contribox-node-php.git",
+  "BC_GIT_INSTALL": "https://github.com/chainaccelerator/contribox-node.git",
   "BITCOIN_VERSION": "0.21.1",
   "ELEMENTS_VERSION": "0.18.1.11",
   "PORT_PREFIX_SERVER": "71",
