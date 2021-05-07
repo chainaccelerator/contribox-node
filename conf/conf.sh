@@ -253,7 +253,7 @@ function bitcoinWallet_gen(){
     local BC_ENV="$7"
     local BC_CONF_DIR=$8
 
-    echo "" >&2
+    # echo "" >&2
     # echo ADDRESS_TYPE="$1" >&2
     # echo PARTICIPANT_NUMBER=$3 >&2
     # echo BC_APP_INSTALL_DIR=$4 >&2
@@ -263,7 +263,7 @@ function bitcoinWallet_gen(){
     # echo BC_ENV="$9" >&2
     # echo BC_CONF_DIR=${10} >&2
 
-    echo -e "${CYAN}[$ADDRESS_TYPE WALLETS]${NCOLOR}" >&2
+    # echo -e "${CYAN}[$ADDRESS_TYPE WALLETS]${NCOLOR}" >&2
     declare -a CONF_FILE_LIST
     for i in `seq 1 $PARTICIPANT_NUMBER`;
     do
@@ -778,6 +778,7 @@ confJsonGet $CONF_FILE "BLOCK_PARTICIPANT_MIN"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_MAX"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_MIN"
 confJsonGet $CONF_FILE "NEW_NODE"
+confJsonGet $CONF_FILE "PHP_V"
 
 export HOST_IP=$(/sbin/ip -o -4 addr list $HOST_IP_INTERFACE | awk '{print $4}' | cut -d/ -f1)
 
@@ -863,3 +864,4 @@ export ELEMENTS_SECTION="[$ELEMENTS_CHAIN_VAL]"
 export ELEMENTS_SECTION_ACTIVE="[$ELEMENTS_CHAIN_VAL]"
 export ELEMENTS_SECTION_PREFIX="$ELEMENTS_CHAIN_VAL."
 export BC_API_LOG_FILE=$BC_APP_LOG_DIR/api.log
+export PHP_V=$PHP_V

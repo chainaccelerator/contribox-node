@@ -4,7 +4,7 @@ shopt -s expand_aliases
 
 clear
 
-apt install update -q=2 -y && apt full-upgrade -y -q=2
+apt update -q=2 -y && apt full-upgrade -y -q=2
 apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -q=2
 
 export BASEDIR=$(dirname "$0")
@@ -87,19 +87,22 @@ cat > $CONF_FILE <<EOL
     "ELEMENTS_CHAIN": "${ELEMENTS_CHAIN}",
     "ELEMENTS_SECTION": "${ELEMENTS_SECTION}",
     "ELEMENTS_SECTION_ACTIVE": "${ELEMENTS_SECTION_ACTIVE}",
-    "ELEMENTS_SECTION_PREFIX": "${ELEMENTS_SECTION_PREFIX}"
+    "ELEMENTS_SECTION_PREFIX": "${ELEMENTS_SECTION_PREFIX}",
+    "PHP_V": "${PHP_V}"
 }
 EOL
 chmod $BC_RIGHTS_FILES $CONF_FILE
 chown $BC_USER $CONF_FILE
 
-if [ $APT_UPDATE_UPGRADE -eq 1 ]; then
+PHP_V_TMP=$(php -r 'echo PHP_VERSION;')
+
+if [ $APT_UPDATE_UPGRADE -eq 1 ] && [ $PHP_V_TMP != '8.0.5' ]; then
 
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |tee /etc/apt/sources.list.d/php.list
     apt install php8.0 php8.0-fpm php8.0-{curl,cli,common,mbstring,gd,intl} php-sodium -y
     contribox_mkdir '/var/log/php'
-    php -v
+    php -r 'echo PHP_VERSION;'
 fi
 contribox_mkdir $BC_WEB_ROOT_DIR
 

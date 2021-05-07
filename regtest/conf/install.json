@@ -10,6 +10,7 @@
   "BC_GIT_INSTALL": "https://github.com/chainaccelerator/contribox-node.git",
   "BITCOIN_VERSION": "0.21.1",
   "ELEMENTS_VERSION": "0.18.1.11",
+  "PHP_V": "8.0.5",
   "PORT_PREFIX_SERVER": "71",
   "PORT_PREFIX_RPC": "72",
   "BC_SERVER_DIR": "/opt",

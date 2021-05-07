@@ -24,7 +24,6 @@ function pegInProposal() {
     local BITCOIN_ADDRESS=$(bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR)
     local ELEMENTS_ADDRESS=$(elementsAddressInfo $INDEX_E "peg" $BC_CONF_DIR)
 
-
     local PEGINADDRESS=$(getWalletConfFileParamCMD "peg" $INDEX_E "E_CLI_GETPEGINADDRESS" $BC_CONF_DIR "" "" "")
     local MAINCHAIN=$(echo $PEGINADDRESS | jq -r '.mainchain_address')
     echo "MAINCHAIN=$MAINCHAIN" >&2
@@ -50,7 +49,7 @@ function pegInProposal() {
 
     local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
 
-    elementsTxInfo $INDEX_E "peg" $CLAIMTXID $CLAIMTXID $BC_CONF_DIR "CLAIMTXID" >&2
+    elementsTxInfo $INDEX_E "peg" $CLAIMTXID $BC_CONF_DIR "CLAIMTXID" >&2
 
     bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR >&2
     elementsAddressInfo $INDEX_E "peg" $BC_CONF_DIR >&2

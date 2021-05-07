@@ -51,7 +51,7 @@ if [ ! $NEW_NODE -eq 1 ];then
     export INDEX_B_BLOCK=1
 
     NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV $INDEX_E "none")
-    exit
+
     if [ $PEG -eq 1 ];then
         echo "" >&2
         echo -e "${BROWN}[FIRST PEG IN]$NCOLOR" >&2
@@ -61,6 +61,7 @@ if [ ! $NEW_NODE -eq 1 ];then
         echo -e "${BROWN}[FIRST PEG OUT]$NCOLOR" >&2
         FIRSTPEG=$($BC_APP_SCRIPT_DIR/pegOut.sh $BC_ENV $INDEX_E $INDEX_B_PEG $INDEX_B_BLOCK)
     fi
+    exit
     export MAIN_LIST_CONF=$(wallet_gen "main" $NUMBER_NODES $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
     export LOCK_LIST_CONF=$(wallet_gen "lock" $LOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV"  $BC_CONF_DIR)
     export BACKUP_LIST_CONF=$(wallet_gen "backup" $BACKUP_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR"  "$BC_ENV" $BC_CONF_DIR)
