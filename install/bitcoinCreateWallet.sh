@@ -80,9 +80,7 @@ function bitcoinCreateWallet() {
   local B_CLI_GETTRANSACTION="${CLI_WALLET} gettransaction"
 
   local CW="$(eval "$B_CLI_CREATEWALLET $WALLET | jq -r .name")"
-  # sleep 2
   local NODE_PUB_ADDRESS=$(eval "$B_CLI_GETNEWADDRESS \"$ADDRESS\" \"legacy\"")
-  # sleep 2
   local NODE_PUB_KEY=$(eval "$B_CLI_GETADDRESSINFO $NODE_PUB_ADDRESS | jq -r .pubkey")
   local NODE_PRIV_KEY=$(eval "$B_CLI_DUMPPRIVKEY $NODE_PUB_ADDRESS")
 

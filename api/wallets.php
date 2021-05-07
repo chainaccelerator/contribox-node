@@ -18,19 +18,17 @@ function infoType(string $network, string $type):string{
         exec($cmd.' '.$args, $result, $result_code);
         $a = implode('', $result);
         $a = json_decode($a);
+        $walletName = $a->walletname;
+        $address = $i->pubAddress;
 
         if($network === 'b') {
 
-            $walletName = $a->walletname;
-            $address = $a->pubAddress;
             $balance = (string) $a->balance;
             $unconfirmed_balance = (string) $a->unconfirmed_balance;
             $immature_balance = (string) $a->immature_balance;
         }
         else {
 
-            $walletName = $a->walletname;
-            $address = $a->pubAddress;
             $balance = (string) $a->balance->bitcoin;
             $unconfirmed_balance = (string) $a->unconfirmed_balance->bitcoin;
             $immature_balance = (string) $a->immature_balance->bitcoin;
@@ -96,26 +94,57 @@ $peg .= infoType('e', 'peg');
     <meta charset="utf-8">
     <title></title>
     <style>
+span, p {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
 .wallet {}
 .address {
+    font-size: 10px;
     display: inline-block;
-    width: 260px;
+    width: 400px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 .walletname {
+    font-size: 10px;
     display: inline-block;
     width: 260px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 .balance {
+    font-size: 10px;
     display: inline-block;
     width: 170px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 .unconfirmed_balance {
+    font-size: 10px;
     display: inline-block;
     width: 180px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 .immature_balance {
+    font-size: 10px;
     display: inline-block;
     width: 200px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
     </style>
 </head>
