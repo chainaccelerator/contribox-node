@@ -14,8 +14,6 @@ export PEG_SIGN_PUBKEY_LIST="$7"
 # echo "BC_INST=$BC_INST"
 # echo "BITCOIN_CONF_FILE=$BITCOIN_CONF_FILE"
 # echo "BITCOIN_WALLET_CONF_FILE=$BITCOIN_WALLET_CONF_FILE"
-echo "BLOCK_REDEEMSCRIPT=$BLOCK_REDEEMSCRIPT"
-echo "PEG_REDEEMSCRIPT=$PEG_REDEEMSCRIPT"
 # echo "BLOCK_SIGN_PUBKEY_LIST=$BLOCK_SIGN_PUBKEY_LIST"
 # echo "PEG_SIGN_PUBKEY_LIST=$PEG_SIGN_PUBKEY_LIST"
 # $BC_SERVER_DIR
@@ -27,11 +25,11 @@ export ELEMENTS_DIR=$BC_SERVER_DIR/elements-$ELEMENTS_VERSION/bin
 if [ ! -d $ELEMENTS_DIR ]; then
 
   if [ $APT_UPDATE_UPGRADE -eq 1 ]; then
-    apt install build-essential libtool autotools-dev autoconf pkg-config libssl-dev -y -q=2
-    apt install libboost-all-dev -y -q=2
-    apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler imagemagick librsvg2-bin -y -q=2
-    apt install libqrencode-dev autoconf openssl libssl-dev libevent-dev -y -q=2
-    apt install libminiupnpc-dev -y -q=2
+    apt install build-essential libtool autotools-dev autoconf pkg-config libssl-dev -y -qq
+    apt install libboost-all-dev -y -qq
+    apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler imagemagick librsvg2-bin -y -qq
+    apt install libqrencode-dev autoconf openssl libssl-dev libevent-dev -y -qq
+    apt install libminiupnpc-dev -y -qq
   fi
   cd $BC_SERVER_DIR
   ELEMENTS_INSTALL="elements-$ELEMENTS_VERSION-x86_64-linux-gnu.tar.gz"
@@ -217,16 +215,12 @@ chown $BC_USER $ELEMENTS_CONF_FILE
 
 serverStart "$ELEMENTS_CONF_FILE" "$E_DATA_BASE_DIR" "$QT" "$E_QT" "$E_DEAMON" 1 1 "$E_CLI_STOP"
 
-# echo "BITCOIN_WALLET_CONF_FILE=${BITCOIN_WALLET_CONF_FILE}"
 export wallet_nameBitcoin=$(eval "cat ${BITCOIN_WALLET_CONF_FILE} | jq '.wallet_name'")
 wallet_nameBitcoin=$(eval echo $wallet_nameBitcoin)
-# echo "wallet_nameBitcoin=$wallet_nameBitcoin"
 export wallet_uriBitcoin=$(eval "cat ${BITCOIN_WALLET_CONF_FILE} | jq '.wallet_uri'")
 wallet_uriBitcoin=$(eval echo $wallet_uriBitcoin)
-# echo "wallet_uriBitcoin=$wallet_uriBitcoin"
 export pubAddressBitcoin=$(eval "cat ${BITCOIN_WALLET_CONF_FILE} | jq '.pubAddress'")
 pubAddressBitcoin=$(eval echo $pubAddressBitcoin)
-# echo "pubAddressBitcoin=$pubAddressBitcoin"
 export B_CLI_GETWALLETINFO=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI_GETWALLETINFO')
 export B_CLI_SENDTOADDRESS=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI_SENDTOADDRESS')
 export B_CLI_GENERATETOADDRESS=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI_GENERATETOADDRESS')
@@ -237,9 +231,6 @@ export B_CLI_GETRAWTRANSACTION=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI
 export B_CLI_GETBLOCKCOUNT=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI_GETBLOCKCOUNT')
 export B_CLI_GETTOUT=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI_GETTOUT')
   
-# echo "RUN API"
-# php -S $ELEMENTS_API_BIND_VAL:$ELEMENTS_API_PORT_VAL -t $BC_APP_API_DIR -d display_errors=1 -d error_reporting=32767 -d log_errors=1 -d error_log=$BC_APP_LOG_DIR/api-${BC_INST}.log &>/dev/null &
-
 cat > $NODE_CONF_FILE <<EOL
 {
   "BLOCK_REDEEMSCRIPT": "${BLOCK_REDEEMSCRIPT}",

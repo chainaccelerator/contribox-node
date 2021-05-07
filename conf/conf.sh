@@ -221,8 +221,8 @@ function createMultisig(){
   echo ''${PUBKEY_LIST0}'' > $BC_CONF_DIR/"e_$TYPE_"${BC_ENV}"_pubKey_list.json"
   local MULTISIG=$(getWalletConfFileParamCMD $TYPE 1 "E_CLI_CREATEMULTISIG" $BC_CONF_DIR $PARTICIPANT_MIN "'[$PUBKEY_LIST]'" "")
   local REDEEMSCRIPT=$(echo $MULTISIG | jq -r '.redeemScript')
-  echo "" >&2
-  echo "REDEEMSCRIPT=$REDEEMSCRIPT" >&2
+  # echo "" >&2
+  # echo "REDEEMSCRIPT=$REDEEMSCRIPT" >&2
 
   echo $REDEEMSCRIPT
 }
@@ -560,10 +560,8 @@ function askFor(){
 }
 EOF
 )
-        echo "DATA=$DATA" >&2
-        # echo ''--digest -s -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "${DATA}" "http://${HOST}:${PORT}/index.php"'' >&2
+        # echo "DATA=$DATA" >&2
         local RESULT_TMP=$(curl --digest -s -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "$DATA" "http://$HOST:$PORT/index.php")
-        # zcho "RESULT_TMP=$RESULT_TMP" >&2
         RESULT_TMP=$(echo $RESULT_TMP | jq '.success')
         # echo "VALIDATION=$RESULT_TMP" >&2
         RESULT=$RESULT$(eval echo $RESULT_TMP)

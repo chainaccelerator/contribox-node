@@ -60,6 +60,7 @@ if [ ! $NEW_NODE -eq 1 ];then
         echo "" >&2
         echo -e "${BROWN}[FIRST PEG OUT]$NCOLOR" >&2
         FIRSTPEG=$($BC_APP_SCRIPT_DIR/pegOut.sh $BC_ENV $INDEX_E $INDEX_B_PEG $INDEX_B_BLOCK)
+        exit
     fi
     exit
     export MAIN_LIST_CONF=$(wallet_gen "main" $NUMBER_NODES $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)

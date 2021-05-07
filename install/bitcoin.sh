@@ -9,14 +9,14 @@ rm -rf $BITCOIN_DEBUG_FILE_VAL
 if [ ! -d $BITCOIN_DIR ];then
 
   if [ $APT_UPDATE_UPGRADE -eq 1 ];then
-    apt install build-essential gcc make clang -y -q=2
-    apt install libtool autotools-dev automake pkg-config bsdmainutils python3 -y -q=2
-    apt install libevent-dev libboost-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev -y -q=2
-    apt install libsqlite3-dev -y -q=2
-    apt install libminiupnpc-dev libnatpmp-dev -y -q=2
-    apt install libzmq3-dev -y -q=2
-    apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools -y -q=2
-    apt install libqrencode-dev -y -q=2
+    apt install build-essential gcc make clang -y -qq
+    apt install libtool autotools-dev automake pkg-config bsdmainutils python3 -y -qq
+    apt install libevent-dev libboost-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev -y -qq
+    apt install libsqlite3-dev -y -qq
+    apt install libminiupnpc-dev libnatpmp-dev -y -qq
+    apt install libzmq3-dev -y -qq
+    apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools -y -qq
+    apt install libqrencode-dev -y -qq
   fi
   cd $BC_SERVER_DIR
   wget "https://bitcoincore.org/bin/bitcoin-core-$BITCOIN_VERSION/$BITCOIN_INSTALL"

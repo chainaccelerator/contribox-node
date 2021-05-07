@@ -17,7 +17,7 @@ function notify() {
     # echo $BASEDIR >&2
     source $BASEDIR/../../conf/conf.sh $BC_ENV
     # echo $BC_APP_DATA_DIR >&2
-    local FILE="$BC_APP_DATA_DIR/b_tx_${TXID}.json"
+    local FILE="$BC_APP_DATA_DIR/e_tx_${TXID}.json"
     echo "FILE=$FILE" >&2
 
     echo $FILE

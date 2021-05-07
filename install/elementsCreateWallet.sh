@@ -144,12 +144,11 @@ function elementsCreateWallet() {
     PEG_SIGN_PUBKEY_lIST='""'
   fi
   if [ "$ADDRESS_TYPE" = "block" ] && [ -z $PRIKEY ];then
-    echo "E_CLI_GENERATETOADDRESS" >&2
     local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
   fi
   if [ "$ADDRESS_TYPE" = "peg" ] && [ -z $PRIKEY ];then
 
-    # local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 2 "creditForPegFromElementMiner")
+    # local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 2 "creditForPeg")
     sleep 2
   fi
 
@@ -273,6 +272,10 @@ function elementsCreateWallet() {
 EOL
   chmod $BC_RIGHTS_FILES $CODE_CONF_FILE
   chown $BC_USER $CODE_CONF_FILE
+
+  cp $CODE_CONF_FILE $BC_CONF_DIR/e_a_${NODE_PUB_ADDRESS}".json"
+  chmod $BC_RIGHTS_FILES $BC_CONF_DIR/e_a_${NODE_PUB_ADDRESS}".json"
+  chown $BC_USER $BC_CONF_DIR/e_a_${NODE_PUB_ADDRESS}".json"
 
   echo $CODE_CONF_FILE
 }
