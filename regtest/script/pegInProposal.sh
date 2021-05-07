@@ -20,7 +20,6 @@ function pegInProposal() {
     local BASEDIR0=$(dirname "$0")
     source $BASEDIR0/../../conf/conf.sh $BC_ENV
 
-    # echo "[PEG PROPOSAL $INDEX" >&2
     local BITCOIN_ADDRESS=$(bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR)
     local ELEMENTS_ADDRESS=$(elementsAddressInfo $INDEX_E "peg" $BC_CONF_DIR)
 
@@ -49,9 +48,16 @@ function pegInProposal() {
     echo -e "\nCLAIMTXID=$CLAIMTXID" >&2
 
     local PROPOSAL=$(askFor $ELEMENTS_ADDRESS 'peg' $BC_CONF_DIR $PEG_PARTICIPANT_MAX $PEG_AMOUNT $BC_ENV 'peg' 'pegInValidation' "" "" "")
-    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
-    local B_I=$(elementsTxInfo $INDEX_E "peg" $CLAIMTXID $BC_CONF_DIR "CLAIMTXID")
 
+    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
+    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
+    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
+
+    bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
+    bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
+    bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
+
+    local B_I=$(elementsTxInfo $INDEX_E "peg" $CLAIMTXID $BC_CONF_DIR "CLAIMTXID")
     bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR >&2
     elementsAddressInfo $INDEX_E "peg" $BC_CONF_DIR >&2
 
