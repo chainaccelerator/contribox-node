@@ -4,8 +4,8 @@ shopt -s expand_aliases
 
 clear
 
-apt update -q=2 -y && apt full-upgrade -y -qq  > /dev/null
-apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null
+apt update -q=2 -y && apt full-upgrade -y -qq  > /dev/null 2>&1
+apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
 
 export BASEDIR=$(dirname "$0")
 export BC_CFILE=$BASEDIR/../conf/conf.sh

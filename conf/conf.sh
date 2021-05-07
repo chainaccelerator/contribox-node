@@ -513,18 +513,15 @@ function askFor(){
 
         if [ $j -eq 1 ];then
             local participant2=$(($PARTICIPANT_NUMBER/2))
-            # participant2=$(echo $participant2 | awk '{print int('.$participant2.')}')
             participant2=$(($participant2+1))
             local index2=$(($block % $participant2))
         elif [ $j -lt $O ];then
 
             index2=$(($index2/2))
-            # index2=$(echo $index2 | awk '{print int('$index2')}')
             index2=$(($index2+1))
             RESULT=$RESULT','
         elif [ $j -eq $O ];then
             index2=$(($index2/2))
-            # index2=$(echo $index2 | awk '{print int('$index2')}')
             index2=$(($index2+1))
             RESULT=$RESULT','
         fi
@@ -603,7 +600,7 @@ function bitcoinAddressInfo(){
     local WALLET_INFO=$(getWalletConfFileParamCMD $TYPE $INDEX "B_CLI_GETWALLETINFO" $BC_CONF_DIR "" "" "")
     local BALANCE=$(echo $WALLET_INFO | jq -r '.balance')
     local BALANCE_IMMATURE=$(echo $WALLET_INFO | jq -r '.immature_balance')
-    echo "ADDRESS=$ADDRESS WALLET=$WALLET BALANCE=$BALANCE BALANCE_IMMMATURE=$BALANCE_IMMMATURE" >&2
+    echo "ADDRESS=$ADDRESS WALLET=$WALLET BALANCE=$BALANCE BALANCE_IMMMATURE=$BALANCE_IMMATURE" >&2
 
     echo $ADDRESS
 }
@@ -619,8 +616,8 @@ function elementsAddressInfo(){
     local WALLET=$(getWalletConfFileParam $TYPE $INDEX "wallet_name" $BC_CONF_DIR)
     local WALLET_INFO=$(getWalletConfFileParamCMD $TYPE $INDEX "E_CLI_GETWALLETINFO" $BC_CONF_DIR "" "" "")
     local BALANCE=$(echo $WALLET_INFO | jq -r '.balance.bitcoin')
-    local BALANCE_IMMMATURE=$(echo $WALLET_INFO | jq -r '.immature_balance.bitcoin')
-    echo "ADDRESS=$ADDRESS WALLET=$WALLET BALANCE=$BALANCE BALANCE_IMMMATURE=$BALANCE_IMMMATURE" >&2
+    local BALANCE_IMMATURE=$(echo $WALLET_INFO | jq -r '.immature_balance.bitcoin')
+    echo "ADDRESS=$ADDRESS WALLET=$WALLET BALANCE=$BALANCE BALANCE_IMMMATURE=$BALANCE_IMMATURE" >&2
 
     echo $ADDRESS
 }
@@ -643,12 +640,12 @@ function bitcoinTxInfo(){
     local WALLET_CATEGORY=$(echo $WALLET | jq '.details[0].category')
     local WALLET_ABANDONED=$(echo $WALLET | jq '.details[0].abandoned')
     local WALLET_HEX=$(echo $WALLET | jq '.hex')
-    echo "ADDRESS=$ADDRESS $WALLET txid=${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
+    echo "B_WALLET: ADDRESS=$ADDRESS WALLET:$WALLET txid:${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
     local BC=$(getWalletConfFileParamCMD $TYPE $INDEX "B_CLI_GETRAWTRANSACTION" $BC_CONF_DIR $TXID 1 "")
     local BC_CONFIRMATION=$(echo $WALLET | jq '.confirmations')
     local BC_CATEGORY=$(echo $WALLET | jq '.vout[0].value')
     local BC_ADDRESS0=$(echo $WALLET | jq '.vout[0].addresses[0]')
-    echo "BC txid=${TXID} confirmations:${BC_CONFIRMATION} address0:${BC_ADDRESS0}" >&2
+    echo "B_BC: txid=${TXID} confirmations:${BC_CONFIRMATION} address0:${BC_ADDRESS0}" >&2
 
     echo $WALLET_HEX
 }
@@ -670,12 +667,12 @@ function elementsTxInfo(){
     local WALLET_CATEGORY=$(echo $WALLET | jq '.details[0].category')
     local WALLET_ABANDONED=$(echo $WALLET | jq '.details[0].abandoned')
     local WALLET_HEX=$(echo $WALLET | jq '.hex')
-    echo "WALLET txid=${CLAIMTXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
+    echo "E_WALLET: txid=${CLAIMTXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
     local BC=$(getWalletConfFileParamCMD $TYPE $INDEX "E_CLI_GETRAWTRANSACTION" $BC_CONF_DIR $TXID 1 "")
     local BC_CONFIRMATION=$(echo $WALLET | jq '.confirmations')
     local BC_VALUE=$(echo $WALLET | jq '.vout[0].value')
     local BC_ASSET=$(echo $WALLET | jq '.vout[0].asset')
-    echo "BC txid=${BC_TXID} confirmations:${BC_CONFIRMATION} value:${BC_VALUE} asset:${BC_ASSET}" >&2
+    echo "E_BC: txid=${BC_TXID} confirmations:${BC_CONFIRMATION} value:${BC_VALUE} asset:${BC_ASSET}" >&2
 
     echo $WALLET_HEX
 }
@@ -861,5 +858,5 @@ export ELEMENTS_CHAIN="chain=$ELEMENTS_CHAIN_VAL"
 export ELEMENTS_SECTION="[$ELEMENTS_CHAIN_VAL]"
 export ELEMENTS_SECTION_ACTIVE="[$ELEMENTS_CHAIN_VAL]"
 export ELEMENTS_SECTION_PREFIX="$ELEMENTS_CHAIN_VAL."
-export BC_API_LOG_FILE=$BC_APP_LOG_DIR/api.log
+export BC_API_LOG_FILE="$BC_APP_LOG_DIR/api.log"
 export PHP_V=$PHP_V

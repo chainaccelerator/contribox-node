@@ -29,9 +29,10 @@ function blockProposal() {
     fi
     PROPOSAL=$(askFor $addressFrom 'block' $BC_CONF_DIR $BLOCK_PARTICIPANT_MAX $BLOCK_AMOUNT $BC_ENV 'block' 'blockValidation' $HEX "")
     sleep 20
-    exit
+
     # echo "PROPOSAL=$PROPOSAL" >&2
     local COMBINED=$(getWalletConfFileParamCMD "block" $INDEX "E_CLI_COMBINEBLOCKSIGS" $BC_CONF_DIR $HEX "'$PROPOSAL'" "")
+
     # echo "COMBINED=$COMBINED" >&2
     local SIGNEDBLOCK=$(echo $COMBINED | jq -r '.hex')
     # echo "SIGNEDBLOCK=$SIGNEDBLOCK" >&2

@@ -4,7 +4,7 @@ shopt -s expand_aliases
 
 function pegInValidation() {
 
-   #echo "" >&2
+    #echo "" >&2
     #echo -e "${CYAN_LIGHT}[PEG IN]$NCOLOR" >&2
 
     local BC_ENV=$1

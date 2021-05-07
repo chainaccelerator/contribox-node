@@ -110,7 +110,7 @@ export ELEMENTS_PARAMS="-conf="$ELEMENTS_CONF_FILE
 export NODE_INSTANCE=$BC_INST
 export WALLET_INSTANCE=1
 export NODE_CONF_FILE=$BC_CONF_DIR/e_node_${BC_ENV}_${NODE_INSTANCE}.json
-export ELEMENTS_NOTIFY="walletnotify=$BC_APP_SCRIPT_DIR/./notify.sh $BC_ENV %s $NODE_CONF_FILE"
+export ELEMENTS_NOTIFY="walletnotify=\"bash $BC_APP_SCRIPT_DIR/notify.sh $BC_ENV %s\""
 export ENV2=$BC_ENV"_"$NODE_INSTANCE
 export CLI="$ELEMENTS_DIR/elements-cli $ELEMENTS_PARAMS -rpcconnect=$ELEMENTS_RPC_BIND_VAL -rpcport=$ELEMENTS_RPC_PORT_VAL -rpcuser='$ELEMENTS_RPC_USER_VAL' -rpcpassword='$ELEMENTS_RPC_PASSWORD_VAL'"
 export E_DEAMON="${ELEMENTS_DIR}/elementsd ${ELEMENTS_PARAMS}"

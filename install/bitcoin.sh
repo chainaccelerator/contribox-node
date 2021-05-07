@@ -41,7 +41,7 @@ export BITCOIN_RPC_PORT_VAL=$PORT_BITCOIN_RPC
 export BITCOIN_RPC_PORT="rpcport=$BITCOIN_RPC_PORT_VAL"
 export NODE_CONF_FILE=$BC_CONF_DIR/b_node_${BC_ENV}_1.json
 export CODE_CONF_FILE=$(bitcoinGetAddressConf "$BC_ENV" $NODE_INSTANCE $WALLET_INSTANCE "$ADDRESS_TYPE" "$BC_CONF_DIR")
-export BITCOIN_NOTIFY="walletnotify=$BC_APP_SCRIPT_DIR/notify_bitcoin.sh $BC_ENV %s"
+export BITCOIN_NOTIFY="walletnotify='$BC_APP_SCRIPT_DIR/notify_bitcoin.sh $BC_ENV %s'"
 export INITIAL_AMOUNT=$NODE_INITIAL_AMOUNT
 export AMOUNT=$NODE_AMOUNT
 export CLI="${BITCOIN_DIR}/bitcoin-cli ${BITCOIN_PARAMS} -rpcconnect=$BITCOIN_RPC_BIND_VAL -rpcport=$BITCOIN_RPC_PORT_VAL -rpcuser='$BITCOIN_RPC_USER_VAL' -rpcpassword='$BITCOIN_RPC_PASSWORD_VAL'"

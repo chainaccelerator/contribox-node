@@ -25,4 +25,3 @@ export -f blockValidation
 RES=$(blockValidation ${1} ${2} ${3})
 
 echo $RES
-
