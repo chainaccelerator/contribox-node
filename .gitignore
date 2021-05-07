@@ -3,6 +3,15 @@
 /regtest/conf/*wallets*
 **/log/**
 **/data/**
+/regtest/conf/b_block_wallets.json
+/regtest/conf/b_peg_wallets.json
+/regtest/conf/b_main_wallets.json
+/regtest/conf/block_wallets.json
+/regtest/conf/peg_wallets.json
+/regtest/conf/main_wallets.json
+/regtest/conf/backup_wallets.json
+/regtest/conf/witness_wallets.json
+/regtest/conf/lock_wallets.json
 /regtest/conf/b_peg_regtest_cli1_wallet13.json
 /regtest/conf/b_block_regtest_cli1_wallet1.json
 /regtest/conf/b_block_regtest_cli1_wallet2.json
@@ -19,7 +28,6 @@
 /regtest/conf/b_block_regtest_cli1_wallet13.json
 /regtest/conf/b_block_regtest_cli1_wallet14.json
 /regtest/conf/b_block_regtest_cli1_wallet15.json
-/regtest/conf/b_block_wallets.json
 /regtest/conf/b_main_regtest_cli1_wallet1.json
 /regtest/conf/b_main_regtest_cli1_wallet2.json
 /regtest/conf/b_main_regtest_cli1_wallet3.json
@@ -35,7 +43,6 @@
 /regtest/conf/b_main_regtest_cli1_wallet13.json
 /regtest/conf/b_main_regtest_cli1_wallet14.json
 /regtest/conf/b_main_regtest_cli1_wallet15.json
-/regtest/conf/b_main_wallets.json
 /regtest/conf/b_node_regtest_1.json
 /regtest/conf/b_peg_regtest_cli1_wallet1.json
 /regtest/conf/b_peg_regtest_cli1_wallet2.json
@@ -51,7 +58,6 @@
 /regtest/conf/b_peg_regtest_cli1_wallet12.json
 /regtest/conf/b_peg_regtest_cli1_wallet14.json
 /regtest/conf/b_peg_regtest_cli1_wallet15.json
-/regtest/conf/b_peg_wallets.json
 /regtest/conf/bitcoin_regtest.conf
 /regtest/conf/conf.json
 /.idea/contribox-node.iml
