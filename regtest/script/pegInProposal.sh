@@ -36,7 +36,7 @@ function pegInProposal() {
 
     bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
 
-    bitcoinTxInfo $INDEX_B_PEG "b_peg" $TXID $BC_CONF_DIR "BITCOIN TXID" >2
+    local B_I=$(bitcoinTxInfo $INDEX_B_PEG "b_peg" $TXID $BC_CONF_DIR "BITCOINTXID")
 
     local PROOF=$(getWalletConfFileParamCMD "b_peg" $INDEX_B_PEG "B_CLI_GETTXOUTPROOF" $BC_CONF_DIR $T "" "")
     echo -e "\nPROOF=$PROOF" >&2
@@ -48,8 +48,9 @@ function pegInProposal() {
     local PROPOSAL=$(askFor $ELEMENTS_ADDRESS 'peg' $BC_CONF_DIR $PEG_PARTICIPANT_MAX $PEG_AMOUNT $BC_ENV 'peg' 'pegInValidation' "" "" "")
 
     local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
+    exit
 
-    elementsTxInfo $INDEX_E "peg" $CLAIMTXID $BC_CONF_DIR "CLAIMTXID" >&2
+    local B_I=$(elementsTxInfo $INDEX_E "peg" $CLAIMTXID $BC_CONF_DIR "CLAIMTXID")
 
     bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR >&2
     elementsAddressInfo $INDEX_E "peg" $BC_CONF_DIR >&2
