@@ -31,7 +31,7 @@ function pegInProposal() {
 
     bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
 
-    local TXID=$(getWalletConfFileParamCMD "b_peg" $INDEX_B_PEG "B_CLI_SENDTOADDRESS" $BC_CONF_DIR $MAINCHAIN $PEG_AMOUNT "sendToWatchmen")
+    local TXID=$(getWalletConfFileParamCMD "b_peg" $INDEX_B_PEG "B_CLI_SENDTOADDRESS" $BC_CONF_DIR $MAINCHAIN $PEG_AMOUNT "sendToWatchmen" "''" true true)
     local T="'''[\"'''$TXID'''\"]'''"
     echo "T=$T" >&2
 

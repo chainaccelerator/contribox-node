@@ -78,23 +78,23 @@ function bitcoinCreateWallet() {
   local B_CLI_IMPORTWALLET="${CLI_WALLET} importwallet"
   local B_CLI_SENDTOADDRESS="${CLI_WALLET} sendtoaddress"
   local B_CLI_GETTRANSACTION="${CLI_WALLET} gettransaction"
+  local B_CLI_LISTUNSPENT="${CLI_WALLET} listunspent"
 
   local CW="$(eval "$B_CLI_CREATEWALLET $WALLET | jq -r .name")"
   local NODE_PUB_ADDRESS=$(eval "$B_CLI_GETNEWADDRESS \"$ADDRESS\" \"legacy\"")
   local NODE_PUB_KEY=$(eval "$B_CLI_GETADDRESSINFO $NODE_PUB_ADDRESS | jq -r .pubkey")
   local NODE_PRIV_KEY=$(eval "$B_CLI_DUMPPRIVKEY $NODE_PUB_ADDRESS")
 
-  if [ "$ADDRESS_TYPE" = "block" ];then
+  if [ "$ADDRESS_TYPE" = "block" ] || [ "$ADDRESS_TYPE" = "b_block" ];then
     echo "B_CLI_GENERATETOADDRESS" >&2
     local BITCOIN_BLOCK_GEN=$(eval "$B_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
   fi
-  if [ "$ADDRESS_TYPE" = "peg" ];then
+  if [ "$ADDRESS_TYPE" = "peg" ] || [ "$ADDRESS_TYPE" = "b_peg" ];then
 
-    local blockTx=$(getWalletConfFileParamCMD "b_block" 1 "B_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 2 "creditForPeg")
+    # echo "CODE_CONF_FILE=$CODE_CONF_FILE" >&2
+    local blockTx=$(getWalletConfFileParamCMD "b_block" 1 "B_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 0.0003 "creditForPeg" "''" true true)
     sleep 2
   fi
-  CODE_CONF_FILE=$BC_CONF_DIR/${WALLET}".json"
-  echo $CODE_CONF_FILE
 
   cat > $CODE_CONF_FILE <<EOL
 {
@@ -138,15 +138,37 @@ function bitcoinCreateWallet() {
   "B_CLI_GETRAWTRANSACTION": "${B_CLI_GETRAWTRANSACTION}",
   "B_CLI_GETBLOCKCOUNT": "${B_CLI_GETBLOCKCOUNT}",
   "B_CLI_GETTOUT": "${B_CLI_GETTOUT}",
+  "B_CLI_LISTUNSPENT":  "${B_CLI_LISTUNSPENT}",
   "API_PORT": "${API_PORT}"
 }
 EOL
   chmod $BC_RIGHTS_FILES $CODE_CONF_FILE
   chown $BC_USER $CODE_CONF_FILE
 
-  cp $CODE_CONF_FILE $BC_CONF_DIR/b_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
-  chmod $BC_RIGHTS_FILES $BC_CONF_DIR/b_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
-  chown $BC_USER $BC_CONF_DIR/b_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
+    if [ "$ADDRESS_TYPE" = "block" ] || [ "$ADDRESS_TYPE" = "peg" ] || [ "$ADDRESS_TYPE" = "node" ] || [ "$ADDRESS_TYPE" = "b_block" ] || [ "$ADDRESS_TYPE" = "b_peg" ] || [ "$ADDRESS_TYPE" = "b_node" ];then
+
+    local SHARE_FILE=$BC_CONF_DIR/shared/${WALLET}.json
+    rm -rf $SHARE_FILE
+    cat > $SHARE_FILE <<EOL
+{
+  "wallet_name": "${WALLET}",
+  "wallet_uri": "${WALLET_URI}",
+  "pubKey_name": "${ADDRESS}",
+  "pubAddress": "${NODE_PUB_ADDRESS}",
+  "pubKey": "${NODE_PUB_KEY}",
+  "apiBind": "${ELEMENTS_API_BIND_VAL}",
+  "apiPort": "${ELEMENTS_API_PORT_VAL}",
+  "nodeId": "${NODEID}",
+  "env": "${BC_ENV}",
+  "nodeInstance": "${NODE_INSTANCE}",
+  "walletInstance": "${WALLET_INSTANCE}",
+  "addressType": "${ADDRESS_TYPE}"
+}
+EOL
+    chmod $BC_RIGHTS_FILES $SHARE_FILE
+    chown $BC_USER $SHARE_FILE
+  fi
+  echo $CODE_CONF_FILE
 
 }
 export -f bitcoinCreateWallet

@@ -121,21 +121,40 @@ function elementsCreateWallet() {
   local E_CLI_COMBINERAWTRANSACTION="${CLI_WALLET} combinerawtransaction"
   local E_CLI_SIGNRAWTRANSACTIONWITHKEY="${CLI_WALLET} signrawtransactionwithkey"
   local E_CLI_SENDRAWTRANSACTION="${CLI_WALLET} sendrawtransaction"
+  local E_CLI_LISTUNSPENT="${CLI_WALLET} listunspent"
 
+  if [ "$ADDRESS_TYPE" == "block" ] && [ $NODE_INSTANCE -eq 1 ] && [ $WALLET_INSTANCE -eq 1 ];then
+      echo "E_CLI_DUMPPRIVKEY2" >&2
+      echo $(eval "$CLI listwallets")
+      local DUMP_INITIAL_ADDRESS=$(eval "$CLI getnewaddress" \"legacy\")
+      local DUMP_INITIAL_KEY=$(eval "$E_CLI_DUMPPRIVKEY2 $DUMP_INITIAL_ADDRESS")
+  fi
   local WN=$(eval "$E_CLI_CREATEWALLET '$WALLET' | jq -r .name")
+
   local BLOCKCOUNT=$(eval "$E_CLI_GETBLOCKCOUNT")
 
   local PEGGED_ASSET=$(eval "$E_CLI_GETBLOCKCOUNT")
 
   if [ -z "$PRIKEY" ];then
+    echo "E_CLI_DUMPPRIVKEY" >&2
     local NODE_PUB_ADDRESS=$(eval "$E_CLI_GETNEWADDRESS \"$ADDRESS\" \"legacy\"")
     local NODE_PRIV_KEY=$(eval "$E_CLI_DUMPPRIVKEY $NODE_PUB_ADDRESS")
     local NODE_PUB_KEY=$(eval "$E_CLI_GETADDRESSINFO $NODE_PUB_ADDRESS | jq -r .pubkey")
   else
+    echo "E_CLI_IMPORTPRIVKEY" >&2
     local IMPORT=$(eval "$E_CLI_IMPORTPRIVKEY $PRIKEY")
+    sleep 120
     local NODE_PRIV_KEY=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "prvKey" $BC_CONF_DIR "" "" "")
     local NODE_PUB_ADDRESS=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "pubAddress" $BC_CONF_DIR "" "" "")
     local NODE_PUB_KEY=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "pubKey" $BC_CONF_DIR "" "" "")
+  fi
+  if [ "$ADDRESS_TYPE" == "block" ] && [ -z $PRIKEY ];then
+    echo "E_CLI_GENERATETOADDRESS" >&2
+    local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
+  fi
+  if [ "$ADDRESS_TYPE" == "peg" ] && [ -z $PRIKEY ];then
+
+    local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 0.0003 "creditForPeg" "''" true true)
   fi
   if [ -z "$BLOCK_SIGN_PUBKEY_LIST" ];then
     BLOCK_SIGN_PUBKEY_lIST='""'
@@ -143,15 +162,14 @@ function elementsCreateWallet() {
   if [ -z "$PEG_SIGN_PUBKEY_LIST" ];then
     PEG_SIGN_PUBKEY_lIST='""'
   fi
-  if [ "$ADDRESS_TYPE" = "block" ] && [ -z $PRIKEY ];then
-    local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
+  if [ "$ADDRESS_TYPE" == "block" ] && [ $NODE_INSTANCE -eq 1 ] && [ $WALLET_INSTANCE -eq 1 ];then
+      echo "INITIAL IMPORT" >&2
+      local IMPORT_INITIAL=$(eval "$E_CLI_IMPORTPRIVKEY $DUMP_INITIAL_KEY")
+      echo "end import" >&2
+      # local SEND_INITIAL=$(eval "$E_CLI_SENDTOADDRESS $NODE_PUB_ADDRESS 21000000 'InitialTokens' "''" true true")
+      echo "end send" >&2
+      local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
   fi
-  if [ "$ADDRESS_TYPE" = "peg" ] && [ -z $PRIKEY ];then
-
-    # local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 2 "creditForPeg")
-    sleep 2
-  fi
-
   rm -rf $CODE_CONF_FILE
   cat > $CODE_CONF_FILE <<EOL
 {
@@ -224,6 +242,7 @@ function elementsCreateWallet() {
   "E_CLI_COMBINERAWTRANSACTION": "${E_CLI_COMBINERAWTRANSACTION}",
   "E_CLI_SENDRAWTRANSACTION": "${E_CLI_SENDRAWTRANSACTION}",
   "E_CLI_SIGNRAWTRANSACTIONWITHKEY": "${E_CLI_SIGNRAWTRANSACTIONWITHKEY}",
+  "E_CLI_LISTUNSPENT": "${E_CLI_LISTUNSPENT}",
   "ELEMENTS_DATA_ROOT_PATH": "${ELEMENTS_DATA_ROOT_PATH}",
   "ELEMENTS_API_BIND_VAL": "${ELEMENTS_API_BIND_VAL}",
   "ELEMENTS_API_PORT_VAL": "${ELEMENTS_API_PORT_VAL}",
@@ -272,11 +291,30 @@ function elementsCreateWallet() {
 EOL
   chmod $BC_RIGHTS_FILES $CODE_CONF_FILE
   chown $BC_USER $CODE_CONF_FILE
+  
+  if [ "$ADDRESS_TYPE" = "block" ] || [ "$ADDRESS_TYPE" = "peg" ] || [ "$ADDRESS_TYPE" = "node" ];then
 
-  cp $CODE_CONF_FILE $BC_CONF_DIR/e_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
-  chmod $BC_RIGHTS_FILES $BC_CONF_DIR/e_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
-  chown $BC_USER $BC_CONF_DIR/e_a_${ADDRESS_TYPE}_${NODE_PUB_ADDRESS}".json"
-
+    local SHARE_FILE=$BC_CONF_DIR/shared/${WALLET}.json
+    rm -rf $SHARE_FILE
+    cat > $SHARE_FILE <<EOL
+{
+  "wallet_name": "${WALLET}",
+  "wallet_uri": "${WALLET_URI}",
+  "pubKey_name": "${ADDRESS}",
+  "pubAddress": "${NODE_PUB_ADDRESS}",
+  "pubKey": "${NODE_PUB_KEY}",
+  "apiBind": "${ELEMENTS_API_BIND_VAL}",
+  "apiPort": "${ELEMENTS_API_PORT_VAL}",
+  "nodeId": "${NODEID}",
+  "env": "${BC_ENV}",
+  "nodeInstance": "${NODE_INSTANCE}",
+  "walletInstance": "${WALLET_INSTANCE}",
+  "addressType": "${ADDRESS_TYPE}"
+}
+EOL
+    chmod $BC_RIGHTS_FILES $SHARE_FILE
+    chown $BC_USER $SHARE_FILE
+  fi
   echo $CODE_CONF_FILE
 }
 export -f elementsCreateWallet

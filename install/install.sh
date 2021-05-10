@@ -126,10 +126,15 @@ if [ ! -d $BC_APP_ROOT_DIR ]; then
 fi
 cd $BC_APP_INSTALL_DIR
 
-rm -i $BC_CONF_DIR/b_node_regtest_1.json
-rm -f $BC_CONF_DIR/*wallets.json
-rm -f $BC_CONF_DIR/b_*
-rm -f $BC_CONF_DIR/e_*
+if [ -z "$BC_CONF_DIR" ];then
+  echo "BAD CONFIGURATION FILE"
+  exit
+fi
+
+rm -rf $BC_CONF_DIR/b_node_regtest_1.json
+rm -rf $BC_CONF_DIR/*wallets.json
+rm -rf $BC_CONF_DIR/b_*
+rm -rf $BC_CONF_DIR/e_*
 rm -rf $BC_APP_LOG_DIR/*
 rm -rf $BC_APP_DATA_DIR/*
 contribox_mkdir $BC_APP_DIR
@@ -149,6 +154,12 @@ contribox_rmdir $ELEMENTS_CONF_ROOT_PATH
 contribox_mkdir $ELEMENTS_CONF_ROOT_PATH
 contribox_rmdir $ELEMENTS_LOG_ROOT_PATH
 contribox_mkdir $ELEMENTS_LOG_ROOT_PATH
+contribox_rmdir ${BC_CONF_DIR}/federation
+contribox_mkdir ${BC_CONF_DIR}/federation
+contribox_rmdir ${BC_CONF_DIR}/local
+contribox_mkdir ${BC_CONF_DIR}/local
+contribox_rmdir ${BC_CONF_DIR}/shared
+contribox_mkdir ${BC_CONF_DIR}/shared
 
 source $BC_APP_INSTALL_DIR/configure.sh
 

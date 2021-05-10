@@ -17,8 +17,8 @@ function pegInValidation() {
     local BASEDIR0=$(dirname "$0")
     source $BASEDIR0/../../conf/conf.sh $BC_ENV
 
-    local blockAddress=$(elementsAddressInfo $INDEX_E_BLOCK "block" $BC_CONF_DIR)
-    local GENERATE=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_GENERATETOADDRESS" $BC_CONF_DIR 1 $blockAddress "")
+    local blockAddress=$(elementsAddressInfo $INDEX_E_BLOCK "federation/block" $BC_CONF_DIR)
+    local GENERATE=$(getWalletConfFileParamCMD "federation/peg" $INDEX_E_PEG "E_CLI_GENERATETOADDRESS" $BC_CONF_DIR 1 $blockAddress "")
     local RES=$(echo $GENERATE | jq '.[0]')
 
     echo $RES

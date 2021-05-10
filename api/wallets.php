@@ -4,89 +4,98 @@ require_once 'lib/_require.php';
 
 function infoType(string $network, string $type):string{
 
-    $prefix=$network.'_a_'.$type.'_';
-    $files = glob(Conf::$BC_CONF_DIR.'/'.$prefix.'*');
+    $BC_CONF_DIR = Conf::$BC_CONF_DIR;
+    if ( $type == "block" || $type == "peg" || $type == "node" ) {
+        $BC_CONF_DIR = $BC_CONF_DIR .'/federation';
+    }
+    else {
+        $BC_CONF_DIR = $BC_CONF_DIR.'/local';
+    }
+    $basename = $network.'_'.$type.'.wallets.json';
+    $file = $BC_CONF_DIR.'/'.$basename;
+
+    if(is_file($file) === false) return '';
+
+    $files0 = glob($file);
     $content = array();
 
-    foreach($files as $k => $addressFile) {
+    foreach($files0 as $k => $addressFile0) {
 
-        $i = json_decode(file_get_contents($addressFile));
-        if($network === 'e') $cmd = $i->E_CLI_GETWALLETINFO;
-        if($network === 'b') $cmd = $i->B_CLI_GETWALLETINFO;
-        $args = '';
-        $result = '';
-        exec($cmd.' '.$args, $result, $result_code);
-        $a = implode('', $result);
-        $a = json_decode($a);
-        $walletName = $a->walletname;
-        $address = $i->pubAddress;
+        $i0 = json_decode(file_get_contents($addressFile0));
 
-        if($network === 'b') {
+        foreach ($i0 as $k => $addressFile) {
 
-            $balance = (string) $a->balance;
-            $unconfirmed_balance = (string) $a->unconfirmed_balance;
-            $immature_balance = (string) $a->immature_balance;
+            $i = json_decode(file_get_contents($addressFile));
+            $cmd = '';
+            if ($network === 'e') $cmd = $i->E_CLI_GETWALLETINFO;
+            if ($network === 'b') $cmd = $i->B_CLI_GETWALLETINFO;
+            $args = '';
+            $result = '';
+            exec($cmd . ' ' . $args, $result, $result_code);
+            $a = implode('', $result);
+            $a = json_decode($a);
+            $walletName = $a->walletname;
+            $address = $i->pubAddress;
+
+            if ($network === 'b') {
+
+                $balance = (string)$a->balance;
+                $unconfirmed_balance = (string)$a->unconfirmed_balance;
+                $immature_balance = (string)$a->immature_balance;
+            } else {
+
+                $balance = (string)$a->balance->bitcoin;
+                $unconfirmed_balance = (string)$a->unconfirmed_balance->bitcoin;
+                $immature_balance = (string)$a->immature_balance->bitcoin;
+            }
+
+
+            $content[$i->walletInstance] = '<p class="wallet">';
+            $content[$i->walletInstance] .= '<span class="walletname">' . $walletName . '</span>';
+            $content[$i->walletInstance] .= '<span class="address">' . $address . '</span>';
+            $content[$i->walletInstance] .= '<span class="balance">' . $balance . '</span>';
+            $content[$i->walletInstance] .= '<span class="unconfirmed_balance">' . $unconfirmed_balance . '</span>';
+            $content[$i->walletInstance] .= '<span class="immature_balance">' . $immature_balance . '</span>';
+            $content[$i->walletInstance] .= '</p>';
         }
-        else {
-
-            $balance = (string) $a->balance->bitcoin;
-            $unconfirmed_balance = (string) $a->unconfirmed_balance->bitcoin;
-            $immature_balance = (string) $a->immature_balance->bitcoin;
-        }
-        $content[$i->walletInstance] = '<p class="wallet">';
-        $content[$i->walletInstance] .= '<span class="walletname">'.$walletName.'</span>';
-        $content[$i->walletInstance] .= '<span class="address">'.$address.'</span>';
-        $content[$i->walletInstance] .= '<span class="balance">'.$balance.'</span>';
-        $content[$i->walletInstance] .= '<span class="unconfirmed_balance">'.$unconfirmed_balance.'</span>';
-        $content[$i->walletInstance] .= '<span class="immature_balance">'.$immature_balance.'</span>';
-        $content[$i->walletInstance] .= '</p>';
     }
     ksort($content);
 
     return implode('', $content);
 }
+function infoTypeHTml(string $network, string $type):string{
+
+    $html = '<h3>BITCOIN '.$type.'</h3>';
+    $html .= '<p class="wallet">';
+    $html .= '<span class="walletname">walletName</span>';
+    $html .= '<span class="address">address</span>';
+    $html .= '<span class="balance">balance</span>';
+    $html .= '<span class="unconfirmed_balance">unconfirmed_balance</span>';
+    $html .= '<span class="immature_balance">immature_balance</span>';
+    $html .= '</p>';
+    $html .= infoType($network, $type);
+
+    return $html;
+}
+
 $BC_ENV = 'regtest';
 $conf = new Conf($BC_ENV);
-
-$b_block = '<h3>BITCOIN BLOCK</h3>';
-$b_block .= '<p class="wallet">';
-$b_block .= '<span class="walletname">walletName</span>';
-$b_block .= '<span class="address">address</span>';
-$b_block .= '<span class="balance">balance</span>';
-$b_block .= '<span class="unconfirmed_balance">unconfirmed_balance</span>';
-$b_block .= '<span class="immature_balance">immature_balance</span>';
-$b_block .= '</p>';
-$b_block .= infoType('b', 'block');
-
-$b_peg = '<h3>BITCOIN PEG</h3>';
-$b_peg .= '<p class="wallet">';
-$b_peg .= '<span class="walletname">walletName</span>';
-$b_peg .= '<span class="address">address</span>';
-$b_peg .= '<span class="balance">balance</span>';
-$b_peg .= '<span class="unconfirmed_balance">unconfirmed_balance</span>';
-$b_peg .= '<span class="immature_balance">immature_balance</span>';
-$b_peg .= '</p>';
-$b_peg .= infoType('b', 'peg');
-
-$block = '<h3>ELEMENTS BLOCK</h3>';
-$block .= '<p class="wallet">';
-$block .= '<span class="walletname">walletName</span>';
-$block .= '<span class="address">address</span>';
-$block .= '<span class="balance">balance</span>';
-$block .= '<span class="unconfirmed_balance">unconfirmed_balance</span>';
-$block .= '<span class="immature_balance">immature_balance</span>';
-$block .= '</p>';
-$block .= infoType('e', 'block');
-
-$peg = '<h3>ELEMENTS PEG</h3>';
-$peg .= '<p class="wallet">';
-$peg .= '<span class="walletname">walletName</span>';
-$peg .= '<span class="address">address</span>';
-$peg .= '<span class="balance">balance</span>';
-$peg .= '<span class="unconfirmed_balance">unconfirmed_balance</span>';
-$peg .= '<span class="immature_balance">immature_balance</span>';
-$peg .= '</p>';
-$peg .= infoType('e', 'peg');
+$b_block = infoTypeHTml('b', 'block');
+$b_peg = infoTypeHTml('b', 'peg');
+$b_main = infoTypeHTml('b', 'main');
+$b_node = infoTypeHTml('b', 'node');
+$block = infoTypeHTml('e', 'block');
+$peg = infoTypeHTml('e', 'peg');
+$main = infoTypeHTml('e', 'main');
+$node = infoTypeHTml('e', 'node');
+$lock = infoTypeHTml('e', 'lock');
+$backup = infoTypeHTml('e', 'backup');
+$witness = infoTypeHTml('e', 'witness');
+$share = infoTypeHTml('e', 'share');
+$convert = infoTypeHTml('e', 'convert');
+$share = infoTypeHTml('e', 'share');
+$post = infoTypeHTml('e', 'post');
+$get = infoTypeHTml('e', 'get');
 
 ?><!doctype html>
 <html lang="fr">
@@ -204,13 +213,30 @@ aside {
             <input type="integer" name="convertLSat[amount]"> LSats with <select name="convertLSAT[utxo]" multiple></select> following <select name="convertLSat[template]"></select> to <select name="convertLSAT[address]" multiple></select> for convert into SAT (each)<br>
             <input type="submit" name="conversion" value="Send"><br>
         </fieldset>
+        <fieldset><legend>Upgrade</legend>
+            Pay to mine: <input type="integer" name="payToMine[amount]" value="100000" min="100000" max="100000" readonly> Sats with <select name="payToMine[utxo]" multiple></select> following <select name="payToMine[template]"></select> to <select name="payToMine[address]" multiple></select> for be able to mine (each)<br>
+            Pay to pegOut: <input type="integer" name="payToPegOut[amount]" value="100000" min="1000000" max="100000" readonly> Sats with <select name="payToPegOut[utxo]" multiple></select> following <select name="payToPegOut[template]"></select> to <select name="payToPegOut[address]" multiple></select> for be able to pegOut (each)<br>
+            <input type="submit" name="conversion" value="Send"><br>
+        </fieldset>
     </form>
 </section>
 <section>
-    <?php echo $b_block; ?>
-    <?php echo $b_peg; ?>
-    <?php echo $block; ?>
-    <?php echo $peg; ?>
+<?php echo $b_block = infoTypeHTml('b', 'block'); ?>
+<?php echo $b_peg = infoTypeHTml('b', 'peg'); ?>
+<?php echo $b_main = infoTypeHTml('b', 'main'); ?>
+<?php echo $b_node = infoTypeHTml('b', 'node'); ?>
+<?php echo $block = infoTypeHTml('e', 'block'); ?>
+<?php echo $peg = infoTypeHTml('e', 'peg'); ?>
+<?php echo $main = infoTypeHTml('e', 'main'); ?>
+<?php echo $node = infoTypeHTml('e', 'node'); ?>
+<?php echo $lock = infoTypeHTml('e', 'lock'); ?>
+<?php echo $backup = infoTypeHTml('e', 'backup'); ?>
+<?php echo $witness = infoTypeHTml('e', 'witness'); ?>
+<?php echo $share = infoTypeHTml('e', 'share'); ?>
+<?php echo $convert = infoTypeHTml('e', 'convert'); ?>
+<?php echo $share = infoTypeHTml('e', 'share'); ?>
+<?php echo $post = infoTypeHTml('e', 'post'); ?>
+<?php echo $get = infoTypeHTml('e', 'get'); ?>
 </section>
 </body>
 </html>

@@ -182,6 +182,12 @@ elementsGetAddressConf(){
   local ADDRESS_TYPE="$4"
   local BC_CONF_DIR=$5
   local WALLET=$(elementsGetWalletName "${BC_ENV}" ${NODE_INSTANCE} ${WALLET_INSTANCE} "${ADDRESS_TYPE}")
+
+  if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
+    local BC_CONF_DIR=${BC_CONF_DIR}/federation
+  else
+    local BC_CONF_DIR=${BC_CONF_DIR}/local
+  fi
   local CODE_CONF_FILE=${BC_CONF_DIR}/${WALLET}.json
 
   echo $CODE_CONF_FILE
@@ -236,6 +242,12 @@ bitcoinGetAddressConf(){
   local ADDRESS_TYPE="$4"
   local BC_CONF_DIR=$5
   local WALLET=$(bitcoinGetWalletName "${BC_ENV}" ${NODE_INSTANCE} ${WALLET_INSTANCE} "${ADDRESS_TYPE}")
+
+  if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
+    local BC_CONF_DIR=${BC_CONF_DIR}/federation
+  else
+    local BC_CONF_DIR=${BC_CONF_DIR}/local
+  fi
   local CODE_CONF_FILE=${BC_CONF_DIR}/${WALLET}.json
 
   echo $CODE_CONF_FILE
@@ -274,6 +286,11 @@ function bitcoinWallet_gen(){
     local separator='","'
     local regex="$( printf "${separator}%s" ${CONF_FILE_LIST[@]} )"
     local regex="${regex:${#separator}}"
+    if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
+      local BC_CONF_DIR=${BC_CONF_DIR}/federation
+    else
+      local BC_CONF_DIR=${BC_CONF_DIR}/local
+    fi
     local CONF=$BC_CONF_DIR/b_${ADDRESS_TYPE}_wallets.json
     echo '["'$regex'"]' > $CONF
 
@@ -318,6 +335,11 @@ function wallet_gen(){
     local separator='","'
     local regex="$( printf "${separator}%s" ${CONF_FILE_LIST[@]} )"
     local regex="${regex:${#separator}}"
+    if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
+      local BC_CONF_DIR=${BC_CONF_DIR}/federation
+    else
+      local BC_CONF_DIR=${BC_CONF_DIR}/local
+    fi
     local CONF=$BC_CONF_DIR/${ADDRESS_TYPE}_wallets.json
     echo '["'$regex'"]' > $CONF
 
@@ -335,6 +357,11 @@ function getWalletConfFile() {
   # echo "INDEX=$INDEX" >&2
   # echo "BC_CONF_DIR=$BC_CONF_DIR" >&2
 
+  if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
+    local BC_CONF_DIR=${BC_CONF_DIR}/federation
+  else
+    local BC_CONF_DIR=${BC_CONF_DIR}/local
+  fi
   local LIST=$(cat "$BC_CONF_DIR/${ADDRESS_TYPE}_wallets.json")
   declare -a CONF_FILE_LIST
   INDEX=$(($INDEX-1))
@@ -376,6 +403,9 @@ function getWalletConfFileParamCMD() {
   local P1=$5
   local P2=$6
   local P3=$7
+  local P4="$8"
+  local P5=$9
+  local P6=${10}
 
   # echo "" >&2
   # echo "->CMD" >&2
@@ -390,8 +420,8 @@ function getWalletConfFileParamCMD() {
   # PARAM=$(eval echo $PARAM)
   local CMD=$(getWalletConfFileParam $ADDRESS_TYPE $INDEX $PARAM $BC_CONF_DIR)
   # CMD=$(eval echo $CMD)
-  echo "$PARAM $P1 $P2 $P3" >&2
-  local VAL=$(eval "$CMD $P1 $P2 $P3")
+  echo "$PARAM $P1 $P2 $P3 $P4 $P5 $P6" >&2
+  local VAL=$(eval "$CMD $P1 $P2 $P3 $P4 $P5 $P6")
   # echo "RESULT=$VAL" >&2
   
   echo $VAL
@@ -575,7 +605,7 @@ function bitcoinMine(){
     BITCOIN_BLOCK_PARTICIPANT_NUMBER=$2
     BC_CONF_DIR=$3
 
-    if [ $BC_ENV == "main" ];then
+    if [ "$BC_ENV" == "main" ];then
        local SLEEP=$((60*10*2))
        sleep $SLEEP
     else
