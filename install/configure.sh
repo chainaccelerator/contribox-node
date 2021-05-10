@@ -34,27 +34,31 @@ if [ $NEW_NODE -eq 0 ];then
   export PEG_LIST_CONF=$(wallet_gen "peg" $PEG_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
   export PEG_PUBKEY_LIST=$(createMultisigPubKeyList $BC_ENV "peg" $PEG_PARTICIPANT_NUMBER $BC_CONF_DIR)
   export PEG_REDEEMSCRIPT=$(createMultisig $BC_ENV "peg" $PEG_PUBKEY_LIST $PEG_PARTICIPANT_MIN $BC_CONF_DIR)
-  exit
+
   for a in `seq 1 $NUMBER_NODES`;
   do
       source $BC_APP_INSTALL_DIR/elements.sh "$a" $NODE_CONF_FILE $CODE_CONF_FILE $BLOCK_REDEEMSCRIPT $PEG_REDEEMSCRIPT "[$BLOCK_PUBKEY_LIST]" "[$PEG_PUBKEY_LIST]"
 
       if [ $a -eq 1 ];then
 
-          BLOCK_LIST_CONF=$(wallet_gen "block" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
-          PEG_LIST_CONF=$(wallet_gen "peg" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
+        export BLOCK_LIST_CONF=$(wallet_gen "block" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
+        export LOAD=$(eval "$E_CLI_LOADWALLET \"\"")
+        export NODE_PUB_ADDRESS=$(getWalletConfFileParam "block" 1 "pubAddress" $BC_CONF_DIR)
+
+        export SEND_INITIAL=$(eval "$E_CLI_SENDTOADDRESS2 $NODE_PUB_ADDRESS 21000000 'InitialTokens' "''" true true")
+        echo "SEND_INITIAL=$SEND_INITIAL"
+        export NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
+
+        export PEG_LIST_CONF=$(wallet_gen "peg" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
+        export NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV $INDEX_E "none")
       fi
   done
-  echo "" >&2
-  echo -e "${BROWN}[FIRST BLOCK]$NCOLOR" >&2
-
-  export INDEX_E=1
-  export INDEX_B_PEG=1
-  export INDEX_B_BLOCK=1
-
-  NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV $INDEX_E "none")
-
   if [ $PEG -eq 1 ];then
+
+      export INDEX_E=1
+      export INDEX_B_PEG=1
+      export INDEX_B_BLOCK=1
+
       echo "" >&2
       echo -e "${BROWN}[FIRST PEG IN]$NCOLOR" >&2
       FIRSTPEG=$($BC_APP_SCRIPT_DIR/pegInProposal.sh $BC_ENV $INDEX_E $INDEX_B_PEG $INDEX_B_BLOCK)
@@ -64,6 +68,7 @@ if [ $NEW_NODE -eq 0 ];then
       FIRSTPEG=$($BC_APP_SCRIPT_DIR/pegOut.sh $BC_ENV $INDEX_E $INDEX_B_PEG $INDEX_B_BLOCK)
   fi
 fi
+exit
 export MAIN_LIST_CONF=$(wallet_gen "main" $NUMBER_NODES $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
 export NODE_LIST_CONF=$(wallet_gen "node" $WITNESS_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR"  "$BC_ENV" $BC_CONF_DIR)
 export LOCK_LIST_CONF=$(wallet_gen "lock" $LOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV"  $BC_CONF_DIR)

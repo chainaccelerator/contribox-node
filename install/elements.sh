@@ -126,7 +126,7 @@ export E_CLI_STOP="${CLI} stop"
 export E_CLI_GENERATETOADDRESS2="${CLI} generatetoaddress"
 export E_CLI_GETWALLETINFO2="${CLI} getwalletinfo"
 export E_CLI_GETTRANSACTION2="${CLI} gettransaction"
-export E_CLI_SENDTOADDRESS2="${CLI} sendtoaddress"
+export E_CLI_SENDTOADDRESS2="${CLI} -rpcwallet='' sendtoaddress"
 export E_CLI_GETSIDECHAININFO2="${CLI} getsidechaininfo"
 export E_CLI_GETBLOCKCOUNT="${CLI} getblockcount"
 export E_CLI_GETMEMPOOL="${CLI} getmempoolinfo"
@@ -234,6 +234,8 @@ export B_CLI_GETTOUT=$(cat ${BITCOIN_WALLET_CONF_FILE} | jq -r '.B_CLI_GETTOUT')
 cat > $NODE_CONF_FILE <<EOL
 {
   "WALLET_URI": "${ELEMENTS_DATA_PATH}/${ELEMENTS_CHAIN_VAL}/wallets/wallet.dat",
+  "WALLET_ADDRESS": "${DUMP_INITIAL_ADDRESS}",
+  "WALLET_PRIV": "${DUMP_INITIAL_KEY}",
   "BLOCK_REDEEMSCRIPT": "${BLOCK_REDEEMSCRIPT}",
   "PEG_REDEEMSCRIPT": "${PEG_REDEEMSCRIPT}",
   "BLOCK_SIGN_PUBKEY_LIST": ${BLOCK_SIGN_PUBKEY_LIST},

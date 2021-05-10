@@ -123,17 +123,9 @@ function elementsCreateWallet() {
   local E_CLI_SENDRAWTRANSACTION="${CLI_WALLET} sendrawtransaction"
   local E_CLI_LISTUNSPENT="${CLI_WALLET} listunspent"
 
-  if [ "$ADDRESS_TYPE" == "block" ] && [ $NODE_INSTANCE -eq 1 ] && [ $WALLET_INSTANCE -eq 1 ];then
-      echo "E_CLI_DUMPPRIVKEY2" >&2
-      echo $(eval "$CLI listwallets")
-      local DUMP_INITIAL_ADDRESS=$(eval "$CLI getnewaddress" \"legacy\")
-      local DUMP_INITIAL_KEY=$(eval "$E_CLI_DUMPPRIVKEY2 $DUMP_INITIAL_ADDRESS")
-  fi
   local WN=$(eval "$E_CLI_CREATEWALLET '$WALLET' | jq -r .name")
 
   local BLOCKCOUNT=$(eval "$E_CLI_GETBLOCKCOUNT")
-
-  local PEGGED_ASSET=$(eval "$E_CLI_GETBLOCKCOUNT")
 
   if [ -z "$PRIKEY" ];then
     echo "E_CLI_DUMPPRIVKEY" >&2
@@ -143,34 +135,20 @@ function elementsCreateWallet() {
   else
     echo "E_CLI_IMPORTPRIVKEY" >&2
     local IMPORT=$(eval "$E_CLI_IMPORTPRIVKEY $PRIKEY")
-    sleep 120
+    sleep 10
     local NODE_PRIV_KEY=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "prvKey" $BC_CONF_DIR "" "" "")
     local NODE_PUB_ADDRESS=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "pubAddress" $BC_CONF_DIR "" "" "")
     local NODE_PUB_KEY=$(getWalletConfFileParam $ADDRESS_TYPE $WALLET_INSTANCE "pubKey" $BC_CONF_DIR "" "" "")
   fi
-  if [ "$ADDRESS_TYPE" == "block" ] && [ -z $PRIKEY ];then
-    echo "E_CLI_GENERATETOADDRESS" >&2
-    local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
-  fi
-  if [ "$ADDRESS_TYPE" == "peg" ] && [ -z $PRIKEY ];then
+  if [ "$ADDRESS_TYPE" == "peg" ] && [ -n "$PRIKEY" ];then
 
-    local addr=$(getWalletConfFileParam "block" 1 "pubAddress" $BC_CONF_DIR)
     local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 0.0003 "creditForPeg" "''" true true)
-    local blockg=$(getWalletConfFileParamCMD "block" 1 "E_CLI_GENERATETOADDRESS" $BC_CONF_DIR 101 $addr)
   fi
   if [ -z "$BLOCK_SIGN_PUBKEY_LIST" ];then
     BLOCK_SIGN_PUBKEY_lIST='""'
   fi
   if [ -z "$PEG_SIGN_PUBKEY_LIST" ];then
     PEG_SIGN_PUBKEY_lIST='""'
-  fi
-  if [ "$ADDRESS_TYPE" == "block" ] && [ $NODE_INSTANCE -eq 1 ] && [ $WALLET_INSTANCE -eq 1 ];then
-      echo "INITIAL IMPORT" >&2
-      local IMPORT_INITIAL=$(eval "$E_CLI_IMPORTPRIVKEY $DUMP_INITIAL_KEY")
-      echo "end import" >&2
-      # local SEND_INITIAL=$(eval "$E_CLI_SENDTOADDRESS $NODE_PUB_ADDRESS 21000000 'InitialTokens' "''" true true")
-      echo "end send" >&2
-      local ELEMENTS_BLOCK_GEN=$(eval "$E_CLI_GENERATETOADDRESS 101 $NODE_PUB_ADDRESS")
   fi
   rm -rf $CODE_CONF_FILE
   cat > $CODE_CONF_FILE <<EOL

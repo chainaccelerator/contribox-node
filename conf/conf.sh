@@ -184,11 +184,11 @@ elementsGetAddressConf(){
   local WALLET=$(elementsGetWalletName "${BC_ENV}" ${NODE_INSTANCE} ${WALLET_INSTANCE} "${ADDRESS_TYPE}")
 
   if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
-    local BC_CONF_DIR=${BC_CONF_DIR}/federation
+    local BCCONFDIR=${BC_CONF_DIR}/federation
   else
-    local BC_CONF_DIR=${BC_CONF_DIR}/local
+    local BCCONFDIR=${BC_CONF_DIR}/local
   fi
-  local CODE_CONF_FILE=${BC_CONF_DIR}/${WALLET}.json
+  local CODE_CONF_FILE=${BCCONFDIR}/${WALLET}.json
 
   echo $CODE_CONF_FILE
 }
@@ -244,11 +244,11 @@ bitcoinGetAddressConf(){
   local WALLET=$(bitcoinGetWalletName "${BC_ENV}" ${NODE_INSTANCE} ${WALLET_INSTANCE} "${ADDRESS_TYPE}")
 
   if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
-    local BC_CONF_DIR=${BC_CONF_DIR}/federation
+    local BCCONFDIR=${BC_CONF_DIR}/federation
   else
-    local BC_CONF_DIR=${BC_CONF_DIR}/local
+    local BCCONFDIR=${BC_CONF_DIR}/local
   fi
-  local CODE_CONF_FILE=${BC_CONF_DIR}/${WALLET}.json
+  local CODE_CONF_FILE=${BCCONFDIR}/${WALLET}.json
 
   echo $CODE_CONF_FILE
 }
@@ -287,11 +287,11 @@ function bitcoinWallet_gen(){
     local regex="$( printf "${separator}%s" ${CONF_FILE_LIST[@]} )"
     local regex="${regex:${#separator}}"
     if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
-      local BC_CONF_DIR=${BC_CONF_DIR}/federation
+      local BCCONFDIR=${BC_CONF_DIR}/federation
     else
-      local BC_CONF_DIR=${BC_CONF_DIR}/local
+      local BCCONFDIR=${BC_CONF_DIR}/local
     fi
-    local CONF=$BC_CONF_DIR/b_${ADDRESS_TYPE}_wallets.json
+    local CONF=$BCCONFDIR/b_${ADDRESS_TYPE}_wallets.json
     echo '["'$regex'"]' > $CONF
 
     echo $CONF
@@ -336,11 +336,11 @@ function wallet_gen(){
     local regex="$( printf "${separator}%s" ${CONF_FILE_LIST[@]} )"
     local regex="${regex:${#separator}}"
     if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
-      local BC_CONF_DIR=${BC_CONF_DIR}/federation
+      local BCCONFDIR=${BC_CONF_DIR}/federation
     else
-      local BC_CONF_DIR=${BC_CONF_DIR}/local
+      local BCCONFDIR=${BC_CONF_DIR}/local
     fi
-    local CONF=$BC_CONF_DIR/${ADDRESS_TYPE}_wallets.json
+    local CONF=$BCCONFDIR/${ADDRESS_TYPE}_wallets.json
     echo '["'$regex'"]' > $CONF
 
     echo $CONF
@@ -353,16 +353,18 @@ function getWalletConfFile() {
   local INDEX=$2
   local BC_CONF_DIR=$3
 
+  # echo "getWalletConfFile" >&2
   # echo "ADDRESS_TYPE=$ADDRESS_TYPE" >&2
   # echo "INDEX=$INDEX" >&2
   # echo "BC_CONF_DIR=$BC_CONF_DIR" >&2
 
   if [ "$ADDRESS_TYPE" == "block" ] || [ "$ADDRESS_TYPE" == "peg" ] || [ "$ADDRESS_TYPE" == "node" ] ||  [ "$ADDRESS_TYPE" == "b_block" ] || [ "$ADDRESS_TYPE" == "b_peg" ] || [ "$ADDRESS_TYPE" == "b_node" ];then
-    local BC_CONF_DIR=${BC_CONF_DIR}/federation
+    local BCCONFDIR=${BC_CONF_DIR}/federation
   else
-    local BC_CONF_DIR=${BC_CONF_DIR}/local
+    local BCCONFDIR=${BC_CONF_DIR}/local
   fi
-  local LIST=$(cat "$BC_CONF_DIR/${ADDRESS_TYPE}_wallets.json")
+  # echo "->$BCCONFDIR/${ADDRESS_TYPE}_wallets.json" >&2
+  local LIST=$(cat "$BCCONFDIR/${ADDRESS_TYPE}_wallets.json")
   declare -a CONF_FILE_LIST
   INDEX=$(($INDEX-1))
   local CONF_FILE=$(echo $LIST | jq '.['$INDEX']')
@@ -380,7 +382,7 @@ function getWalletConfFileParam() {
   local PARAM=$3
   local BC_CONF_DIR=$4
 
-  # echo "->PARAM" >&2
+  # echo "getWalletConfFileParam" >&2
   # echo "ADDRESS_TYPE=$ADDRESS_TYPE" >&2
   # echo "INDEX=$INDEX" >&2
   # echo "PARAM=$PARAM" >&2
@@ -532,7 +534,7 @@ function askFor(){
     # echo "bc_env=$bc_env" >&2
     # echo "addressType=$addressType" >&2
     # echo "method=$method" >&2
-    # echo "hex=$hex" >&2
+    echo "hex=$hex" >&2
 
     local RESULT='['
     local block=$(getWalletConfFileParamCMD $addressType 1 "E_CLI_GETBLOCKCOUNT" $BC_CONF_DIR "" "" "")

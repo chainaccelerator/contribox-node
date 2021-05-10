@@ -41,6 +41,7 @@ class RPC{
         if (isset($data->bc_env) === false) exit('Err env');
 
         new Conf($data->bc_env);
+        ini_set("error_log", '/var/www/contribox-node/' .$data->bc_env . '/log/api.log');
         error_log('RECEIVED: '.json_encode($data, JSON_PRETTY_PRINT), 0);
 
         if (isset($data->jsonrpc) === false || $data->jsonrpc !== $this->jsonrpc) exit('RPC Version');
