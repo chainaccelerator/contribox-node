@@ -50,7 +50,7 @@ if [ $NEW_NODE -eq 0 ];then
         export NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
 
         export PEG_LIST_CONF=$(wallet_gen "peg" $BLOCK_PARTICIPANT_NUMBER $BC_APP_INSTALL_DIR $NODE_CONF_FILE "$CYAN" "$NCOLOR" "$BC_ENV" $BC_CONF_DIR)
-        export NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV $INDEX_E "none")
+        export NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
       fi
   done
   if [ $PEG -eq 1 ];then

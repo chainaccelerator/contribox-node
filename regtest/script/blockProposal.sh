@@ -16,7 +16,7 @@ function blockProposal() {
     local BASEDIR0=$(dirname "$0")
     source $BASEDIR0/../../conf/conf.sh $BC_ENV
 
-    for a in `seq 1 102`;
+    for a in `seq 1 2`;
     do
 
       local BLOCKCOUNT1=$(getWalletConfFileParamCMD "block" $INDEX "E_CLI_GETBLOCKCOUNT" $BC_CONF_DIR "" "" "")
@@ -34,10 +34,10 @@ function blockProposal() {
           # echo "HEX=$HEX" >&2
       fi
       PROPOSAL=$(askFor $addressFrom 'block' $BC_CONF_DIR $BLOCK_PARTICIPANT_MAX $BLOCK_AMOUNT $BC_ENV 'block' 'blockValidation' $HEXF "")
-      sleep 10
+      sleep 20
 
       # echo "PROPOSAL=$PROPOSAL" >&2
-      local COMBINED=$(getWalletConfFileParamCMD "block" $INDEX "E_CLI_COMBINEBLOCKSIGS" $BC_CONF_DIR $HEX "'$PROPOSAL'" "")
+      local COMBINED=$(getWalletConfFileParamCMD "block" $INDEX "E_CLI_COMBINEBLOCKSIGS" $BC_CONF_DIR $HEXF "'$PROPOSAL'" "")
 
       # echo "COMBINED=$COMBINED" >&2
       local SIGNEDBLOCK=$(echo $COMBINED | jq -r '.hex')
