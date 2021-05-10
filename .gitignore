@@ -3,6 +3,7 @@
 /regtest/conf/*wallets*
 **/log/**
 **/data/**
+/regtest/conf/local/**
 /regtest/conf/b_block_wallets.json
 /regtest/conf/b_peg_wallets.json
 /regtest/conf/b_main_wallets.json

@@ -154,7 +154,9 @@ function elementsCreateWallet() {
   fi
   if [ "$ADDRESS_TYPE" == "peg" ] && [ -z $PRIKEY ];then
 
+    local addr=$(getWalletConfFileParam "block" 1 "pubAddress" $BC_CONF_DIR)
     local blockTx=$(getWalletConfFileParamCMD "block" 1 "E_CLI_SENDTOADDRESS" $BC_CONF_DIR $NODE_PUB_ADDRESS 0.0003 "creditForPeg" "''" true true)
+    local blockg=$(getWalletConfFileParamCMD "block" 1 "E_CLI_GENERATETOADDRESS" $BC_CONF_DIR 101 $addr)
   fi
   if [ -z "$BLOCK_SIGN_PUBKEY_LIST" ];then
     BLOCK_SIGN_PUBKEY_lIST='""'
