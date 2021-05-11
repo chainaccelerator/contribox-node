@@ -16,7 +16,7 @@ function blockProposal() {
     local BASEDIR0=$(dirname "$0")
     source $BASEDIR0/../../conf/conf.sh $BC_ENV
 
-    for a in `seq 1 5`;
+    for a in `seq 1 101`;
     do
 
       local BLOCKCOUNT1=$(getWalletConfFileParamCMD "block" $INDEX "E_CLI_GETBLOCKCOUNT" $BC_CONF_DIR "" "" "")

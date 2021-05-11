@@ -22,7 +22,7 @@ function pegInValidation() {
     echo "blockAddress0=$blockAddress0" >&2
     # local LIST=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_GETRAWMEMPOOL" $BC_CONF_DIR false)
     # echo "LIST=$LIST" >&2
-    local HASH=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_GENERATE" $BC_CONF_DIR 1)
+    local HASH=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_GENERATE" $BC_CONF_DIR 101)
     HASH=$(echo $HASH | jq '.[0]')
     echo "HASH=$HASH" >&2
 
@@ -38,7 +38,7 @@ function pegInValidation() {
        # RES0=$(echo $GENERATE | jq '.[0]')
        # RES=$RES", "$RES0
     # done
-    # echo $RES
+    echo $HASH
 }
 export -f pegInValidation
 

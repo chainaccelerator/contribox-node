@@ -225,7 +225,7 @@ function createMultisig(){
 
   local PUBKEY_LIST0='['$PUBKEY_LIST']'
   echo ''${PUBKEY_LIST0}'' > $BC_CONF_DIR/"e_$TYPE_"${BC_ENV}"_pubKey_list.json"
-  local MULTISIG=$(getWalletConfFileParamCMD $TYPE 1 "E_CLI_CREATEMULTISIG" $BC_CONF_DIR $PARTICIPANT_MIN "'[$PUBKEY_LIST]'" "")
+  local MULTISIG=$(getWalletConfFileParamCMD $TYPE 1 "E_CLI_CREATEMULTISIG" $BC_CONF_DIR $PARTICIPANT_MIN "'[$PUBKEY_LIST]'" "legacy")
   local REDEEMSCRIPT=$(echo $MULTISIG | jq -r '.redeemScript')
   # echo "" >&2
   # echo "REDEEMSCRIPT=$REDEEMSCRIPT" >&2
