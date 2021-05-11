@@ -111,7 +111,7 @@ if [ $APT_UPDATE_UPGRADE -eq 1 ] && [ $PHP_V_TMP != '8.0.5' ]; then
 
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |tee /etc/apt/sources.list.d/php.list
-    apt install php8.0 php8.0-fpm php8.0-{curl,cli,common,mbstring,gd,intl} php-sodium -y
+    apt install php8.0 php8.0-fpm php8.0-{curl,cli,common,mbstring,gd,intl,bcmath,gmp,mcrypt} php-sodium -y
     contribox_mkdir '/var/log/php'
     php -r 'echo PHP_VERSION;'
 fi

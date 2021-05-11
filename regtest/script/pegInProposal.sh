@@ -47,6 +47,8 @@ function pegInProposal() {
     local CLAIMTXID=$(getWalletConfFileParamCMD "peg" $INDEX_E "E_CLI_CLAIMPEGIN" $BC_CONF_DIR $RAW $PROOF $CLAIMSCRIPT)
     echo -e "\nCLAIMTXID=$CLAIMTXID" >&2
 
+    sleep 120
+
     local PROPOSAL=$(askFor $ELEMENTS_ADDRESS 'peg' $BC_CONF_DIR $PEG_PARTICIPANT_MAX $PEG_AMOUNT $BC_ENV 'peg' 'pegInValidation' "" "" "")
 
     local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")

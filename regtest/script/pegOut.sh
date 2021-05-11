@@ -28,7 +28,7 @@ function pegOutProposal() {
 
     bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
 
-    bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR >&2e
+    bitcoinAddressInfo $INDEX_B_PEG "b_peg" $BC_CONF_DIR >&2
     elementsAddressInfo $INDEX_E "peg" $BC_CONF_DIR >&2
 
     echo $ELEMENTS_BALANCE
