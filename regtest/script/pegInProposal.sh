@@ -50,11 +50,7 @@ function pegInProposal() {
     local PROPOSAL=$(askFor $ELEMENTS_ADDRESS 'peg' $BC_CONF_DIR $PEG_PARTICIPANT_MAX $PEG_AMOUNT $BC_ENV 'peg' 'pegInValidation' "" "" "")
 
     local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
-    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
-    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 "none")
 
-    bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
-    bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
     bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
 
     local B_I=$(elementsTxInfo $INDEX_E "peg" $CLAIMTXID $BC_CONF_DIR "CLAIMTXID")
