@@ -18,17 +18,24 @@ function pegInValidation() {
     source $BASEDIR0/../../conf/conf.sh $BC_ENV
 
     local RES=""
+    local blockAddress0=$(elementsAddressInfo $INDEX_E_PEG "peg" $BC_CONF_DIR)
+
+    # local LIST=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_getrawmempool" $BC_CONF_DIR false)
+    # local HASH=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_generateblock" $BC_CONF_DIR $blockAddress0 $LIST)
+    # HASH=$(echo $HASH | jq '.hash')
+
+    local GENERATE=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_GENERATETOADDRESS" $BC_CONF_DIR 1 $blockAddress0 "")
+    local RES0=$(echo $GENERATE | jq '.[0]')
+    RES=$RES", "$RES0
+
+    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 $RES0)
     for a in `seq 1 $BLOCK_PARTICIPANT_NUMBER`;
     do
       local blockAddress=$(elementsAddressInfo $a "block" $BC_CONF_DIR)
       local GENERATE=$(getWalletConfFileParamCMD "peg" $INDEX_E_PEG "E_CLI_GENERATETOADDRESS" $BC_CONF_DIR 1 $blockAddress "")
-      local RES0=$(echo $GENERATE | jq '.[0]')
+      RES0=$(echo $GENERATE | jq '.[0]')
       RES=$RES", "$RES0
-      local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 $RES0)
-
-
     done
-
     echo $RES
 }
 export -f pegInValidation
