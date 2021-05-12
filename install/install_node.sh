@@ -19,9 +19,7 @@ if [ ! -d "/var/www" ];then
   chown $BC_RIGHTS_FILES "/var/www"
 fi
 
-cd /var/www/
-
 apt install git -y
-git clone 'https://github.com/ncantu/contribox-node-php.git'
-cd contribox-node-php/install/install
-source /var/www/contribox-node-php/install/install_sidechain.sh $BC_ENV 1 $BC_USER $BC_RIGHTS_FILES $EXTERNAL_IP $FIRST_CONNECT
+git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
+cd /var/www/contribox-node/install
+source /var/www/contribox-node/install/install_sidechain.sh $BC_ENV 1 $BC_USER $BC_RIGHTS_FILES $EXTERNAL_IP $FIRST_CONNECT
