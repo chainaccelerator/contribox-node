@@ -19,6 +19,10 @@ if [ ! -d "/var/www" ];then
   chmod $BC_USER "/var/www"
   chown $BC_RIGHTS_FILES "/var/www"
 fi
+if [ -d "/var/www/contribox-node" ];then
+
+  rm -rf /var/www/contribox-node
+fi
 
 apt install git -y
 git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
