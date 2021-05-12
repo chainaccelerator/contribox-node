@@ -12,7 +12,7 @@ export FIRST_CONNECT=$5
 # export EXTERNAL_IP="10.10.242.30"
 # export FIRST_CONNECT="10.0.0.2"
 
-if [ -d "/var/www/" ];then
+if [ ! -d "/var/www/" ];then
 
   mkdir "/var/www/"
   chmod $BC_USER "/var/www/"
