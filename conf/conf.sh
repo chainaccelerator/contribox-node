@@ -759,7 +759,6 @@ export CYAN_LIGHT='\033[1;36m'
 export GREY_LIGHT='\033[1;37m'
 export NCOLOR='\033[0m'
 
-confJsonGet $CONF_FILE "HOST_IP_INTERFACE"
 confJsonGet $CONF_FILE "NUMBER_NODES"
 confJsonGet $CONF_FILE "BLOCK_PARTICIPANT_NUMBER"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_NUMBER"
@@ -801,8 +800,6 @@ confJsonGet $CONF_FILE "BLOCK_PARTICIPANT_MIN"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_MAX"
 confJsonGet $CONF_FILE "PEG_PARTICIPANT_MIN"
 confJsonGet $CONF_FILE "PHP_V"
-
-export HOST_IP=$(/sbin/ip -o -4 addr list $HOST_IP_INTERFACE | awk '{print $4}' | cut -d/ -f1)
 
 if [ "$BC_ENV" == "main" ];then
   export BITCOIN_ENV_INDEX="1"

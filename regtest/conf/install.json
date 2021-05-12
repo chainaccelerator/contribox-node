@@ -1,5 +1,4 @@
 {
-  "HOST_IP_INTERFACE": "enp4s0",
   "BC_ENV": "regtest",
   "NUMBER_NODES": 3,
   "API_PORT": "9002",
