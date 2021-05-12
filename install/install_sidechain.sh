@@ -23,11 +23,18 @@ export BC_CFILE=$BASEDIR/../conf/conf.sh
 source $BC_CFILE $1
 export CONF_FILE=$BC_CONF_DIR/conf.json
 
+export NEW_NODE=$2
+export BC_USER=$3
+export BC_RIGHTS_FILES=$4
+export EXTERNAL_IP=$5
+export FIRST_CONNECT=$6
+
 cat > $CONF_FILE <<EOL
 {
     "NUMBER_NODES": ${NUMBER_NODES},
     "HOST_IP": "${HOST_IP}",
     "EXTERNAL_IP": "${EXTERNAL_IP}",
+    "FIRST_CONNECT": "${FIRST_CONNECT}",
     "PORT_PREFIX_SERVER": "${PORT_PREFIX_SERVER}",
     "PORT_PREFIX_RPC": "${PORT_PREFIX_RPC}",
     "BC_SERVER_DIR": "${BC_SERVER_DIR}",
