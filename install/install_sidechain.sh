@@ -30,6 +30,9 @@ export HOST_IP=$5
 export EXTERNAL_IP=$6
 export FIRST_CONNECT=$7
 
+echo  "HOST_IP=$HOST_IP"
+echo  "FIRST_CONNECT=$FIRST_CONNECT"
+
 cat > $CONF_FILE <<EOL
 {
     "NUMBER_NODES": ${NUMBER_NODES},

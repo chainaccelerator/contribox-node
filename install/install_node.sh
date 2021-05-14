@@ -10,6 +10,8 @@ export BC_RIGHTS_FILES=$3
 export EXTERNAL_IP=$4
 export HOST_IP=$5
 export FIRST_CONNECT=$6
+echo  "HOST_IP=$HOST_IP"
+echo  "FIRST_CONNECT=$FIRST_CONNECT"
 # export EXTERNAL_IP="10.10.242.30"
 # export FIRST_CONNECT="10.0.0.2"
 
