@@ -116,7 +116,7 @@ chown $BC_USER $CONF_FILE
 
 PHP_V_TMP=$(php -r 'echo PHP_VERSION;')
 
-if [ $APT_UPDATE_UPGRADE -eq 1 ] && [ ! $PHP_V_TMP == '8.0.5' ]; then
+if [ $APT_UPDATE_UPGRADE -eq 1 ] && [ ! "$PHP_V_TMP" == '8.0.5' ]; then
 
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |tee /etc/apt/sources.list.d/php.list
