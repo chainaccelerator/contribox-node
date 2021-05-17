@@ -2,6 +2,20 @@
 
 shopt -s expand_aliases
 
+export BC_ENV=$1
+export NEW_NODE=$2
+export BC_USER=$3
+export BC_RIGHTS_FILES=$4
+export EXTERNAL_IP=$5
+export HOST_IP=$6
+export FIRST_CONNECT=$7
+echo  "BC_ENV=$BC_ENV"
+echo  "BC_USER=$BC_USER"
+echo  "BC_RIGHTS_FILES=$BC_RIGHTS_FILES"
+echo  "EXTERNAL_IP=$EXTERNAL_IP"
+echo  "HOST_IP=$HOST_IP"
+echo  "FIRST_CONNECT=$FIRST_CONNECT"
+
 apt update -q=2 -y  > /dev/null 2>&1
 apt full-upgrade -y -qq  > /dev/null 2>&1
 apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
@@ -18,19 +32,10 @@ fi
 
 export BASEDIR=$(dirname "$0")
 export BC_CFILE=$BASEDIR/../conf/conf.sh
-source $BC_CFILE $1
+source $BC_CFILE $BC_ENV
 export CONF_FILE=$BC_CONF_DIR/conf.json
 
-export NEW_NODE=$2
-export BC_USER=$3
-export BC_RIGHTS_FILES=$4
-export EXTERNAL_IP=$5
-export HOST_IP=$6
-export FIRST_CONNECT=$7
-
-echo  "HOST_IP=$HOST_IP"
-echo  "FIRST_CONNECT=$FIRST_CONNECT"
-
+export BC_OWNER_FILES=$BC_USER
 cat > $CONF_FILE <<EOL
 {
     "NUMBER_NODES": ${NUMBER_NODES},

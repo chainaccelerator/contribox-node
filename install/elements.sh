@@ -26,11 +26,11 @@ echo  "FIRST_CONNECT=$FIRST_CONNECT"
 export ELEMENTS_DIR=$BC_SERVER_DIR/elements-$ELEMENTS_VERSION/bin
 if [ ! -d $ELEMENTS_DIR ]; then
 
-apt install build-essential libtool autotools-dev autoconf pkg-config libssl-dev -y -qq
-apt install libboost-all-dev -y -qq
-apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler imagemagick librsvg2-bin -y -qq
-apt install libqrencode-dev autoconf openssl libssl-dev libevent-dev -y -qq
-apt install libminiupnpc-dev -y -qq
+  apt install build-essential libtool autotools-dev autoconf pkg-config libssl-dev -y -qq  > /dev/null 2>&1
+  apt install libboost-all-dev -y -qq  > /dev/null 2>&1
+  apt install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler imagemagick librsvg2-bin -y -qq  > /dev/null 2>&1
+  apt install libqrencode-dev autoconf openssl libssl-dev libevent-dev -y -qq  > /dev/null 2>&1
+  apt install libminiupnpc-dev -y -qq  > /dev/null 2>&1
 
   cd $BC_SERVER_DIR
   ELEMENTS_INSTALL="elements-$ELEMENTS_VERSION-x86_64-linux-gnu.tar.gz"
