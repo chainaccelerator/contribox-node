@@ -66,7 +66,7 @@ On debian, with root:
     # apt install git -y
     # git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
     # cd /var/www/contribox-node/install
-    # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 1 <user ex:Nicolas> <file rights ex:077> <external IP> <host IP> <first node IP to connect ex: 10.0.0.14>
+    # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 1 <user ex:Nicolas> <file rights ex:077> <external IP> <host IP>
 
  
 
