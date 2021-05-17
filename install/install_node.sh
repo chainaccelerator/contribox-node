@@ -35,4 +35,4 @@ apt install git -y
 git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
 cd /var/www/contribox-node/install
 source /var/www/contribox-node/install/install_sidechain.sh $BC_ENV 1 $BC_USER $BC_RIGHTS_FILES $EXTERNAL_IP $HOST_IP $FIRST_CONNECT
-rm -rf /tmp/install_node.sh
+

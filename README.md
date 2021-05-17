@@ -2,7 +2,7 @@
 
 ## Configure
 
-<env>/conf/install.json
+<env ex:regtest>/conf/install.json
 
     "BC_ENV": "regtest" Mainchain and Elements chain name
     "NUMBER_NODES": 3, Nodes to run
@@ -45,15 +45,28 @@
     "PEG_PARTICIPANT_MAX": 5, Number max of participant to select of the peg sign into the 15 max total signatures
     "PEG_PARTICIPANT_MIN": 1, Number min of participant to select of the peg sign into the 15 max total signatures
 
-## Install
+## Install a node
 
-On debian
-
-With root:
+On debian, with root:
 
     # apt install curl -y && curl -o install_node.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_node.sh && bash install_node.sh <chain ex:regtest> <user ex:Nicolas> <file rights ex:077> <external IP> <host IP> <first node IP to connect ex: 10.0.0.14>
 
+## Install a sidechain
 
+On debian, with root:
+
+    # if [ ! -d "/var/www" ];then
+    #   mkdir "/var/www"
+    #   chmod <user ex:Nicolas> "/var/www"
+    #   chown <file rights ex:077> "/var/www"
+    # fi
+    # if [ -d "/var/www/contribox-node" ];then    
+    #   rm -rf /var/www/contribox-node
+    # fi
+    # apt install git -y
+    # git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
+    # cd /var/www/contribox-node/install
+    # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 1 <user ex:Nicolas> <file rights ex:077> <external IP> <host IP> <first node IP to connect ex: 10.0.0.14>
 
  
 
