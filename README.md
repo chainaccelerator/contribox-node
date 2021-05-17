@@ -45,7 +45,7 @@
     "PEG_PARTICIPANT_MAX": 5, Number max of participant to select of the peg sign into the 15 max total signatures
     "PEG_PARTICIPANT_MIN": 1, Number min of participant to select of the peg sign into the 15 max total signatures
 
-## Install a node
+## Install a sidechain's node
 
 On debian, with root:
 
