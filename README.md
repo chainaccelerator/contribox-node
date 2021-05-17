@@ -33,7 +33,7 @@
     "PEG_SIGNER_AMOUNT": 0.0001, Recommanded amount for be able to sign the pegs (in Bitcoins)
     "BLOCK_SIGNER_AMOUNT": 0.0001, Recommanded amount for be able to sign the blocks (in Bitcoins)
     "NODE_AMOUNT": 0.0001, Recommanded a for be able to publis a node (in Bitcoins)
-    "NODE_INITIAL_AMOUNT": 21000000, Recommanded a of initial tokens
+    "NODE_INITIAL_AMOUNT": 21000000, Initial sidechain tokens
     "BACKUP_AMOUNT": 0.0001, Recommanded a for ask for a backup a wallet (in Bitcoins)
     "WITNESS_AMOUNT": 0.0001, Recommanded a for ask for a co-sign a wallet (in Bitcoins)
     "LOCK_AMOUNT": 0.0001, Recommanded amount for ask for a lock a wallet (in Bitcoins)
