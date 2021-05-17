@@ -2,8 +2,6 @@
 
 shopt -s expand_aliases
 
-clear
-
 apt update -q=2 -y  > /dev/null 2>&1
 apt full-upgrade -y -qq  > /dev/null 2>&1
 apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
