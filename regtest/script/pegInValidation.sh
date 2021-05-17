@@ -30,7 +30,7 @@ function pegInValidation() {
     # local RES0=$(echo $GENERATE | jq '.[0]')
     # RES="$RES $RES0 $blockAddress0 "
 
-    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 0.0001 $HASH)
+    local NEWBLOCK=$($BC_APP_SCRIPT_DIR/blockProposal.sh $BC_ENV 1 $HASH)
     # for a in `seq 1 $BLOCK_PARTICIPANT_NUMBER`;
     # do
        # local blockAddress=$(elementsAddressInfo $a "block" $BC_CONF_DIR)

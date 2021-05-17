@@ -31,7 +31,17 @@ function pegInProposal() {
 
     bitcoinMine $BC_ENV $BITCOIN_BLOCK_PARTICIPANT_NUMBER $BC_CONF_DIR
 
-    local TXID=$(getWalletConfFileParamCMD "b_peg" $INDEX_B_PEG "B_CLI_SENDTOADDRESS" $BC_CONF_DIR $MAINCHAIN $PEG_AMOUNT "sendToWatchmen" "''" true true)
+    local TXID=$(getWalletConfFileParamCMD "b_peg" $INDEX_B_PEG "B_CLI_SENDTOADDRESS" $BC_CONF_DIR $MAINCHAIN $PEG_AMOUNT "sendToWatchmen" "''" true false)
+
+    if [ -z "$TXID" ];then
+      local bw=$(getWalletConfFileParam "b_peg" $INDEX_B_PEG "wallet_name" $BC_CONF_DIR)
+      echo "bw=$bw" >&2
+      echo "MAINCHAIN=$bw" >&2
+      echo "PEG_AMOUNT=$PEG_AMOUNT" >&2
+      echo "TXID=$TXID" >&2
+      exit
+    fi
+
     local T="'''[\"'''$TXID'''\"]'''"
     echo "T=$T" >&2
 
@@ -46,6 +56,16 @@ function pegInProposal() {
     sleep 60
     local CLAIMTXID=$(getWalletConfFileParamCMD "peg" $INDEX_E "E_CLI_CLAIMPEGIN" $BC_CONF_DIR $RAW $PROOF $CLAIMSCRIPT)
     echo -e "\nCLAIMTXID=$CLAIMTXID" >&2
+
+     if [ -z "$CLAIMTXID" ];then
+      local bw=$(getWalletConfFileParam "peg" $INDEX_E "wallet_name" $BC_CONF_DIR)
+      echo "bw=$bw" >&2
+      echo "RAW=$RAW" >&2
+      echo "PROOF=$PROOF" >&2
+      echo "CLAIMSCRIPT=$CLAIMSCRIPT" >&2
+      echo "CLAIMTXID=$CLAIMTXID" >&2
+      exit
+    fi
 
     sleep 120
 

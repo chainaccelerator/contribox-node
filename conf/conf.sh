@@ -223,6 +223,12 @@ function createMultisig(){
   local PARTICIPANT_MIN=$4
   local BC_CONF_DIR=$5
 
+  echo BC_ENV=$BC_ENV >&2
+  echo TYPE=$TYPE >&2
+  echo PUBKEY_LIST=$PUBKEY_LIST >&2
+  echo PARTICIPANT_MIN=$PARTICIPANT_MIN >&2
+  echo BC_CONF_DIR=$BC_CONF_DIR >&2
+
   local PUBKEY_LIST0='['$PUBKEY_LIST']'
   echo ''${PUBKEY_LIST0}'' > $BC_CONF_DIR/"e_$TYPE_"${BC_ENV}"_pubKey_list.json"
   local MULTISIG=$(getWalletConfFileParamCMD $TYPE 1 "E_CLI_CREATEMULTISIG" $BC_CONF_DIR $PARTICIPANT_MIN "'[$PUBKEY_LIST]'" "legacy")
@@ -665,6 +671,7 @@ function bitcoinTxInfo(){
 
     echo "COMMENT=$COMMENT" >&2
     local ADDRESS=$(getWalletConfFileParam $TYPE $INDEX "pubAddress" $BC_CONF_DIR)
+    local WALLET=$(getWalletConfFileParam $TYPE $INDEX "wallet_name" $BC_CONF_DIR $TXID "" "" "")
     local WALLET=$(getWalletConfFileParamCMD $TYPE $INDEX "B_CLI_GETTRANSACTION" $BC_CONF_DIR $TXID "" "" "")
     local WALLET_AMOUNT=$(echo $WALLET | jq '.amount')
     local WALLET_FEE=$(echo $WALLET | jq '.fee')
@@ -672,7 +679,7 @@ function bitcoinTxInfo(){
     local WALLET_CATEGORY=$(echo $WALLET | jq '.details[0].category')
     local WALLET_ABANDONED=$(echo $WALLET | jq '.details[0].abandoned')
     local WALLET_HEX=$(echo $WALLET | jq '.hex')
-    echo "B_WALLET: ADDRESS=$ADDRESS WALLET:$WALLET txid:${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
+    echo "B_WALLET: ADDRESS=$ADDRESS WALLET:${WALLETNAME} txid:${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
     local BC=$(getWalletConfFileParamCMD $TYPE $INDEX "B_CLI_GETRAWTRANSACTION" $BC_CONF_DIR $TXID 1 "")
     local BC_CONFIRMATION=$(echo $WALLET | jq '.confirmations')
     local BC_CATEGORY=$(echo $WALLET | jq '.vout[0].value')
@@ -693,13 +700,14 @@ function elementsTxInfo(){
 
     echo "COMMENT=$COMMENT" >&2
     local WALLET=$(getWalletConfFileParamCMD $TYPE $INDEX "E_CLI_GETTRANSACTION" $BC_CONF_DIR $TXID "" "" "")
+    local WALLETNAME=$(getWalletConfFileParam $TYPE $INDEX "wallet_name" $BC_CONF_DIR $TXID "" "" "")
     local WALLET_AMOUNT=$(echo $WALLET | jq '.amount.bitcoin')
     local WALLET_FEE=$(echo $WALLET | jq '.fee.bitcoin')
     local WALLET_CONFIRMATION=$(echo $WALLET | jq '.confirmations')
     local WALLET_CATEGORY=$(echo $WALLET | jq '.details[0].category')
     local WALLET_ABANDONED=$(echo $WALLET | jq '.details[0].abandoned')
     local WALLET_HEX=$(echo $WALLET | jq '.hex')
-    echo "E_WALLET: txid=${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
+    echo "E_WALLET: wallet:${WALLETNAME} txid=${TXID} amount:${WALLET_AMOUNT} fee:${WALLET_FEE} confirmations:${WALLET_CONFIRMATION} category:${WALLET_CATEGORY} abandoned:${WALLET_ABANDONED}" >&2
     local BC=$(getWalletConfFileParamCMD $TYPE $INDEX "E_CLI_GETRAWTRANSACTION" $BC_CONF_DIR $TXID 1 "")
     local BC_CONFIRMATION=$(echo $WALLET | jq '.confirmations')
     local BC_VALUE=$(echo $WALLET | jq '.vout[0].value')
