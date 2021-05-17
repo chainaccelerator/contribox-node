@@ -24,8 +24,8 @@ export CONF_FILE=$BC_CONF_DIR/conf.json
 export NEW_NODE=$2
 export BC_USER=$3
 export BC_RIGHTS_FILES=$4
-export HOST_IP=$5
-export EXTERNAL_IP=$6
+export EXTERNAL_IP=$5
+export HOST_IP=$6
 export FIRST_CONNECT=$7
 
 echo  "HOST_IP=$HOST_IP"
