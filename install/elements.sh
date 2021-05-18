@@ -175,7 +175,15 @@ txindex=1
 listen=1
 server=1
 debug=1
+walletbroadcast=1
+changetype=legacy
+addresstype=legacy
 validatepegin=1
+con_has_parent_chain=1
+con_signed_blocks=1
+peginconfirmationdepth=1
+recheckpeginblockinterval=10
+blindedaddresses=0
 ${BLOCKSCRIPT}
 ${PEGSCRIPT}
 
