@@ -277,12 +277,10 @@ function elementsCreateWallet() {
 EOL
   chmod $BC_RIGHTS_FILES $CODE_CONF_FILE
   chown $BC_USER $CODE_CONF_FILE
-  
-  if [ "$ADDRESS_TYPE" = "block" ] || [ "$ADDRESS_TYPE" = "peg" ] || [ "$ADDRESS_TYPE" = "node" ];then
 
-    local SHARE_FILE=$BC_CONF_DIR/shared/${WALLET}.json
-    rm -rf $SHARE_FILE
-    cat > $SHARE_FILE <<EOL
+  local SHARE_FILE=$BC_CONF_DIR/shared/${WALLET}.json
+  rm -rf $SHARE_FILE
+  cat > $SHARE_FILE <<EOL
 {
   "wallet_name": "${WALLET}",
   "wallet_uri": "${WALLET_URI}",
@@ -298,9 +296,9 @@ EOL
   "addressType": "${ADDRESS_TYPE}"
 }
 EOL
-    chmod $BC_RIGHTS_FILES $SHARE_FILE
-    chown $BC_USER $SHARE_FILE
-  fi
+  chmod $BC_RIGHTS_FILES $SHARE_FILE
+  chown $BC_USER $SHARE_FILE
+
   echo $CODE_CONF_FILE
 }
 export -f elementsCreateWallet
