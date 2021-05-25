@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_witnessOrg_regtest_cli1_wallet1",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_witnessOrg_regtest_cli1_wallet1",
+  "pubKey_name": "e_a_witnessOrg_regtest_cli1_wallet1",
+  "pubAddress": "2dvpXS9Mivau3LTsTCGCDn1FSvDXW1rGjf8",
+  "pubKey": "03d987ccc26f77f212723bc5647fa6281901d072aab81ffb51385ca0a2462cb6d0",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "1",
+  "addressType": "witnessOrg"
+}

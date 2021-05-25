@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_ban_regtest_cli1_wallet3",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_ban_regtest_cli1_wallet3",
+  "pubKey_name": "e_a_ban_regtest_cli1_wallet3",
+  "pubAddress": "2dh5pp9yx5LH1HtgNcYLLNJ4XkWFvESd8np",
+  "pubKey": "031363db69d4830e9c4c8ebb0eb24eb1d2d67fe0545816831a2ae3742f9054077f",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "3",
+  "addressType": "ban"
+}

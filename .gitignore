@@ -101,3 +101,4 @@
 /.idea/vcs.xml
 /regtest/conf/elements_regtest_2.conf
 /regtest/conf/elements_regtest_3.conf
+/regtest/conf/shared/b_block_regtest_cli1_wallet3.json

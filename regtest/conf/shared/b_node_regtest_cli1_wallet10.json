@@ -1,0 +1,14 @@
+{
+  "wallet_name": "b_node_regtest_cli1_wallet10",
+  "wallet_uri": "/var/bitcoin/regtest/regtest/wallets/b_node_regtest_cli1_wallet10",
+  "pubKey_name": "b_a_node_regtest_cli1_wallet10",
+  "pubAddress": "mh1961dNhSQQVcqBcUPV6niDUGCFkB5bf9",
+  "pubKey": "03c256d9365dcc72b11abfabb171d0f1218c2816bee45692f5ae26ceb7d6e9f982",
+  "apiBind": "",
+  "apiPort": "",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "10",
+  "addressType": "node"
+}

@@ -1,0 +1,14 @@
+{
+  "wallet_name": "b_peg_regtest_cli1_wallet3",
+  "wallet_uri": "/var/bitcoin/regtest/regtest/wallets/b_peg_regtest_cli1_wallet3",
+  "pubKey_name": "b_a_peg_regtest_cli1_wallet3",
+  "pubAddress": "n1pUHntifxewMJG1npx4KoHgRLy5LuZKfd",
+  "pubKey": "02ff34e3faa5a127e76e6c5db0febd77e1fe4181bd33aca1fcd15363614686d39e",
+  "apiBind": "",
+  "apiPort": "",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "3",
+  "addressType": "peg"
+}
