@@ -6,7 +6,7 @@ Install a specific API on top of node for the relay for the sharing between user
 
 Validation is on the client side, until the Elements blockchain' blocs validation.
 
-Certification is on the Elements side, until peg in/out validations. 
+Certification is on the Elements side, until peg out validations. 
 
 Provide a JS Sdk for using this API with a wasm module.
 
