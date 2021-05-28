@@ -6,7 +6,7 @@ Install a specific API on top of node for the relay for the sharing between user
 
 Provide a JS Sdk for using this API with a wasm module.
 
-Confidential, free, fast transactions, uniq assets and  and proof' issuements, without smart contract centralisation but:
+Confidential, free, fast transactions, uniq assets and proof' issuements, without smart contract centralisation but:
 * Validation is on the client side, until the Elements blockchain' blocs validation
 * Certification is on the Elements side, until peg out validations
 * Templates allow to ask a reward for specifics validations
