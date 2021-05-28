@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_block_regtest_cli1_wallet7",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_block_regtest_cli1_wallet7",
+  "pubKey_name": "e_a_block_regtest_cli1_wallet7",
+  "pubAddress": "2dfwtaDAQk6LVSubLN3aLQNNGLXXXoYjiYa",
+  "pubKey": "029758889597fb4232cc07d1599c9e972338c2d6330373081f62ca73a76bd4879d",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "7",
+  "addressType": "block"
+}

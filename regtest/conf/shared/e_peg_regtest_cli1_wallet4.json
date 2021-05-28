@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_peg_regtest_cli1_wallet4",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_peg_regtest_cli1_wallet4",
+  "pubKey_name": "e_a_peg_regtest_cli1_wallet4",
+  "pubAddress": "2deXgZCYqrKBUBHeB1RWUyw5UJDEZXWMPtZ",
+  "pubKey": "02563c11cb54f96b9a5d6e8036a594eb7a77da2fc4effb9d2fd4eba1277ea33dfc",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "4",
+  "addressType": "peg"
+}
