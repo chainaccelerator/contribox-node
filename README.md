@@ -6,14 +6,14 @@ Install a specific API on top of node for the relay for the sharing between user
 
 Provide a JS Sdk for using this API with a wasm module.
 
-For now: 
-* It's not a pure dynamic federation.
-* Tested on Regtest only.
-
-Free, fast transactions, uniq asset' issuements and proof, without smart contract centralisation but:
+Free, fast transactions, uniq asset' issuements and proofs, without smart contract centralisation but:
 * Validation is on the client side, until the Elements blockchain' blocs validation
 * Certification is on the Elements side, until peg out validations
 * Templates allow to ask a reward for specifics validations
+
+For now:
+* It's not a pure dynamic federation.
+* Tested on Regtest only.
 
 ## Install a sidechain's node
 
