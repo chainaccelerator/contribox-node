@@ -4,8 +4,8 @@ shopt -s expand_aliases
 
 export BC_ENV=$1
 export BC_USER=$2
-export FIRST_CONNECT=$3
-export EXTERNAL_IP=$4
+export EXTERNAL_IP=$3
+export FIRST_CONNECT=$4
 echo  "BC_ENV=$BC_ENV"
 echo  "BC_USER=$BC_USER"
 echo  "EXTERNAL_IP=$EXTERNAL_IP"
