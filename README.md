@@ -1,3 +1,5 @@
+IN DEVELOPEMENT 
+
 # contribox-node
 
 Install an Elements sidechain peg on Bitcoin with a dynamic federation (https://blockstream.com/elements/).
