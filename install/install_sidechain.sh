@@ -20,7 +20,7 @@ apt update -y -qq  > /dev/null 2>&1
 apt full-upgrade -y -qq  > /dev/null 2>&1
 apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
 
-if [ ! $NEW_NODE -eq 1 ];then
+if [ -z $NEW_NODE ];then
   NEW_NODE=0
 fi
 
