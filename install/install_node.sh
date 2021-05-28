@@ -10,5 +10,5 @@ export FIRST_CONNECT=$3
 export EXTERNAL_IP=$4
 export NEW_NODE=1
 
-source /var/www/contribox-node/install/install_sidechain.sh $BC_ENV $BC_USER $FIRST_CONNECT $EXTERNAL_IP
+source /var/www/contribox-node/install/install_sidechain.sh $BC_ENV $BC_USER "$EXTERNAL_IP" $FIRST_CONNECT
 
