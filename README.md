@@ -16,7 +16,7 @@ Full native web integration without app or plug-in.
 For now:
 * Not condifidential addresses, transactions and issuements (until Elements allow it)
 * Not a pure dynamic federation (until Elements allow it)
-* Wallets storage (secured by multisignatures) encrypted into Javascript indexDB into navigators
+* Wallets storage (secured by multisignatures) encrypted into Javascript indexDB into navigators for a specific URL (node IP:port)
 * Tested on Regtest only
 
 ## Install a sidechain's node
