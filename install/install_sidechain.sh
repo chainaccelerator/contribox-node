@@ -7,14 +7,16 @@ export NEW_NODE=$2
 export BC_USER=$3
 export BC_RIGHTS_FILES=$4
 export EXTERNAL_IP=$5
-export HOST_IP=$6
-export FIRST_CONNECT=$7
+export FIRST_CONNECT=$6
 echo  "BC_ENV=$BC_ENV"
 echo  "BC_USER=$BC_USER"
 echo  "BC_RIGHTS_FILES=$BC_RIGHTS_FILES"
 echo  "EXTERNAL_IP=$EXTERNAL_IP"
-echo  "HOST_IP=$HOST_IP"
 echo  "FIRST_CONNECT=$FIRST_CONNECT"
+
+export IP=$(ip -j address | jq '.[1].addr_info[0].local')
+export HOST_IP=$IP
+echo  "HOST_IP=$HOST_IP"
 
 apt update -q=2 -y  > /dev/null 2>&1
 apt full-upgrade -y -qq  > /dev/null 2>&1

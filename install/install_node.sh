@@ -8,8 +8,10 @@ export BC_ENV=$1
 export BC_USER=$2
 export BC_RIGHTS_FILES=$3
 export EXTERNAL_IP=$4
-export HOST_IP=$5
-export FIRST_CONNECT=$6
+export FIRST_CONNECT=$5
+
+export IP=$(ip -j address | jq '.[1].addr_info[0].local')
+export HOST_IP=$IP
 
 # echo  "BC_ENV=$BC_ENV"
 # echo  "BC_USER=$BC_USER"
