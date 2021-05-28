@@ -4,15 +4,15 @@
 
 On debian 10 stable, with root:
 
+<external IP (option)> is required if you want to accept requests from other nodes
+
     # apt install jq curl git -y && curl -o install_node.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_node.sh && bash install_node.sh <chain ex:regtest> <user ex:Nicolas> <first node IP to connect ex: 10.0.0.14> <external IP (option)> 
 
 ## Install a sidechain
 
 On debian 10 stable, with root:
 
-<external IP (option)> is not required
-
-    # apt install jq curl git -y && curl -o install_sidechain.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_sidechain.sh && bash install_sidechain.sh <chain ex:regtest> <user ex:Nicolas> <external IP (option)>
+    # apt install jq curl git -y && curl -o install_sidechain.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_sidechain.sh && bash install_sidechain.sh <chain ex:regtest> <user ex:Nicolas> <external IP>
 
 ## Configure (Optional)
 
