@@ -16,6 +16,10 @@ export HOST_IP=$IP
 echo  "HOST_IP=$HOST_IP"
 export BC_RIGHTS_FILES=077
 
+apt update -y -qq  > /dev/null 2>&1
+apt full-upgrade -y -qq  > /dev/null 2>&1
+apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
+
 if [ ! $NEW_NODE -eq 1 ];then
   NEW_NODE=0
 fi
@@ -31,10 +35,6 @@ if [ -d "/var/www/contribox-node" ];then
 fi
 git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
 cd /var/www/contribox-node/install
-
-apt update -q=2 -y  > /dev/null 2>&1
-apt full-upgrade -y -qq  > /dev/null 2>&1
-apt install curl git jq wget lsb-release apt-transport-https ca-certificates sed dos2unix -y -qq  > /dev/null  2>&1
 
 export BITCOIN_PID=$(pidof 'bitcoin-qt')
 if [ -n "$BITCOIN_PID" ];then
