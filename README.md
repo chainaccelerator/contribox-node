@@ -6,7 +6,7 @@ Install an Elements sidechain peg on Bitcoin with a dynamic federation (https://
 
 Install a specific API on top of node for the relay for the sharing between user : templates (decentralized referential), transactions, encrypted proofs, and signs.
 
-Full native web integration without app or plug-in: provide a JS Sdk for using this API with a WASM module for transactions building and (multi)signing without a node dependency.
+Full native web integration without app or plug-in: provide a JS Sdk for using this API with a WASM module for transactions building and (multi)signing without a node dependency. Communication between the navigators and the nodes are encrypted with the blokchain' keys and au litle PoW.
 
 Confidential, free, fast transactions, uniq assets and proof' issuements, without smart contract centralisation but:
 * Validation is on the client side, until the Elements blockchain' blocs validation
