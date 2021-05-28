@@ -40,15 +40,31 @@
     "BITCOIN_MAIN_PARTICIPANT_NUMBER": 15, Number of bitcoin wallet to create
     "BITCOIN_PEG_PARTICIPANT_NUMBER": 15, Number of bitcoin wallet to create for pegs
     "BITCOIN_BLOCK_PARTICIPANT_NUMBER": 15, Number of bitcoin wallet to create for mine (regtest and test environments only)
-    "BACKUP_PARTICIPANT_NUMBER": 3, Number of Elements wallet to create for backup other wallets (multisignatures)
-    "WITNESS_PARTICIPANT_NUMBER": 3, Number of Elements wallet to create for co-sign other wallets (multisignatures)
-    "LOCK_PARTICIPANT_NUMBER": 3, Number of Elements wallet to create for lock other wallets (multisignatures)
     "PEG_PARTICIPANT_NUMBER": 15, Number of Elements wallet to create for peg in/out (multisignatures)
     "BLOCK_PARTICIPANT_NUMBER": 15, Number of Elements wallet to create for sign the blocs (multisignatures)
     "BLOCK_PARTICIPANT_MAX": 5, Number max of participant to select of the block sign into the 15 max total signatures
     "BLOCK_PARTICIPANT_MIN": 1, Number min of participant to select of the block sign into the 15 max total signatures
     "PEG_PARTICIPANT_MAX": 5, Number max of participant to select of the peg sign into the 15 max total signatures
     "PEG_PARTICIPANT_MIN": 1, Number min of participant to select of the peg sign into the 15 max total signatures
+    "PEG_PARTICIPANT_NUMBER": 15, Number of Elements wallet to create for this role
+    "BLOCK_PARTICIPANT_NUMBER": 15, Number of Elements wallet to create for this role
+    "MAIN_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "FROM_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "TO_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "NODE_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "LOCK_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "BACKUP_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "COSIGNER_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "WITNESS_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "SHARE_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "OLD_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "MEMBER_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "BOARD_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "BAN_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "WITNESSORG_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "COSIGNEROR_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "PARENTTYPE1_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
+    "CHILDTYPE1_PARTICIPANT_NUMBER":3, Number of Elements wallet to create for this role
 
 ## Install a sidechain's node
 

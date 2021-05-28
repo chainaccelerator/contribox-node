@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_member_regtest_cli1_wallet2",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_member_regtest_cli1_wallet2",
+  "pubKey_name": "e_a_member_regtest_cli1_wallet2",
+  "pubAddress": "2dagKPUg1szGHuRDdRMmKAf18wx9Z93ePC9",
+  "pubKey": "02ee2bc96f9d856cc12f1e9aa641d52020baa315cf9112b5fa11ab03d0e3f132b7",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "2",
+  "addressType": "member"
+}

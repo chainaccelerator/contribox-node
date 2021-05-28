@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_backup_regtest_cli1_wallet1",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_backup_regtest_cli1_wallet1",
+  "pubKey_name": "e_a_backup_regtest_cli1_wallet1",
+  "pubAddress": "2dsj18uaQcQWCjKzLxgWHMHWzvkNznLC8p9",
+  "pubKey": "0368a9ed7816ff9b7aada75b76822337857827b639505919383bdf9449c8fab720",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "1",
+  "addressType": "backup"
+}

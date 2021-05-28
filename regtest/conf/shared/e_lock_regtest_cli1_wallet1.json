@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_lock_regtest_cli1_wallet1",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_lock_regtest_cli1_wallet1",
+  "pubKey_name": "e_a_lock_regtest_cli1_wallet1",
+  "pubAddress": "2dmCa3DNsNibJepWRqjmkpRSiieB11GXV6q",
+  "pubKey": "039c35994dd059bdcfe4d57bcb6f7708bd1ae8db55f3a62f378e4ccb6884408d72",
+  "apiBind": "10.0.0.2",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "1",
+  "addressType": "lock"
+}
