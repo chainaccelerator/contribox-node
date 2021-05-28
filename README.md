@@ -11,9 +11,12 @@ Confidential, free, fast transactions, uniq assets and proof' issuements, withou
 * Certification is on the Elements side, until peg out validations
 * Templates allow to ask a reward for specifics validations
 
+Full native web integration without app or plug-in.
+
 For now:
-* It's not condifidential addresses, transactions and issuements (until Elements allow it)
-* It's not a pure dynamic federation (until Elements allow it)
+* Not condifidential addresses, transactions and issuements (until Elements allow it)
+* Not a pure dynamic federation (until Elements allow it)
+* Wallets storage (secured by multisignatures) encrypted into Javascript indexDB into navigators
 * Tested on Regtest only
 
 ## Install a sidechain's node
