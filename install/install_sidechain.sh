@@ -12,7 +12,7 @@ echo  "EXTERNAL_IP=$EXTERNAL_IP"
 echo  "FIRST_CONNECT=$FIRST_CONNECT"
 
 export IP=$(ip -j address | jq '.[1].addr_info[0].local')
-export HOST_IP=$(echo $IP)
+export HOST_IP=$(eval echo $IP)
 echo  "HOST_IP=$HOST_IP"
 export BC_RIGHTS_FILES=077
 
