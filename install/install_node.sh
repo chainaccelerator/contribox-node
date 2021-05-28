@@ -6,12 +6,12 @@ clear
 
 export BC_ENV=$1
 export BC_USER=$2
-export BC_RIGHTS_FILES=$3
+export FIRST_CONNECT=$3
 export EXTERNAL_IP=$4
-export FIRST_CONNECT=$5
 
 export IP=$(ip -j address | jq '.[1].addr_info[0].local')
 export HOST_IP=$IP
+export BC_RIGHTS_FILES=077
 
 # echo  "BC_ENV=$BC_ENV"
 # echo  "BC_USER=$BC_USER"
@@ -36,5 +36,5 @@ fi
 apt install git -y
 git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
 cd /var/www/contribox-node/install
-source /var/www/contribox-node/install/install_sidechain.sh $BC_ENV 1 $BC_USER $BC_RIGHTS_FILES $EXTERNAL_IP $HOST_IP $FIRST_CONNECT
+source /var/www/contribox-node/install/install_sidechain.sh $BC_ENV 1 $BC_USER $FIRST_CONNECT $EXTERNAL_IP
 

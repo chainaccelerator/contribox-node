@@ -54,24 +54,13 @@
 
 On debian, with root:
 
-    # apt install curl -y && curl -o install_node.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_node.sh && bash install_node.sh <chain ex:regtest> <user ex:Nicolas> <file rights ex:077> <external IP> <host IP> <first node IP to connect ex: 10.0.0.14>
+    # apt install jq curl git -y && curl -o install_node.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_node.sh && bash install_node.sh <chain ex:regtest> <user ex:Nicolas> <first node IP to connect ex: 10.0.0.14> <external IP (option)> 
 
 ## Install a sidechain
 
 On debian, with root:
 
-    # if [ ! -d "/var/www" ];then
-    #   mkdir "/var/www"
-    #   chmod <user ex:Nicolas> "/var/www"
-    #   chown <file rights ex:077> "/var/www"
-    # fi
-    # if [ -d "/var/www/contribox-node" ];then    
-    #   rm -rf /var/www/contribox-node
-    # fi
-    # apt install git -y
-    # git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
-    # cd /var/www/contribox-node/install
-    # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 0 <user ex:Nicolas> <file rights ex:077> <external IP> <host IP>
+    # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 0 <user ex:Nicolas> <external IP (option)>
 
  
 
