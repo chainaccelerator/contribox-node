@@ -29,7 +29,7 @@
   "HOST_IP": "10.0.0.2",
   "EXTERNAL_IP": "10.0.0.2",
   "BC_USER": "ncantu",
-  "BC_RIGHTS_FILES": "777",
+  "BC_RIGHTS_FILES": "077",
   "BC_WEB_ROOT_DIR": "/var/www",
   "CLI": "/opt/bitcoin-0.21.1/bin/bitcoin-cli -conf=/var/www/contribox-node/regtest/conf/bitcoin_regtest.conf -rpcconnect=10.0.0.2 -rpcport=722 -rpcuser='b_regtest' -rpcpassword='b_mdp_regtest'",
   "B_DAEMON": "/opt/bitcoin-0.21.1/bin/bitcoind -conf=/var/www/contribox-node/regtest/conf/bitcoin_regtest.conf",

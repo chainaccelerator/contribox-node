@@ -1,0 +1,14 @@
+
+body {
+    background-color: midnightblue;
+    color: bisque;
+}
+textarea, input, select, button {
+    width: 250px;
+}
+input[type=checkbox] {
+    width: initial;
+}
+input[type=number] {
+    width: 50px;
+}
