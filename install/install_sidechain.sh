@@ -3,10 +3,9 @@
 shopt -s expand_aliases
 
 export BC_ENV=$1
-export NEW_NODE=$2
-export BC_USER=$3
-export FIRST_CONNECT=$4
-export EXTERNAL_IP=$5
+export BC_USER=$2
+export FIRST_CONNECT=$3
+export EXTERNAL_IP=$4
 echo  "BC_ENV=$BC_ENV"
 echo  "BC_USER=$BC_USER"
 echo  "EXTERNAL_IP=$EXTERNAL_IP"
@@ -17,15 +16,20 @@ export HOST_IP=$IP
 echo  "HOST_IP=$HOST_IP"
 export BC_RIGHTS_FILES=077
 
+if [ ! $NEW_NODE -eq 1 ];then
+  NEW_NODE=0
+fi
+
 if [ ! -d "/var/www" ];then
   mkdir "/var/www"
   chmod <user ex:Nicolas> "/var/www"
   chown <file rights ex:077> "/var/www"
 fi
 if [ -d "/var/www/contribox-node" ];then
+
   rm -rf /var/www/contribox-node
-  apt install jq curl git -y && git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
 fi
+git clone 'https://github.com/chainaccelerator/contribox-node.git' /var/www/contribox-node
 cd /var/www/contribox-node/install
 
 apt update -q=2 -y  > /dev/null 2>&1

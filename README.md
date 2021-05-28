@@ -10,7 +10,9 @@ On debian 10 stable, with root:
 
 On debian 10 stable, with root:
 
-    # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 0 <user ex:Nicolas> <external IP (option)>
+<external IP (option)> is not required
+
+    # apt install jq curl git -y && curl -o install_sidechain.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_sidechain.sh && bash install_sidechain.sh <chain ex:regtest> <user ex:Nicolas> <external IP (option)>
 
 ## Configure (Optional)
 
