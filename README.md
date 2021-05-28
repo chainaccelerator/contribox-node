@@ -52,13 +52,13 @@
 
 ## Install a sidechain's node
 
-On debian, with root:
+On debian 10 stable, with root:
 
     # apt install jq curl git -y && curl -o install_node.sh https://raw.githubusercontent.com/chainaccelerator/contribox-node/main/install/install_node.sh && bash install_node.sh <chain ex:regtest> <user ex:Nicolas> <first node IP to connect ex: 10.0.0.14> <external IP (option)> 
 
 ## Install a sidechain
 
-On debian, with root:
+On debian 10 stable, with root:
 
     # source /var/www/contribox-node/install/install_sidechain.sh <chain ex:regtest> 0 <user ex:Nicolas> <external IP (option)>
 
