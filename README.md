@@ -2,7 +2,7 @@
 
 Install an Elements sidechain peg on Bitcoin with a dynamic federation (https://blockstream.com/elements/).
 
-Install a specific API on top of node for the relay for the sharing between user : templates (referential), transactions, encrypted proofs, and signs.
+Install a specific API on top of node for the relay for the sharing between user : templates (decentralized referential), transactions, encrypted proofs, and signs.
 
 Provide a JS Sdk for using this API with a wasm module.
 
