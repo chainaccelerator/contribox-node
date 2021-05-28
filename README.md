@@ -10,7 +10,7 @@ For now:
 * It's not a pure dynamic federation.
 * Tested on Regtest only.
 
-Free, fast transactions but:
+Free, fast transactions, uniq asset' issuements and proof, without smart contract centralisation but:
 * Validation is on the client side, until the Elements blockchain' blocs validation
 * Certification is on the Elements side, until peg out validations
 * Templates allow to ask a reward for specifics validations
