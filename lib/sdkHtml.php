@@ -34,7 +34,7 @@ class SdkHtml {
     }
     public static function optionHtmlMultiple(array $tab, array $value = []): string {
 
-        $optionHtml = '';
+        $optionHtml = '<option>None</option>';
 
         foreach ($tab as $elm) {
 

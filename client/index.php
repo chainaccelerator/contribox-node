@@ -22,6 +22,14 @@ $templateJS = $templateDefault->initJs();
     <link type="text/css" rel="stylesheet" href="css/default.css">
     <script async type="text/javascript" src="js/contribox.js"></script>
     <script async type='text/javascript' src='js/main.js'></script>
+    <script>
+var Module = {
+    onRuntimeInitialized: async function () {
+        console.info('onRuntimeInitialized');
+        main();
+    }
+}
+    </script>
     <script src="js/sodium.js" async></script>
 </head>
 <body>
@@ -77,12 +85,6 @@ var sep2 = document.getElementById("sep2");
 var provePay = document.getElementById("provePay");
 var templateElm = document.getElementById("template");
 var createTemplate = document.getElementById("createTemplate");
-var Module = {
-    onRuntimeInitialized: async function () {
-        console.info('onRuntimeInitialized');
-        main();
-    }
-}
 window.sodium = {
     onload: function (sodium0) {
         let h = sodium0.crypto_generichash(64, sodium0.from_string('test'));

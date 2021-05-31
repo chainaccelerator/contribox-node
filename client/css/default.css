@@ -12,3 +12,7 @@ input[type=checkbox] {
 input[type=number] {
     width: 50px;
 }
+label {
+    width: 400px;
+    display: inline-block;
+}

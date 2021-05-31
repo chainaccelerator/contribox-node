@@ -40,7 +40,7 @@ class SdkTemplateType {
         $fileList = glob($path);
 
         foreach($fileList as $file) {
-            
+
             $data = json_decode(file_get_contents($file));
             $res[] = $data;
         }
@@ -57,10 +57,10 @@ class SdkTemplateType {
         return '
 <br>
 <h4>'.$this->type.'</h4>
-'.$checkboxState.' Using<br> 
-<select name="publickeyList'.$this->type.'" multiple>'.$optionPubKeys.'</select> signers with <select name="pattern'.$this->type.'">'.$optionPatterns.'</select> required <br>
-'.$checkboxPatternAfterTimeout.' after <input type="number" value="'.$this->patternAfterTimeoutN.'" min="1" name="patternAfterTimeoutN'.$this->type.'"> bloc(s) timeout<br>
-'.$checkboxPatternBeforeTimeout.' before <input type="number" value="'.$this->patternBeforeTimeoutN.'" min="1" name="patternBeforeTimeoutN'.$this->type.'"> bloc(s) timeout<br>
+'.$checkboxState.' Using<br><br> 
+<select name="publickeyList'.$this->type.'" multiple>'.$optionPubKeys.'</select> signers with <select name="pattern'.$this->type.'">'.$optionPatterns.'</select> required <br><br>
+'.$checkboxPatternAfterTimeout.' after <input type="number" value="'.$this->patternAfterTimeoutN.'" min="1" name="patternAfterTimeoutN'.$this->type.'"> bloc(s) timeout<br><br>
+'.$checkboxPatternBeforeTimeout.' before <input type="number" value="'.$this->patternBeforeTimeoutN.'" min="1" name="patternBeforeTimeoutN'.$this->type.'"> bloc(s) timeout<br><br>
 <input type="number" name="amountBTCMin'.$this->type.'" value="'.$this->amountBTCMin.'"> BTC rewards, paid by (if other than From) <input type="text" name="amountBTCMinFrom'.$this->type.'" value="'.$this->amountBTCMinFrom.'"><br>
 ';
     }
