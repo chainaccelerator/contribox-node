@@ -114,10 +114,10 @@ class SdkTemplate {
         $optionsProcessesStepActions = SdkHtml::optionHtml(self::$processesStepsAction, $this->processStepAction);
         $checkboxBlock = SdkHtml::checkboxHtml('block', $this->blockSignature);
         $checkboxPeg = SdkHtml::checkboxHtml('peg', $this->pegSignature);
-        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('askForDeclareFrom'.$this->type, $this->declareAddressFrom);
-        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('askForDeclareTo'.$this->type, $this->declareAddressTo);
-        $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption'.$this->type, $this->proofEncryption);
-        $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption'.$this->type, $this->userEncryption);
+        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('askForDeclareFrom'.$this->name, $this->declareAddressFrom);
+        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('askForDeclareTo'.$this->name, $this->declareAddressTo);
+        $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption'.$this->name, $this->proofEncryption);
+        $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption'.$this->name, $this->userEncryption);
 
         return '
 <label for="amount">For</label> <input type="number" name="amount" value="'.$this->amount.'"> BTC<br><br>
@@ -126,10 +126,10 @@ class SdkTemplate {
 <label for="process">Process</label> <select name="process">'.$optionsProcesses.'</select> <select name="step">'.$optionsProcessesSteps.'</select> <select name="actions">'.$optionsProcessesStepActions.'</select><br><br>
 '.$checkboxBlock.' <label for="AskForConfirmationBlock">Ask for an immediate block signature</label><br><br>
 '.$checkboxPeg.' <label for="AskForConfirmationPeg">Ask for for a rapid bitcoin proof</label><br><br>
-'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom'.$this->type.'"> Require declared users (from)</label>
-'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo'.$this->type.'"> Require declared users (to)</label>
-'.$checkboxProofEncryption.' <label for="proofEncryption'.$this->type.'"> Proof encryption</label>
-'.$checkboxUserEncryption.' <label for="userEncryption'.$this->type.'"> User encryption</label>'
+'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom'.$this->name.'"> Require declared users (from)</label>
+'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo'.$this->name.'"> Require declared users (to)</label>
+'.$checkboxProofEncryption.' <label for="proofEncryption'.$this->name.'"> Proof encryption</label>
+'.$checkboxUserEncryption.' <label for="userEncryption'.$this->name.'"> User encryption</label>'
 .$this->proof->conditionHtml()
 .$this->fromValidation->conditionHtml()
 .$this->toValidation->conditionHtml()
