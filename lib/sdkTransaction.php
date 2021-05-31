@@ -11,6 +11,7 @@ class SdkTransaction {
     public string $proofEncryptionKey = '';
     public string $userEncryptionKey = '';
     public array $htmlFieldsId = array();
+    public string $htmlScript = '';
 
     public function __construct(array $from = [], array $to = [], string $template = '', int $amount = 0, string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
 
@@ -46,6 +47,15 @@ class SdkTransaction {
             $function1 .= $id.' = '.json_encode($this->$id).', ';
             $function2 .= 'this.'.$id.' = '.$id.';'."\n";
         }
+        $this->htmlScript = 'function Transaction('.substr($function1, 0,-2).'){
+
+            '.$function2.'
+}
+Transaction.prototype.getDataFromForm = function () {
+
+    '.$function.'
+}
+';
 
         return '
 <label for="from">From addresses</label> <select name="from" multiple>'.$optionsFrom.'</select><br><br>
@@ -55,21 +65,7 @@ class SdkTransaction {
 <label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>
 <label for="proofEncryptionKey">Proof encryption key</label> <input name="proofEncryptionKey" value="'.$this->proofEncryptionKey.'"><br><br>
 <label for="user">User</label> <textarea name="user">'.$this->user.'</textarea><br><br>
-<label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">
-<script>
-function Transaction('.substr($function1, 0,-2).'){
-
-'.$function2.'
-}
-Transaction.prototype.getDataFromForm = function () {
-
-'.$function.'
-}
-let transaction = new Transaction();
-transaction.getDataFromForm()
-console.log(transaction);
-</script>
-';
+<label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">';
     }
     public function definitionJs(): string {
 

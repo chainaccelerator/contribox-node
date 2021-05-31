@@ -14,6 +14,7 @@ class SdkTemplateType {
     public string $amountBTCMinFrom = 'Genesis';
     public bool $state = true;
     public array $htmlFieldsId = array();
+    public string $htmlScript = '';
 
     public function __construct(array $pubList = [], string $pattern = 'any', bool $patternAfterTimeout = true, int $patternAfterTimeoutN = 300, bool $patternBeforeTimeout = false, int $patternBeforeTimeoutN = 1, int $amountBTCMin = 0){
 
@@ -60,16 +61,20 @@ class SdkTemplateType {
         $checkboxPatternAfterTimeout = SdkHtml::checkboxHtml('patternAfterTimeout'.$this->type, $this->patternAfterTimeout);
         $checkboxPatternBeforeTimeout = SdkHtml::checkboxHtml('patternBeforeTimeout'.$this->type, $this->patternBeforeTimeout);
         $this->htmlFieldsId = [
-            'publickeyList'.$this->type,
-            'pattern'.$this->type,
-            'patternAfterTimeoutN'.$this->type,
-            'patternBeforeTimeoutN'.$this->type,
-            'amountBTCMin'.$this->type,
-            'amountBTCMinFrom'.$this->type,
-            'state'.$this->type,
-            'patternAfterTimeout'.$this->type,
-            'patternBeforeTimeout'.$this->type
+            $this->type
         ];
+        $this->htmlScript = 'Template.prototype.'.$this->type.'GetDataFromForm = function(){
+
+    this.'.$this->type.'.publickeyList = document.getElementById("publickeyList'.$this->type.'").value;
+    this.'.$this->type.'.pattern = document.getElementById("pattern'.$this->type.'").value;
+    this.'.$this->type.'.patternAfterTimeoutN = document.getElementById("patternAfterTimeoutN'.$this->type.'").value;
+    this.'.$this->type.'.patternBeforeTimeoutN = document.getElementById("patternBeforeTimeoutN'.$this->type.'").value;
+    this.'.$this->type.'.amountBTCMin = document.getElementById("amountBTCMin'.$this->type.'").value;
+    this.'.$this->type.'.amountBTCMinFrom = document.getElementById("amountBTCMinFrom'.$this->type.'").value;
+    this.'.$this->type.'.state = document.getElementById("state'.$this->type.'").value;
+    this.'.$this->type.'.patternAfterTimeout = document.getElementById("patternAfterTimeout'.$this->type.'").value;
+    this.'.$this->type.'.patternBeforeTimeout = document.getElementById("patternBeforeTimeout'.$this->type.'").value;
+}';
 
         return '
 <br>

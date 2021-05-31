@@ -62,6 +62,7 @@ class SdkTemplate {
     public SdkTemplateTypeInvestorType1 $investorType1;
     public string $hash;
     public array $htmlFieldsId = array();
+    public string $htmlScript = '';
 
     public static function initFromJson($json){
 
@@ -126,35 +127,35 @@ class SdkTemplate {
         $optionsProcesses = SdkHtml::optionHtml(self::$processes, $this->process);
         $optionsProcessesSteps = SdkHtml::optionHtml(self::$processesSteps, $this->processStep);
         $optionsProcessesStepActions = SdkHtml::optionHtml(self::$processesStepsAction, $this->processStepAction);
-        $checkboxBlock = SdkHtml::checkboxHtml('block', $this->blockSignature);
-        $checkboxPeg = SdkHtml::checkboxHtml('peg', $this->pegSignature);
-        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('askForDeclareFrom', $this->declareAddressFrom);
-        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('askForDeclareTo', $this->declareAddressTo);
+        $checkboxBlock = SdkHtml::checkboxHtml('blockSignature', $this->blockSignature);
+        $checkboxPeg = SdkHtml::checkboxHtml('pegSignature', $this->pegSignature);
+        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('declareAddressFrom', $this->declareAddressFrom);
+        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('declareAddressTo', $this->declareAddressTo);
         $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption', $this->proofEncryption);
         $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption', $this->userEncryption);
 
         $this->htmlFieldsId = [
             'amount',
-            'roles',
+            'role',
             'domain',
             'process',
-            'block',
-            'peg',
-            'askForDeclareFrom',
-            'askForDeclareTo',
+            'blockSignature',
+            'pegSignature',
+            'declareAddressFrom',
+            'declareAddressTo',
             'proofEncryption',
             'userEncryption'
         ];
 
         $form = '
 <label for="amount">For</label> <input type="number" name="amount" value="'.$this->amount.'"> Project-BTC<br><br>
-<label for="roles">As</label> <select name="roles">'.$optionsRoles.'</select><br><br>
+<label for="role">As</label> <select name="role">'.$optionsRoles.'</select><br><br>
 <label for="domain">Domain</label> <select name="domain">'.$optionsDomains.'</select> <select name="subdomain">'.$optionsDomainSubs.'</select> <select id="about" name="about">'.$optionsDomainSubsAbout.'</select><br><br>
 <label for="process">Process</label> <select name="process">'.$optionsProcesses.'</select> <select name="step">'.$optionsProcessesSteps.'</select> <select name="actions">'.$optionsProcessesStepActions.'</select><br><br>
-'.$checkboxBlock.' <label for="AskForConfirmationBlock">Ask for an immediate block signature</label><br><br>
-'.$checkboxPeg.' <label for="AskForConfirmationPeg">Ask for for a rapid bitcoin proof</label><br><br>
-'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom"> Require declared users (from)</label><br><br>
-'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo"> Require declared users (to)</label><br><br>
+'.$checkboxBlock.' <label for="blockSignature">Ask for an immediate block signature</label><br><br>
+'.$checkboxPeg.' <label for="pegSignature">Ask for for a rapid bitcoin proof</label><br><br>
+'.$checkboxAskForDeclareFrom.' <label for="declareAddressFrom"> Require declared users (from)</label><br><br>
+'.$checkboxAskForDeclareTo.' <label for="declareAddressTo"> Require declared users (to)</label><br><br>
 '.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
 '.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label>'
             .$this->proof->conditionHtml()
@@ -177,7 +178,7 @@ class SdkTemplate {
             .$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
             .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
             .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
-
+/*
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->proof->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->fromValidation->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->toValidation->htmlFieldsId);
@@ -197,33 +198,103 @@ class SdkTemplate {
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->investorType1->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->block->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->peg->htmlFieldsId);
-
+*/
         $function = '';
         $function1 = '';
         $function2 = '';
 
         foreach($this->htmlFieldsId as $id){
 
-            $function .= 'this.'.$id.' = document.getElementsByName("'.$id.'")[0].value;'."\n";
-            $function1 .= $id.', ';
-            $function2 .= 'this.'.$id.' = '.$id.';'."\n";
+            $function .= "\t".'this.'.$id.' = document.getElementsByName("'.$id.'")[0].value;'."\n";
+            $function1 .= $id.' = '.json_encode($this->$id).', ';
+            $function2 .= "\t".'this.'.$id.' = '.$id.';'."\n";
         }
-        $form .=  '
-<script>
-function Template('.substr($function1, 0,-2).'){
-
+        $this->htmlScript =  '
+function Template('.substr($function1, 0,-2).', '.
+'proof = {}, '.
+'fromValidation = {}, '.
+'toValidation = {}, '.
+'from = {}, '.
+'to = {}, '.
+'backup = {}, '.
+'lock = {}, '.
+'witness = {}, '.
+'cosigner = {}, '.
+'ban = {}, '.
+'old = {}, '.
+'board = {}, '.
+'cosignerOrg = {}, '.
+'witnessOrg = {}, '.
+'parentstype1 = {}, '.
+'childstype1 = {}, '.
+'investorType1 = {}, '.
+'block = {}, '.
+'peg = {}) {
+console.info("construct");
 '.$function2.'
+    this.proof = proof;
+    this.fromValidation = fromValidation;
+    this.toValidation = toValidation;
+    this.from = from;
+    this.to = to;
+    this.backup = backup;
+    this.lock = lock;
+    this.witness = witness;
+    this.cosigner = cosigner;
+    this.ban = ban;
+    this.old = old;
+    this.board = board;
+    this.cosignerOrg = cosignerOrg;
+    this.witnessOrg = witnessOrg;
+    this.parentstype1 = parentstype1;
+    this.childstype1 = childstype1;
+    this.investorType1 = investorType1;
+    this.block = block;
+    this.peg = peg;
 }
 Template.prototype.getDataFromForm = function () {
 
 '.$function.'
+    this.proof = this.proofGetDataFromForm();
+    this.fromValidation  = this.fromValidationGetDataFromForm();
+    this.toValidation  = this.toValidationGetDataFromForm();
+    this.from = this.fromGetDataFromForm();
+    this.to  = this.toGetDataFromForm();
+    this.backup  = this.backupGetDataFromForm();
+    this.lock  = this.lockGetDataFromForm();
+    this.witness  = this.witnessGetDataFromForm();
+    this.cosigner  = this.cosignerGetDataFromForm();
+    this.ban  = this.banGetDataFromForm();
+    this.old  = this.oldGetDataFromForm();
+    this.board  = this.boardGetDataFromForm();
+    this.cosignerOrg  = this.cosignerOrgGetDataFromForm();
+    this.witnessOrg  = this.witnessGetDataFromForm();
+    this.parentstype1  = this.parentstype1GetDataFromForm();
+    this.childstype1  = this.childType1GetDataFromForm();
+    this.investorType1  = this.investorType1GetDataFromForm();
+    this.block  = this.blockGetDataFromForm();
+    this.peg = this.pegGetDataFromForm();
 }
-let template = new Template();
-template.getDataFromForm()
-console.log(template);
-</script>
-';
-
+'.
+$this->proof->htmlScript."\n".
+$this->fromValidation->htmlScript."\n".
+$this->toValidation->htmlScript."\n".
+$this->from->htmlScript."\n".
+$this->to->htmlScript."\n".
+$this->backup->htmlScript."\n".
+$this->lock->htmlScript."\n".
+$this->witness->htmlScript."\n".
+$this->cosigner->htmlScript."\n".
+$this->ban->htmlScript."\n".
+$this->old->htmlScript."\n".
+$this->board->htmlScript."\n".
+$this->cosignerOrg->htmlScript."\n".
+$this->witnessOrg->htmlScript."\n".
+$this->parentstype1->htmlScript."\n".
+$this->childstype1->htmlScript."\n".
+$this->investorType1->htmlScript."\n".
+$this->block->htmlScript."\n".
+$this->peg->htmlScript."\n";
         return $form;
     }
     public function initJs(): string{

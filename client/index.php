@@ -53,6 +53,21 @@ var Module = {
         main();
     }
 }
+window.sodium = {
+    onload: function (sodium0) {
+        let h = sodium0.crypto_generichash(64, sodium0.from_string('test'));
+        console.log(sodium0.to_hex(h));
+        sodium=sodium0;
+    }
+};
+function main() {
+
+    if (init() !== 0) {
+        alert("initialization failed");
+        return;
+    }
+    console.log("Cleanup and terminating");
+}
     </script>
     <script src="js/sodium.js" async></script>
     <!-- FIN SDK -->
@@ -95,6 +110,10 @@ var Module = {
 <script>
 // START SDK
 const env = '<?php echo $conf->env; ?>';
+<?php echo $templateDefault->htmlScript; ?>
+var template = new Template();
+<?php echo $transactionDefault->htmlScript; ?>
+var transaction = new Transaction();
 <?php echo $templateJS ?>
 var requestData = <?php echo $requestDataJson; ?>;
 var wallets = <?php echo $walletsJson; ?>;
@@ -102,21 +121,6 @@ var sodium;
 var wallet = {list: [], key: ''};
 var walletLoaded = false;
 var ret;
-window.sodium = {
-    onload: function (sodium0) {
-        let h = sodium0.crypto_generichash(64, sodium0.from_string('test'));
-        console.log(sodium0.to_hex(h));
-        sodium=sodium0;
-    }
-};
-function main() {
-
-    if (init() !== 0) {
-        alert("initialization failed");
-        return;
-    }
-    console.log("Cleanup and terminating");
-}
 function createWallet(role){
 
     let w = newWallet();
