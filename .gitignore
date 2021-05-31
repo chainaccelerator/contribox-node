@@ -6,6 +6,10 @@
 /.idea/vcs.xml
 /regtest/conf/local/**
 /regtest/conf/conf.json
+/regtest/conf/e_node_regtest_1.json
+/regtest/conf/e_regtest_pubKey_list.json
+/regtest/conf/b_node_regtest_1.json
+/regtest/conf/bitcoin_regtest.conf
 /regtest/conf/elements_regtest_1.conf
 /regtest/conf/elements_regtest_2.conf
 /regtest/conf/elements_regtest_3.conf
