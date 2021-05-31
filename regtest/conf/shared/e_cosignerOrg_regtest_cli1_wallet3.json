@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_cosignerOrg_regtest_cli1_wallet3",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_cosignerOrg_regtest_cli1_wallet3",
+  "pubKey_name": "e_a_cosignerOrg_regtest_cli1_wallet3",
+  "pubAddress": "2df1i1LUfnWNDN1RmbforqWapjYR5ptBg3X",
+  "pubKey": "02d02179244d1c435456209034af204dd6fe3ec6cecec5357a4ffda29713ce4bfd",
+  "apiBind": "10.0.0.5",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "3",
+  "addressType": "cosignerOrg"
+}

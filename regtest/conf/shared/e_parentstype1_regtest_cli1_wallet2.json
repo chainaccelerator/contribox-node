@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_parentstype1_regtest_cli1_wallet2",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_parentstype1_regtest_cli1_wallet2",
+  "pubKey_name": "e_a_parentstype1_regtest_cli1_wallet2",
+  "pubAddress": "2dww76kPdu95H2zNK7KWSbU2syNp7btfYcY",
+  "pubKey": "0390793a4f70cc7107b1ec76a69ccc8b6e83f66423eb27f5a9dc0b1e3fe8b8e870",
+  "apiBind": "10.0.0.5",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "2",
+  "addressType": "parentstype1"
+}

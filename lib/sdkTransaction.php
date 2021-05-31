@@ -2,10 +2,10 @@
 
 class SdkTransaction {
 
+    public int $amount = 0;
     public array $form = [];
     public array $to = [];
     public string $template = '';
-    public int $amount = 0;
     public string $proof = '{data: "", version: "v0"}';
     public string $user = '{data: "", version: "v0"}';
     public string $proofEncryptionKey = '';

@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_board_regtest_cli1_wallet1",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_board_regtest_cli1_wallet1",
+  "pubKey_name": "e_a_board_regtest_cli1_wallet1",
+  "pubAddress": "2dsTaFGDHJMtpnGCsLPU3i9vcngMn9ozJYA",
+  "pubKey": "0348537e5b4efe2332cb842ad6c226afe0f25d72300b801c2a7b0bcc4a8afe1667",
+  "apiBind": "10.0.0.5",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "1",
+  "addressType": "board"
+}

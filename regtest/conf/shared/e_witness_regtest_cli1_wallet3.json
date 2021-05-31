@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_witness_regtest_cli1_wallet3",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_witness_regtest_cli1_wallet3",
+  "pubKey_name": "e_a_witness_regtest_cli1_wallet3",
+  "pubAddress": "2djhQVq3ssuiWNwGvYGVPPbhmZ2QBo8B8wb",
+  "pubKey": "0274fe165c2c9ca5b9c43d44b352302c12f94e14f776afc77d980081d78af60709",
+  "apiBind": "10.0.0.5",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "3",
+  "addressType": "witness"
+}

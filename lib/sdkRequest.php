@@ -1,11 +1,11 @@
-<?
+<?php
 
 class SdkRequest {
 
     public int $timestamp = 0;
     public array $peerList = [];
-    public SdkPow $pow;
-    public SdkSig $sig;
+    public SdkRequestPow $pow;
+    public SdkRequestSig $sig;
 
     public function __construct(){
 

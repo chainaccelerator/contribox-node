@@ -1,0 +1,14 @@
+{
+  "wallet_name": "e_share_regtest_cli1_wallet2",
+  "wallet_uri": "/var/elements/regtest_1/elementsregtest/wallets/e_share_regtest_cli1_wallet2",
+  "pubKey_name": "e_a_share_regtest_cli1_wallet2",
+  "pubAddress": "2diqq9yWZEirQCNkQUFBtMQeURa1UsSf5sU",
+  "pubKey": "0210b9262c4bee2bb796457929ba7307f0f9a1816291988b9e6ec01365c13671aa",
+  "apiBind": "10.0.0.5",
+  "apiPort": "8001",
+  "nodeId": "",
+  "env": "regtest",
+  "nodeInstance": "1",
+  "walletInstance": "2",
+  "addressType": "share"
+}
