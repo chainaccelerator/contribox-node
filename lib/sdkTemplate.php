@@ -126,9 +126,9 @@ class SdkTemplate {
 <label for="process">Process</label> <select name="process">'.$optionsProcesses.'</select> <select name="step">'.$optionsProcessesSteps.'</select> <select name="actions">'.$optionsProcessesStepActions.'</select><br><br>
 '.$checkboxBlock.' <label for="AskForConfirmationBlock">Ask for an immediate block signature</label><br><br>
 '.$checkboxPeg.' <label for="AskForConfirmationPeg">Ask for for a rapid bitcoin proof</label><br><br>
-'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom'.$this->name.'"> Require declared users (from)</label>
-'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo'.$this->name.'"> Require declared users (to)</label>
-'.$checkboxProofEncryption.' <label for="proofEncryption'.$this->name.'"> Proof encryption</label>
+'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom'.$this->name.'"> Require declared users (from)</label><br><br>
+'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo'.$this->name.'"> Require declared users (to)</label><br><br>
+'.$checkboxProofEncryption.' <label for="proofEncryption'.$this->name.'"> Proof encryption</label><br><br>
 '.$checkboxUserEncryption.' <label for="userEncryption'.$this->name.'"> User encryption</label>'
 .$this->proof->conditionHtml()
 .$this->fromValidation->conditionHtml()

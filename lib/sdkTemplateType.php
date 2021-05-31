@@ -40,7 +40,7 @@ class SdkTemplateType {
         $fileList = glob($path);
 
         foreach($fileList as $file) {
-            echo $file.'<br>';
+            
             $data = json_decode(file_get_contents($file));
             $res[] = $data;
         }

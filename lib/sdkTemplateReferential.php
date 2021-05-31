@@ -11,13 +11,19 @@ class SdkTemplateReferential {
         $this->type =$type;
     }
 
-    public function conditionHtml(): string {
+    public function conditionHtml(string $o = ''): string {
 
+        $c = get_called_class();
+
+        foreach($c::$templateList as $template){
+
+            $o = '<option selected value="'.$template.'">'.$template.'</option>';
+        }
         return '
 <br>
 <br>
 <h4>'.$this->type.'</h4>
-<input type="checkbox" name="state'.$this->type.'"> Using with the definition <select name="definition'.$this->type.'"><option selected value="default">default</option></select>';
+<input type="checkbox" name="state'.$this->type.'"> Using with the definition <select name="definition'.$this->type.'">'.$o.'</select>';
     }
     public function definitionJs(): string {
 
