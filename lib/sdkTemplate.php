@@ -17,7 +17,7 @@ class SdkTemplate {
         ]
     ];
     public static array $roles = ['Author', 'Owner', 'Contributor', 'ClientPrivate', 'ClientPublic', 'Witness', 'Provider', 'Distributor', 'Sponsor', 'Insurance'];
-    public static array $typeList = ['from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'ban', 'old', 'member', 'board', 'witnessOrg', 'cosignerOrg', 'parents', 'childs', 'block', 'peg'];
+    public static array $typeList = ['from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'ban', 'old', 'member', 'board', 'witnessOrg', 'cosignerOrg', 'parentstype1', 'childstype1', 'block', 'peg'];
     public static array $processes = ['Core', 'Authorizations', 'HealthCare', 'Sells', 'Finance', 'Maintenance'];
     public static array $processesSteps = ['Proposal', 'Realization', 'Test', 'Validation', 'Advertising', 'InitialVersion', 'NewVersion'];
     public static array $processesStepsAction = ['AskForConfirmationDeclaration', 'AskForConfirmationBan', 'AskForConfirmationOutboard', 'AskForConfirmationOutboard', 'AskForConfirmationShare', 'AskForTemplateUpdate', 'AskForTechnicalInfos'];
@@ -55,8 +55,8 @@ class SdkTemplate {
     public SdkTemplateTypeBoard $board;
     public SdkTemplateTypeCosignerOrg $cosignerOrg;
     public SdkTemplateTypeWitnessOrg $witnessOrg;
-    public SdkTemplateTypeParents $parents;
-    public SdkTemplateTypeChilds $childs;
+    public SdkTemplateTypeParents $parentstype1;
+    public SdkTemplateTypeChilds $childstype1;
     public SdkTemplateTypeBlock $block;
     public SdkTemplateTypePeg $peg;
     public string $hash;
@@ -103,8 +103,8 @@ class SdkTemplate {
         $this->board = new SdkTemplateTypeBoard(SdkTemplateTypeBoard::walletsList());
         $this->cosignerOrg = new SdkTemplateTypeCosignerOrg(SdkTemplateTypeCosignerOrg::walletsList());
         $this->witnessOrg = new SdkTemplateTypeWitnessOrg(SdkTemplateTypeWitnessOrg::walletsList());
-        $this->parents = new SdkTemplateTypeParents(SdkTemplateTypeParents::walletsList());
-        $this->childs = new SdkTemplateTypeChilds(SdkTemplateTypeChilds::walletsList());
+        $this->parentstype1 = new SdkTemplateTypeParents(SdkTemplateTypeParents::walletsList());
+        $this->childstype1 = new SdkTemplateTypeChilds(SdkTemplateTypeChilds::walletsList());
         $this->block = new SdkTemplateTypeBlock(SdkTemplateTypeBlock::walletsList());
         $this->peg = new SdkTemplateTypePeg(SdkTemplateTypePeg::walletsList());
         $this->name = $this->role.'_'.$this->domain.'_'.$this->domainSub.'_'.$this->domainSubAbout.'_'.$this->process.'_'.$this->processStep.'_'.$this->processStepAction.'_'.$this->version;
@@ -170,8 +170,8 @@ class SdkTemplate {
         .$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
         .$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
         .$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
-        .$this->parents->conditionHtml(SdkTemplateTypeParents::walletsList())
-        .$this->childs->conditionHtml(SdkTemplateTypeChilds::walletsList())
+        .$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
+        .$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
         .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
         .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
 
@@ -189,8 +189,8 @@ class SdkTemplate {
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->board->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->cosignerOrg->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->witnessOrg->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->parents->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->childs->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->parentstype1->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->childstype1->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->block->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->peg->htmlFieldsId);
 
@@ -213,8 +213,8 @@ class SdkTemplate {
         $script .= $this->board->definitionJs()."\n";
         $script .= $this->cosignerOrg->definitionJs()."\n";
         $script .= $this->witnessOrg->definitionJs()."\n";
-        $script .= $this->parents->definitionJs()."\n";
-        $script .= $this->childs->definitionJs()."\n";
+        $script .= $this->parentstype1->definitionJs()."\n";
+        $script .= $this->childstype1->definitionJs()."\n";
         $script .= $this->block->definitionJs()."\n";
         $script .= $this->peg->definitionJs()."\n";
         $script .= $this->definitionJs()."\n";
