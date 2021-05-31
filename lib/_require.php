@@ -48,6 +48,7 @@ require_once 'sdkTemplateTypeTo.php';
 require_once 'sdkTemplateTypeFrom.php';
 require_once 'sdkTemplateTypeWitness.php';
 require_once 'sdkTemplateTypeWitnessOrg.php';
+require_once 'sdkTemplateTypeInvestorType1.php';
 require_once 'sdkTransaction.php';
 
 require_once 'templateCondition.php';

@@ -59,6 +59,7 @@ class SdkTemplate {
     public SdkTemplateTypeChilds $childstype1;
     public SdkTemplateTypeBlock $block;
     public SdkTemplateTypePeg $peg;
+    public SdkTemplateTypeInvestorType1 $investorType1;
     public string $hash;
     public array $htmlFieldsId = array();
 
@@ -107,6 +108,7 @@ class SdkTemplate {
         $this->childstype1 = new SdkTemplateTypeChilds(SdkTemplateTypeChilds::walletsList());
         $this->block = new SdkTemplateTypeBlock(SdkTemplateTypeBlock::walletsList());
         $this->peg = new SdkTemplateTypePeg(SdkTemplateTypePeg::walletsList());
+        $this->investorType1 = new SdkTemplateTypeInvestorType1(SdkTemplateTypeInvestorType1::walletsList());
         $this->name = $this->role.'_'.$this->domain.'_'.$this->domainSub.'_'.$this->domainSubAbout.'_'.$this->process.'_'.$this->processStep.'_'.$this->processStepAction.'_'.$this->version;
         $this->hash = CryptoHash::get($this->name)->hash;
         $this->declareAddressFrom = $declareAddressFrom;
@@ -145,7 +147,7 @@ class SdkTemplate {
         ];
 
         $form = '
-<label for="amount">For</label> <input type="number" name="amount" value="'.$this->amount.'"> BTC<br><br>
+<label for="amount">For</label> <input type="number" name="amount" value="'.$this->amount.'"> Project-BTC<br><br>
 <label for="roles">As</label> <select name="roles">'.$optionsRoles.'</select><br><br>
 <label for="domain">Domain</label> <select name="domain">'.$optionsDomains.'</select> <select name="subdomain">'.$optionsDomainSubs.'</select> <select id="about" name="about">'.$optionsDomainSubsAbout.'</select><br><br>
 <label for="process">Process</label> <select name="process">'.$optionsProcesses.'</select> <select name="step">'.$optionsProcessesSteps.'</select> <select name="actions">'.$optionsProcessesStepActions.'</select><br><br>
@@ -172,6 +174,7 @@ class SdkTemplate {
         .$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
         .$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
         .$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
+        .$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
         .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
         .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
 
@@ -191,6 +194,7 @@ class SdkTemplate {
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->witnessOrg->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->parentstype1->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->childstype1->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->investorType1->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->block->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->peg->htmlFieldsId);
 
@@ -215,6 +219,7 @@ class SdkTemplate {
         $script .= $this->witnessOrg->definitionJs()."\n";
         $script .= $this->parentstype1->definitionJs()."\n";
         $script .= $this->childstype1->definitionJs()."\n";
+        $script .= $this->investorType1->definitionJs()."\n";
         $script .= $this->block->definitionJs()."\n";
         $script .= $this->peg->definitionJs()."\n";
         $script .= $this->definitionJs()."\n";

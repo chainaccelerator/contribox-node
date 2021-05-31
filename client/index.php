@@ -189,6 +189,20 @@ function msgHtml() {
     msgElem.classList.value = '';
     if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
 }
+function proposeTemplate () {
+
+    var data = templateGetData();
+
+    wallets.list.forEach(function(w){
+
+        if(role === w.role) {
+
+            return send(transaction, template, w.pubkey0);
+        }
+    });
+    return false;
+}
+
 dlElem.addEventListener("click", function (e) {
     if (fileSelectElem) {
         fileSelectElem.click();
