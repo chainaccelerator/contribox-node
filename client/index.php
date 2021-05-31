@@ -2,13 +2,37 @@
 
 require_once '../lib/_require.php';
 
+$data = '{
+    "env": "regtest",
+    "role": "owner",
+    "domain": "Core",
+    "domainSub": "user",
+    "process": "Identifier",
+    "processStep": "Validation",
+    "processStepAction": "AskForConfirmationDeclaration",
+    "about": "user",
+    "amount": 0,
+    "blockSignature": false, 
+    "pegSignature": false, 
+    "version": "v0", 
+    "declareAddressFrom": false,
+    "declareAddressTo": false, 
+    "proofEncryption": false, 
+    "userEncryption": false,
+    "from": [],    
+    "to": [], 
+    "proof": "{data: \"\", version: \"v0\"}", 
+    "user": "{data: \"\", version: \"v0\"}"
+}';
+$conf = json_decode($data);
+
 $wallet = new SdkWallet();
 $walletsJson = json_encode($wallet::$wallets);
 $requestData = new SdkRequestData();
 $requestDataJson = json_encode($requestData);
-$templateDefault = new SdkTemplate($role = "owner", "Laeka", "healthRecord", "Autorizations", "Proposal", "AskForOnboardConfirmation", "owner", 0, false, false, 'v0');
+$templateDefault = new SdkTemplate($conf->role, $conf->domain,$conf->domainSub, $conf->process, $conf->processStep, $conf->processStepAction, $conf->about, $conf->amount, $conf->blockSignature, $conf->pegSignature, $conf->version);
 $templateDefaultJson = json_encode($templateDefault);
-$transactionDefault = new SdkTransaction([], [], $templateDefault->name, 0, '{data: "", version: "v0"}', '{data: "", version: "v0"}');
+$transactionDefault = new SdkTransaction($conf->from, $conf->to, $templateDefault->name, $conf->amount, $conf->proof, $conf->user);
 $transactionDefaultJson = json_encode($transactionDefault);
 $template = $templateDefault->conditionHtml();
 $operation = $transactionDefault->conditionHtml(array(), SdkTemplateTypeTo::walletsList());
@@ -36,13 +60,13 @@ var Module = {
     <section>
         <div id="msg"></div>
         <input type="file" name="fileSelect" id="fileSelect" style="display: none">
-        <button id="upload" name="upload">Upload your wallet</button> <button id="create" name="create">Create your wallet</button>
+        <button id="upload" name="upload">Upload your wallet</button> <a href="#" id="create" name="create">Create your wallet</a>
         <br id="sep1">
         <br id="sep2">
         <fieldset><legend>Operation</legend>
             <?php echo $operation ?>
             <br><br>
-            <button id="provePay" name="provePay" style="display: none">Prove and pay</button>
+            <a href="#" id="provePay" name="provePay" style="display: none">Prove and pay</a>
         </fieldset>
         <fieldset><legend>Confirmations to sign (or not)</legend>
             <h4>Backup</h4>
@@ -64,12 +88,12 @@ var Module = {
             <?php echo $template; ?>
             <br>
             <br>
-            <button id="createTemplate" name="createTemplate" style="display: none">Create</button>
+            <a href="#" id="createTemplate" name="createTemplate" style="display: none">Create</a>
         </fieldset>
     </section>
 
 <script>
-const env = 'regtest';
+const env = '<?php echo $conf->env; ?>';
 <?php echo $templateJS ?>
 var requestData = <?php echo $requestDataJson; ?>;
 var wallets = <?php echo $walletsJson; ?>;
@@ -175,20 +199,18 @@ dlElem.addEventListener("click", function (e) {
 
 dlElemCreate.addEventListener("click", function (e) {
 
-    wallets.forEach(w => function(w){
+    wallets.forEach(function(w){
 
         wallet.list[wallet.list.length] = createWallet(w);
     });
     let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(wallet.list)));
     wallet.key = sodium.to_hex(h);
 
-    console.info(wallet);
-    let walletJ = wallet;
-    walletJ.list.forEach(w => function () {
-        from.xPubList[from.xPubList.length] = w.pubkey0;
-        publickeyListFrom.append('<option value="' + w.pubkey0 + '">' + w.wallet_nale + '</option>');
+    console.info('wallet', wallet.list);
+    wallet.list.forEach(function (w) {
+        from.append('<option value="' + w.pubkey0 + '">' + w.role + '</option>');
     });
-    download('wallet_contribox.dat', JSON.stringify(wallet));
+    // download('wallet_contribox.dat', JSON.stringify(wallet));
     walletLoaded = true;
     dlElem.style.display = "none";
     dlElemCreate.style.display = "none";
@@ -197,6 +219,7 @@ dlElemCreate.addEventListener("click", function (e) {
     createTemplate.style.display = "initial";
     provePay.style.display = "initial";
     ret = {msg: "Wallet created", cssClass:"success"};
+
     msgHtml();
 
 }, false);

@@ -16,7 +16,7 @@ class SdkHtml {
                 $cp->consts->$name = $class::$$name;
             }
         }
-        return 'var ' . $name . ' = ' . json_encode($cp) . ';';
+        return 'var ' . $class.$name . ' = ' . json_encode($cp) . ';';
     }
     public static function optionHtml(array $tab, string $value = ''): string {
 

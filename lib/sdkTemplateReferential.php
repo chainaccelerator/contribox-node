@@ -19,11 +19,17 @@ class SdkTemplateReferential {
 
             $o = '<option selected value="'.$template.'">'.$template.'</option>';
         }
+        $this->htmlFieldsId = [
+            'state'.$this->type,
+            'definition'.$this->type
+        ];
+
         return '
 <br>
 <br>
 <h4>'.$this->type.'</h4>
-<input type="checkbox" name="state'.$this->type.'"> Using with the definition <select name="definition'.$this->type.'">'.$o.'</select>';
+<input type="checkbox" name="state'.$this->type.'"> Using with the definition 
+<select name="definition'.$this->type.'">'.$o.'</select>';
     }
     public function definitionJs(): string {
 

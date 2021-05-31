@@ -2,15 +2,18 @@
 
 class SdkTemplate {
 
-    public static array $domains = ['Laeka'];
-    public static array $domainsSubs = ['Laeka' => ['healthRecord'], 'core' => ['user', 'proof']];
+    public static array $domains = ['Laeka', 'Core'];
+    public static array $domainsSubs = [
+        'Laeka' => ['healthRecord'],
+        'Core' => ['user', 'proof']
+    ];
     public static array $domainsSubsAbouts = [
         'Laeka' => [
             'healthRecord' => ['Identifier', 'Product', 'Service', 'Voucher', 'State', 'Record', 'Vote', 'Act', 'Payment', 'Ownership', 'Contribution']
         ],
-        'core' => [
+        'Core' => [
             'proof' => ['Identifier'],
-            'user' => ['identifier']
+            'user' => ['Identifier']
         ]
     ];
     public static array $roles = ['Author', 'Owner', 'Contributor', 'ClientPrivate', 'ClientPublic', 'Witness', 'Provider', 'Distributor', 'Sponsor', 'Insurance'];
@@ -20,9 +23,9 @@ class SdkTemplate {
     public static array $processesStepsAction = ['AskForConfirmationDeclaration', 'AskForConfirmationBan', 'AskForConfirmationOutboard', 'AskForConfirmationOutboard', 'AskForConfirmationShare', 'AskForTemplateUpdate', 'AskForTechnicalInfos'];
     public static array $list = [];
 
+    public int $amount = 0;
     public string $name = '';
     public string $version = 'v0';
-    public int $amount = 0;
     public string $role = '';
     public string $domain = '';
     public string $domainSub = '';
@@ -57,6 +60,7 @@ class SdkTemplate {
     public SdkTemplateTypeBlock $block;
     public SdkTemplateTypePeg $peg;
     public string $hash;
+    public array $htmlFieldsId = array();
 
     public static function initFromJson($json){
 
@@ -127,7 +131,20 @@ class SdkTemplate {
         $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption'.$this->name, $this->proofEncryption);
         $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption'.$this->name, $this->userEncryption);
 
-        return '
+        $this->htmlFieldsId = [
+            'amount',
+            'roles',
+            'domain',
+            'process',
+            'block',
+            'peg',
+            'askForDeclareFrom',
+            'askForDeclareTo',
+            'proofEncryption',
+            'userEncryption'
+        ];
+
+        $form = '
 <label for="amount">For</label> <input type="number" name="amount" value="'.$this->amount.'"> BTC<br><br>
 <label for="roles">As</label> <select name="roles">'.$optionsRoles.'</select><br><br>
 <label for="domain">Domain</label> <select name="domain">'.$optionsDomains.'</select> <select name="subdomain">'.$optionsDomainSubs.'</select> <select id="about" name="about">'.$optionsDomainSubsAbout.'</select><br><br>
@@ -138,25 +155,46 @@ class SdkTemplate {
 '.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo'.$this->name.'"> Require declared users (to)</label><br><br>
 '.$checkboxProofEncryption.' <label for="proofEncryption'.$this->name.'"> Proof encryption</label><br><br>
 '.$checkboxUserEncryption.' <label for="userEncryption'.$this->name.'"> User encryption</label>'
-.$this->proof->conditionHtml()
-.$this->fromValidation->conditionHtml()
-.$this->toValidation->conditionHtml()
-.$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
-.$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
-.$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
-.$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
-.$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
-.$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
-.$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
-.$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
-.$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
-.$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
-.$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
-.$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
-.$this->parents->conditionHtml(SdkTemplateTypeParents::walletsList())
-.$this->childs->conditionHtml(SdkTemplateTypeChilds::walletsList())
-.$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
-.$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
+        .$this->proof->conditionHtml()
+        .$this->fromValidation->conditionHtml()
+        .$this->toValidation->conditionHtml()
+        .$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
+        .$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
+        .$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
+        .$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
+        .$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
+        .$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
+        .$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
+        .$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
+        .$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
+        .$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
+        .$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
+        .$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
+        .$this->parents->conditionHtml(SdkTemplateTypeParents::walletsList())
+        .$this->childs->conditionHtml(SdkTemplateTypeChilds::walletsList())
+        .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
+        .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
+
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->proof->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->fromValidation->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->toValidation->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->from->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->to->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->backup->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->lock->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->witness->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->cosigner->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->ban->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->old->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->board->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->cosignerOrg->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->witnessOrg->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->parents->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->childs->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->block->htmlFieldsId);
+        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->peg->htmlFieldsId);
+
+        return $form;
     }
     public function initJs(): string{
 
@@ -180,6 +218,23 @@ class SdkTemplate {
         $script .= $this->block->definitionJs()."\n";
         $script .= $this->peg->definitionJs()."\n";
         $script .= $this->definitionJs()."\n";
+        $function = '';
+
+        foreach($this->htmlFieldsId as $id){
+
+            $function .= 'data.'.$id.'= document.getElementById("'.$id.'");'."\n";
+        }
+        $function = '
+function getData() {
+
+    var data = {};
+'.$function.'
+
+    return data;
+}
+console.log(getData());
+';
+        $script .= $function;
 
         return $script;
     }

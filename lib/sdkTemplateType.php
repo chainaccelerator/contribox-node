@@ -13,6 +13,7 @@ class SdkTemplateType {
     public int $amountBTCMin = 0;
     public string $amountBTCMinFrom = '';
     public bool $state = true;
+    public array $htmlFieldsId = array();
 
     public function __construct(array $pubList = [], string $pattern = 'any', bool $patternAfterTimeout = true, int $patternAfterTimeoutN = 300, bool $patternBeforeTimeout = false, int $patternBeforeTimeoutN = 1, int $amountBTCMin = 0){
 
@@ -53,12 +54,24 @@ class SdkTemplateType {
         $checkboxState = SdkHtml::checkboxHtml('state'.$this->type, $this->state);
         $checkboxPatternAfterTimeout = SdkHtml::checkboxHtml('patternAfterTimeout'.$this->type, $this->patternAfterTimeout);
         $checkboxPatternBeforeTimeout = SdkHtml::checkboxHtml('patternBeforeTimeout'.$this->type, $this->patternBeforeTimeout);
+        $this->htmlFieldsId = [
+            'publickeyList'.$this->type,
+            'pattern'.$this->type,
+            'patternAfterTimeoutN'.$this->type,
+            'patternBeforeTimeoutN'.$this->type,
+            'amountBTCMin'.$this->type,
+            'amountBTCMinFrom'.$this->type,
+            'state'.$this->type,
+            'patternAfterTimeout'.$this->type,
+            'patternBeforeTimeout'.$this->type
+        ];
 
         return '
 <br>
 <h4>'.$this->type.'</h4>
 '.$checkboxState.' Using<br><br> 
-<select name="publickeyList'.$this->type.'" multiple>'.$optionPubKeys.'</select> signers with <select name="pattern'.$this->type.'">'.$optionPatterns.'</select> required <br><br>
+<select name="publickeyList'.$this->type.'" multiple>'.$optionPubKeys.'</select> signers with 
+<select name="pattern'.$this->type.'">'.$optionPatterns.'</select> required <br><br>
 '.$checkboxPatternAfterTimeout.' after <input type="number" value="'.$this->patternAfterTimeoutN.'" min="1" name="patternAfterTimeoutN'.$this->type.'"> bloc(s) timeout<br><br>
 '.$checkboxPatternBeforeTimeout.' before <input type="number" value="'.$this->patternBeforeTimeoutN.'" min="1" name="patternBeforeTimeoutN'.$this->type.'"> bloc(s) timeout<br><br>
 <input type="number" name="amountBTCMin'.$this->type.'" value="'.$this->amountBTCMin.'"> BTC rewards, paid by (if other than From) <input type="text" name="amountBTCMinFrom'.$this->type.'" value="'.$this->amountBTCMinFrom.'"><br>
