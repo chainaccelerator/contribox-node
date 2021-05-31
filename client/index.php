@@ -206,13 +206,14 @@ dlElemCreate.addEventListener("click", function (e) {
     let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(wallet.list)));
     wallet.key = sodium.to_hex(h);
 
-    console.info('wallet', wallet.list);
     var FromElm = document.getElementsByName("From")[0];
+    var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
     wallet.list.forEach(function (w) {
         var option = document.createElement("option");
         option.value=w.pubkey0;
         option.text=w.role;
         FromElm.appendChild(option);
+        FromPubElm.appendChild(option);
     });
     // download('wallet_contribox.dat', JSON.stringify(wallet));
     walletLoaded = true;

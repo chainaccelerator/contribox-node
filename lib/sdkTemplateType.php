@@ -50,7 +50,12 @@ class SdkTemplateType {
     public function conditionHtml(array $pubList = array()): string {
 
         $optionPatterns = SdkHtml::optionHtml(self::$patterns, $this->pattern);
-        $optionPubKeys = SdkHtml::optionHtmlMultiple($pubList, $this->pubList);
+        $optionPubKeys = '<option>None</option>';
+
+        if($this->type !== 'from') {
+
+            $optionPubKeys = SdkHtml::optionHtmlMultiple($pubList, $this->pubList);
+        }
         $checkboxState = SdkHtml::checkboxHtml('state'.$this->type, $this->state);
         $checkboxPatternAfterTimeout = SdkHtml::checkboxHtml('patternAfterTimeout'.$this->type, $this->patternAfterTimeout);
         $checkboxPatternBeforeTimeout = SdkHtml::checkboxHtml('patternBeforeTimeout'.$this->type, $this->patternBeforeTimeout);
