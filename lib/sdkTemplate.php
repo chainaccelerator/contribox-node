@@ -157,26 +157,26 @@ class SdkTemplate {
 '.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo"> Require declared users (to)</label><br><br>
 '.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
 '.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label>'
-        .$this->proof->conditionHtml()
-        .$this->fromValidation->conditionHtml()
-        .$this->toValidation->conditionHtml()
-        .$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
-        .$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
-        .$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
-        .$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
-        .$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
-        .$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
-        .$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
-        .$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
-        .$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
-        .$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
-        .$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
-        .$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
-        .$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
-        .$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
-        .$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
-        .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
-        .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
+            .$this->proof->conditionHtml()
+            .$this->fromValidation->conditionHtml()
+            .$this->toValidation->conditionHtml()
+            .$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
+            .$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
+            .$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
+            .$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
+            .$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
+            .$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
+            .$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
+            .$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
+            .$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
+            .$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
+            .$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
+            .$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
+            .$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
+            .$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
+            .$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
+            .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
+            .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
 
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->proof->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->fromValidation->htmlFieldsId);
@@ -197,6 +197,32 @@ class SdkTemplate {
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->investorType1->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->block->htmlFieldsId);
         $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->peg->htmlFieldsId);
+
+        $function = '';
+        $function1 = '';
+        $function2 = '';
+
+        foreach($this->htmlFieldsId as $id){
+
+            $function .= 'this.'.$id.' = document.getElementsByName("'.$id.'")[0].value;'."\n";
+            $function1 .= $id.', ';
+            $function2 .= 'this.'.$id.' = '.$id.';'."\n";
+        }
+        $form .=  '
+<script>
+function Template('.substr($function1, 0,-2).'){
+
+'.$function2.'
+}
+Template.prototype.getDataFromForm = function () {
+
+'.$function.'
+}
+let template = new Template();
+template.getDataFromForm()
+console.log(template);
+</script>
+';
 
         return $form;
     }
@@ -223,23 +249,6 @@ class SdkTemplate {
         $script .= $this->block->definitionJs()."\n";
         $script .= $this->peg->definitionJs()."\n";
         $script .= $this->definitionJs()."\n";
-        $function = '';
-
-        foreach($this->htmlFieldsId as $id){
-
-            $function .= 'data.'.$id.' = document.getElementsByName("'.$id.'")[0].value;'."\n";
-        }
-        $function = '
-function templateGetData() {
-
-    var data = {};
-'.$function.'
-
-    return data;
-}
-console.log(templateGetData());
-';
-        $script .= $function;
 
         return $script;
     }

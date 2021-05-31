@@ -24,44 +24,52 @@ class SdkTransaction {
 
     public function conditionHtml(array $listFrom = array(), array $listTo = array()){
 
-        $function = '';
         $optionsFrom = sdkHtml::optionHtmlMultiple($listFrom);
         $optionsTo = sdkHtml::optionHtmlMultiple($listTo);
         $this->htmlFieldsId = [
-            'From',
-            'To',
-            'Template',
+            'from',
+            'to',
+            'template',
             'amount',
             'proof',
             'proofEncryptionKey',
             'user',
             'userEncryptionKey'
         ];
+        $function = '';
+        $function1 = '';
+        $function2 = '';
 
         foreach($this->htmlFieldsId as $id){
 
-            $function .= 'data.'.$id.'= document.getElementById("'.$id.'");'."\n";
+            $function .= 'this.'.$id.' = document.getElementsByName("'.$id.'")[0].value;'."\n";
+            $function1 .= $id.' = '.json_encode($this->$id).', ';
+            $function2 .= 'this.'.$id.' = '.$id.';'."\n";
         }
-        $function = '
 
-function operationGetData() {
+        return '
+<label for="from">From addresses</label> <select name="from" multiple>'.$optionsFrom.'</select><br><br>
+<label for="to">To addresses</label> <select name="to" multiple>'.$optionsTo.'</select><br><br>
+<label for="template">Template</label> <select name="template" id="Template"></select><br><br>
+<label for="amount">For</label> <input type="number" name="amount" min="0" value="'.$this->amount.'"> BTC<br><br>
+<label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>
+<label for="proofEncryptionKey">Proof encryption key</label> <input name="proofEncryptionKey" value="'.$this->proofEncryptionKey.'"><br><br>
+<label for="user">User</label> <textarea name="user">'.$this->user.'</textarea><br><br>
+<label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">
+<script>
+function Transaction('.substr($function1, 0,-2).'){
 
-    var data = {};
-'.$function.'
-
-    return data;
+'.$function2.'
 }
-console.log(operationGetData());
-';
+Transaction.prototype.getDataFromForm = function () {
 
-        return '<label for="From">From addresses</label> <select name="From" multiple>'.$optionsFrom.'</select><br><br>
-            <label for="To">To addresses</label> <select name="To" multiple>'.$optionsTo.'</select><br><br>
-            <label for="Template">Template</label> <select name="Template" id="Template"></select><br><br>
-            <label for="amount">For</label> <input type="number" name="amount" min="0" value="'.$this->amount.'"> BTC<br><br>
-            <label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>
-            <label for="proofEncryptionKey">Proof encryption key</label> <input name="proofEncryptionKey" value="'.$this->proofEncryptionKey.'"><br><br>
-            <label for="user">User</label> <textarea name="user">'.$this->user.'</textarea><br><br>
-            <label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">';
+'.$function.'
+}
+let transaction = new Transaction();
+transaction.getDataFromForm()
+console.log(transaction);
+</script>
+';
     }
     public function definitionJs(): string {
 

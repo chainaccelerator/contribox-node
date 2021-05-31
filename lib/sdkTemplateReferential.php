@@ -14,11 +14,6 @@ class SdkTemplateReferential {
     public function conditionHtml(string $o = ''): string {
 
         $c = get_called_class();
-
-        foreach($c::$templateList as $template){
-
-            $o = '<option selected value="'.$template.'">'.$template.'</option>';
-        }
         $this->htmlFieldsId = [
             'state'.$this->type,
             'definition'.$this->type

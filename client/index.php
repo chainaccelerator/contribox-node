@@ -25,7 +25,6 @@ $data = '{
     "user": "{data: \"\", version: \"v0\"}"
 }';
 $conf = json_decode($data);
-
 $wallet = new SdkWallet();
 $walletsJson = json_encode($wallet::$wallets);
 $requestData = new SdkRequestData();
@@ -44,6 +43,7 @@ $templateJS = $templateDefault->initJs();
     <meta charset="utf-8">
     <title></title>
     <link type="text/css" rel="stylesheet" href="css/default.css">
+    <!-- DEBUT SDK -->
     <script async type="text/javascript" src="js/contribox.js"></script>
     <script async type='text/javascript' src='js/main.js'></script>
     <script>
@@ -55,6 +55,7 @@ var Module = {
 }
     </script>
     <script src="js/sodium.js" async></script>
+    <!-- FIN SDK -->
 </head>
 <body>
     <section>
@@ -91,24 +92,16 @@ var Module = {
             <a href="#" id="createTemplate" name="createTemplate" style="display: none">Create</a>
         </fieldset>
     </section>
-
 <script>
+// START SDK
 const env = '<?php echo $conf->env; ?>';
 <?php echo $templateJS ?>
 var requestData = <?php echo $requestDataJson; ?>;
 var wallets = <?php echo $walletsJson; ?>;
 var sodium;
-var ret;
 var wallet = {list: [], key: ''};
 var walletLoaded = false;
-var fileSelectElem = document.getElementById("fileSelect");
-var dlElem = document.getElementById("upload");
-var dlElemCreate = document.getElementById("create");
-var sep1 = document.getElementById("sep1");
-var sep2 = document.getElementById("sep2");
-var provePay = document.getElementById("provePay");
-var templateElm = document.getElementById("template");
-var createTemplate = document.getElementById("createTemplate");
+var ret;
 window.sodium = {
     onload: function (sodium0) {
         let h = sodium0.crypto_generichash(64, sodium0.from_string('test'));
@@ -124,7 +117,6 @@ function main() {
     }
     console.log("Cleanup and terminating");
 }
-
 function createWallet(role){
 
     let w = newWallet();
@@ -142,6 +134,18 @@ function createWallet(role){
         xpub: walletJ.xpub,
         role: role
     };
+}
+function createwallets(){
+
+    wallets.forEach(function(w){
+
+        wallet.list[wallet.list.length] = createWallet(w);
+    });
+    let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(wallet.list)));
+    wallet.key = sodium.to_hex(h);
+    ret = {msg: "Wallet created", cssClass:"success"};
+    // download('wallet_contribox.dat', JSON.stringify(wallet));
+    walletLoaded = true;
 }
 function download(filename, text) {
 
@@ -182,16 +186,19 @@ async function send(transaction, template, publicAddress) {
         .then(res => console.log(res))
         .catch(err => console.error(err));
 }
-function msgHtml() {
+function createTemplate(){
 
-    let msgElem = document.getElementById("msg");
-    msgElem.innerText = ret.msg;
-    msgElem.classList.value = '';
-    if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
-}
-function proposeTemplate () {
+    let data = Template.GetData();
+    let From = data.publickeyListfrom;
+    let To = data.publickeyListto;
+    let Template = data.publickeyListfrom;
+    let amount = data.publickeyListfrom;
+    let proof = data.publickeyListfrom;
+    let proofEncryptionKey = data.publickeyListfrom;
+    let user = data.publickeyListfrom;
+    let userEncryptionKey = data.publickeyListfrom;
 
-    var data = templateGetData();
+    let transaction = createTransaction(From, To, Template, amount, proof, proofEncryptionKey, user, userEncryptionKey);
 
     wallets.list.forEach(function(w){
 
@@ -200,8 +207,25 @@ function proposeTemplate () {
             return send(transaction, template, w.pubkey0);
         }
     });
-    return false;
 }
+// END SDK
+// START CONFIGURE
+function msgHtml() {
+
+    let msgElem = document.getElementById("msg");
+    msgElem.innerText = ret.msg;
+    msgElem.classList.value = '';
+    if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
+}
+// END CONFIGURE
+var fileSelectElem = document.getElementById("fileSelect");
+var dlElem = document.getElementById("upload");
+var dlElemCreate = document.getElementById("create");
+var sep1 = document.getElementById("sep1");
+var sep2 = document.getElementById("sep2");
+var provePay = document.getElementById("provePay");
+var templateElm = document.getElementById("template");
+var createTemplate = document.getElementById("createTemplate");
 
 dlElem.addEventListener("click", function (e) {
     if (fileSelectElem) {
@@ -213,14 +237,9 @@ dlElem.addEventListener("click", function (e) {
 
 dlElemCreate.addEventListener("click", function (e) {
 
-    wallets.forEach(function(w){
+    createwallets();
 
-        wallet.list[wallet.list.length] = createWallet(w);
-    });
-    let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(wallet.list)));
-    wallet.key = sodium.to_hex(h);
-
-    var FromElm = document.getElementsByName("From")[0];
+    var FromElm = document.getElementsByName("from")[0];
     var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
     wallet.list.forEach(function (w) {
         var option = document.createElement("option");
@@ -232,17 +251,20 @@ dlElemCreate.addEventListener("click", function (e) {
         option2.text=w.role;
         FromPubElm.appendChild(option2);
     });
-    // download('wallet_contribox.dat', JSON.stringify(wallet));
-    walletLoaded = true;
     dlElem.style.display = "none";
     dlElemCreate.style.display = "none";
     sep1.style.display = "none";
     sep2.style.display = "none";
     createTemplate.style.display = "initial";
     provePay.style.display = "initial";
-    ret = {msg: "Wallet created", cssClass:"success"};
 
     msgHtml();
+
+}, false);
+
+createTemplate.addEventListener("click", function (e) {
+
+    createTemplate();
 
 }, false);
 
