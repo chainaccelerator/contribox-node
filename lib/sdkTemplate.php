@@ -126,10 +126,10 @@ class SdkTemplate {
         $optionsProcessesStepActions = SdkHtml::optionHtml(self::$processesStepsAction, $this->processStepAction);
         $checkboxBlock = SdkHtml::checkboxHtml('block', $this->blockSignature);
         $checkboxPeg = SdkHtml::checkboxHtml('peg', $this->pegSignature);
-        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('askForDeclareFrom'.$this->name, $this->declareAddressFrom);
-        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('askForDeclareTo'.$this->name, $this->declareAddressTo);
-        $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption'.$this->name, $this->proofEncryption);
-        $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption'.$this->name, $this->userEncryption);
+        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('askForDeclareFrom', $this->declareAddressFrom);
+        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('askForDeclareTo', $this->declareAddressTo);
+        $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption', $this->proofEncryption);
+        $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption', $this->userEncryption);
 
         $this->htmlFieldsId = [
             'amount',
@@ -151,10 +151,10 @@ class SdkTemplate {
 <label for="process">Process</label> <select name="process">'.$optionsProcesses.'</select> <select name="step">'.$optionsProcessesSteps.'</select> <select name="actions">'.$optionsProcessesStepActions.'</select><br><br>
 '.$checkboxBlock.' <label for="AskForConfirmationBlock">Ask for an immediate block signature</label><br><br>
 '.$checkboxPeg.' <label for="AskForConfirmationPeg">Ask for for a rapid bitcoin proof</label><br><br>
-'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom'.$this->name.'"> Require declared users (from)</label><br><br>
-'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo'.$this->name.'"> Require declared users (to)</label><br><br>
-'.$checkboxProofEncryption.' <label for="proofEncryption'.$this->name.'"> Proof encryption</label><br><br>
-'.$checkboxUserEncryption.' <label for="userEncryption'.$this->name.'"> User encryption</label>'
+'.$checkboxAskForDeclareFrom.' <label for="AskForDeclareUserFrom"> Require declared users (from)</label><br><br>
+'.$checkboxAskForDeclareTo.' <label for="AskForDeclareUserTo"> Require declared users (to)</label><br><br>
+'.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
+'.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label>'
         .$this->proof->conditionHtml()
         .$this->fromValidation->conditionHtml()
         .$this->toValidation->conditionHtml()
@@ -222,17 +222,17 @@ class SdkTemplate {
 
         foreach($this->htmlFieldsId as $id){
 
-            $function .= 'data.'.$id.'= document.getElementById("'.$id.'");'."\n";
+            $function .= 'data.'.$id.' = document.getElementsByName("'.$id.'")[0].value;'."\n";
         }
         $function = '
-function getData() {
+function templateGetData() {
 
     var data = {};
 '.$function.'
 
     return data;
 }
-console.log(getData());
+console.log(templateGetData());
 ';
         $script .= $function;
 

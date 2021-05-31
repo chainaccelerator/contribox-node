@@ -207,8 +207,12 @@ dlElemCreate.addEventListener("click", function (e) {
     wallet.key = sodium.to_hex(h);
 
     console.info('wallet', wallet.list);
+    var FromElm = document.getElementsByName("From")[0];
     wallet.list.forEach(function (w) {
-        from.append('<option value="' + w.pubkey0 + '">' + w.role + '</option>');
+        var option = document.createElement("option");
+        option.value=w.pubkey0;
+        option.text=w.role;
+        FromElm.appendChild(option);
     });
     // download('wallet_contribox.dat', JSON.stringify(wallet));
     walletLoaded = true;

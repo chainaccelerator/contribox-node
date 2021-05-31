@@ -24,6 +24,7 @@ class SdkTransaction {
 
     public function conditionHtml(array $listFrom = array(), array $listTo = array()){
 
+        $function = '';
         $optionsFrom = sdkHtml::optionHtmlMultiple($listFrom);
         $optionsTo = sdkHtml::optionHtmlMultiple($listTo);
         $this->htmlFieldsId = [
@@ -37,13 +38,33 @@ class SdkTransaction {
             'userEncryptionKey'
         ];
 
-        return '<label for="From">From addresses</label> <select name="from" multiple>'.$optionsFrom.'</select><br><br>
-            <label for="To">To addresses</label> <select name="to" multiple>'.$optionsTo.'</select><br><br>
+        foreach($this->htmlFieldsId as $id){
+
+            $function .= 'data.'.$id.'= document.getElementById("'.$id.'");'."\n";
+        }
+        $function = '
+
+function operationGetData() {
+
+    var data = {};
+'.$function.'
+
+    return data;
+}
+console.log(operationGetData());
+';
+
+        return '<label for="From">From addresses</label> <select name="From" multiple>'.$optionsFrom.'</select><br><br>
+            <label for="To">To addresses</label> <select name="To" multiple>'.$optionsTo.'</select><br><br>
             <label for="Template">Template</label> <select name="Template" id="Template"></select><br><br>
             <label for="amount">For</label> <input type="number" name="amount" min="0" value="'.$this->amount.'"> BTC<br><br>
             <label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>
             <label for="proofEncryptionKey">Proof encryption key</label> <input name="proofEncryptionKey" value="'.$this->proofEncryptionKey.'"><br><br>
             <label for="user">User</label> <textarea name="user">'.$this->user.'</textarea><br><br>
             <label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">';
+    }
+    public function definitionJs(): string {
+
+        return SdkHtml::definitionJs($this->name, $this);
     }
 }
