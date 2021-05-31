@@ -213,7 +213,10 @@ dlElemCreate.addEventListener("click", function (e) {
         option.value=w.pubkey0;
         option.text=w.role;
         FromElm.appendChild(option);
-        FromPubElm.appendChild(option);
+        var option2 = document.createElement("option");
+        option2.value=w.pubkey0;
+        option2.text=w.role;
+        FromPubElm.appendChild(option2);
     });
     // download('wallet_contribox.dat', JSON.stringify(wallet));
     walletLoaded = true;

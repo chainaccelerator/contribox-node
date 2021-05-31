@@ -50,7 +50,7 @@ class SdkTemplateType {
     public function conditionHtml(array $pubList = array()): string {
 
         $optionPatterns = SdkHtml::optionHtml(self::$patterns, $this->pattern);
-        $optionPubKeys = '<option>None</option>';
+        $optionPubKeys = '<option selected>None</option>';
 
         if($this->type !== 'from') {
 
