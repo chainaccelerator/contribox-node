@@ -35,7 +35,7 @@ Wallet.prototype.createWallet = function(role){
         role: role
     };
 }
-Wallet.prototype.createwallets() = function(){
+Wallet.prototype.createwallets = function(){
 
     this.walletList.forEach(function(w){
 

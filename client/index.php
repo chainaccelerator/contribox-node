@@ -118,7 +118,7 @@ var template = new Template();
 var transaction = new Transaction();
 <?php echo $walletDefault->htmlScript; ?>;
 var wallet = new Wallet();
-<?php echo $requestData->htmlScript; ?>;
+<?php echo $requestDataDefault->htmlScript; ?>;
 var requestData = new RequestData();
 
 async function sig(publicKey, hash) {
@@ -164,7 +164,7 @@ function msgHtml() {
     msgElem.innerText = ret.msg;
     msgElem.classList.value = '';
     if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
-}s
+}
 function walletListUpade(){
 
     wallet.list.forEach(function (w) {
