@@ -19,6 +19,28 @@ function RequestData() {
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
+RequestData.prototype.send = function(transaction, template, publicAddress) {
+
+    let urlClient = "http://localhost:7000/api/index.php";
+    let dataToHash = requestData;
+    delete dataToHash.pow;
+    requestData.pow.hash = await hash(dataToHash);
+    requestData.sig.sig = await sig(publicAddress, requestData.pow.hash);
+
+    // request options
+    const options = {
+            method: "POST",
+        body: JSON.stringify(requestData),
+        headers: {
+                "Content-Type": "application/json"
+        }
+    }
+    // send post request
+    fetch(urlClient, options)
+    .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
+}
 ';
         return '';
     }

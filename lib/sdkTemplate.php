@@ -273,15 +273,15 @@ Template.prototype.createTemplate = function(){
 
     console.info(template);
     console.info(template.role);
+    
     wallet.list.forEach(function(w){
 
-    console.info(w);
         if(w.role === "api") {
 
-            console.info("found");
-            // return send(transaction, template, w.pubkey0);
+            return requestData.send(transaction, template, w.pubkey0);
         }
     });
+    return false;
 }
 '.
 $this->proofValidation->htmlScript."\n".

@@ -125,28 +125,6 @@ async function sig(publicKey, hash) {
 
     return '';
 }
-async function send(transaction, template, publicAddress) {
-
-    let urlClient = 'http://localhost:7000/api/index.php';
-    let dataToHash = requestData;
-    delete dataToHash.pow;
-    requestData.pow.hash = await hash(dataToHash);
-    requestData.sig.sig = await sig(publicAddress, requestData.pow.hash);
-
-    // request options
-    const options = {
-        method: 'POST',
-        body: JSON.stringify(requestData),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-    // send post request
-    fetch(urlClient, options)
-        .then(res => res.json())
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-}
 // END SDK
 var ret;
 var fileSelectElem = document.getElementById("fileSelect");
@@ -166,7 +144,6 @@ function msgHtml() {
     if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
 }
 function walletListUpade(){
-
 
     var FromElm = document.getElementsByName("from")[0];
     var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
