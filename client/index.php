@@ -116,9 +116,9 @@ const env = '<?php echo $conf->env; ?>';
 var template = new Template();
 <?php echo $transactionDefault->htmlScript; ?>
 var transaction = new Transaction();
-<?php echo $walletDefault->htmlScript; ?>;
+<?php echo $walletDefault->htmlScript; ?>
 var wallet = new Wallet();
-<?php echo $requestDataDefault->htmlScript; ?>;
+<?php echo $requestDataDefault->htmlScript; ?>
 var requestData = new RequestData();
 
 async function sig(publicKey, hash) {
