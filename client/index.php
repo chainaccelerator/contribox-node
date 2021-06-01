@@ -26,7 +26,6 @@ $data = '{
 }';
 $conf = json_decode($data);
 
-$walletsJson = json_encode(SdkWallet::$wallets);
 $walletDefault = new SdkWallet();
 $wallet = $walletDefault->conditionHtml();
 
@@ -36,8 +35,8 @@ $template = $templateDefault->conditionHtml();
 $transactionDefault = new SdkTransaction($conf->from, $conf->to, $templateDefault->name, $conf->amount, $conf->proof, $conf->user);
 $operation = $transactionDefault->conditionHtml(array(), SdkTemplateTypeTo::walletsList());
 
-$requestData = new SdkRequestData();
-$requestDataJson = json_encode($requestData);
+$requestDataDefault= new SdkRequestData();
+$requestData = $requestDataDefault->conditionHtml();
 
 ?><!doctype html>
 <html lang="fr">
@@ -118,9 +117,9 @@ var template = new Template();
 <?php echo $transactionDefault->htmlScript; ?>
 var transaction = new Transaction();
 <?php echo $walletDefault->htmlScript; ?>;
-var Wallet = new Wallet();
-
-var requestData = <?php echo $requestDataJson; ?>;
+var wallet = new Wallet();
+<?php echo $requestData->htmlScript; ?>;
+var requestData = new RequestData();
 
 async function sig(publicKey, hash) {
 
