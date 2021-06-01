@@ -167,6 +167,10 @@ function msgHtml() {
 }
 function walletListUpade(){
 
+
+    var FromElm = document.getElementsByName("from")[0];
+    var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
+
     wallet.list.forEach(function (w) {
         var option = document.createElement("option");
         option.value=w.pubkey0;
@@ -190,9 +194,6 @@ dlElem.addEventListener("click", function (e) {
 dlElemCreate.addEventListener("click", function (e) {
 
     wallet.createwallets();
-
-    var FromElm = document.getElementsByName("from")[0];
-    var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
     dlElem.style.display = "none";
     dlElemCreate.style.display = "none";
     sep1.style.display = "none";

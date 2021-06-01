@@ -39,7 +39,8 @@ Wallet.prototype.createwallets = function(){
 
     this.walletList.forEach(function(w){
 
-        this.list[this.list.length] = this.createWallet(w);
+        let w2 = wallet.createWallet(w);
+        wallet.list[wallet.list.length] = w2;
     });
     let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(this.list)));
     this.key = sodium.to_hex(h);
