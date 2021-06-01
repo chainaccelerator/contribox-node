@@ -67,8 +67,4 @@ Transaction.prototype.getDataFromForm = function () {
 <label for="user">User</label> <textarea name="user">'.$this->user.'</textarea><br><br>
 <label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">';
     }
-    public function definitionJs(): string {
-
-        return SdkHtml::definitionJs($this->name, $this);
-    }
 }

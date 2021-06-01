@@ -25,17 +25,19 @@ $data = '{
     "user": "{data: \"\", version: \"v0\"}"
 }';
 $conf = json_decode($data);
-$wallet = new SdkWallet();
-$walletsJson = json_encode($wallet::$wallets);
+
+$walletsJson = json_encode(SdkWallet::$wallets);
+$walletDefault = new SdkWallet();
+$wallet = $walletDefault->conditionHtml();
+
+$templateDefault = new SdkTemplate($conf->role, $conf->domain,$conf->domainSub, $conf->process, $conf->processStep, $conf->processStepAction, $conf->about, $conf->amount, $conf->blockSignature, $conf->pegSignature, $conf->version);
+$template = $templateDefault->conditionHtml();
+
+$transactionDefault = new SdkTransaction($conf->from, $conf->to, $templateDefault->name, $conf->amount, $conf->proof, $conf->user);
+$operation = $transactionDefault->conditionHtml(array(), SdkTemplateTypeTo::walletsList());
+
 $requestData = new SdkRequestData();
 $requestDataJson = json_encode($requestData);
-$templateDefault = new SdkTemplate($conf->role, $conf->domain,$conf->domainSub, $conf->process, $conf->processStep, $conf->processStepAction, $conf->about, $conf->amount, $conf->blockSignature, $conf->pegSignature, $conf->version);
-$templateDefaultJson = json_encode($templateDefault);
-$transactionDefault = new SdkTransaction($conf->from, $conf->to, $templateDefault->name, $conf->amount, $conf->proof, $conf->user);
-$transactionDefaultJson = json_encode($transactionDefault);
-$template = $templateDefault->conditionHtml();
-$operation = $transactionDefault->conditionHtml(array(), SdkTemplateTypeTo::walletsList());
-$templateJS = $templateDefault->initJs();
 
 ?><!doctype html>
 <html lang="fr">
@@ -109,61 +111,17 @@ function main() {
     </section>
 <script>
 // START SDK
+var sodium;
 const env = '<?php echo $conf->env; ?>';
 <?php echo $templateDefault->htmlScript; ?>
 var template = new Template();
 <?php echo $transactionDefault->htmlScript; ?>
 var transaction = new Transaction();
-<?php echo $templateJS ?>
+<?php echo $walletDefault->htmlScript; ?>;
+var Wallet = new Wallet();
+
 var requestData = <?php echo $requestDataJson; ?>;
-var wallets = <?php echo $walletsJson; ?>;
-var sodium;
-var wallet = {list: [], key: ''};
-var walletLoaded = false;
-var ret;
-function createWallet(role){
 
-    let w = newWallet();
-    if (w === "") {
-        ret = {msg: "Wallet not created", cssClass:"error"};
-        msgHtml();
-        return;
-    }
-    let walletJ = JSON.parse(w);
-    return {
-        hdPath: walletJ.hdPath,
-        pubkey0:  walletJ.pubkey0,
-        seedWords: walletJ.seedWords,
-        xprv: walletJ.xprv,
-        xpub: walletJ.xpub,
-        role: role
-    };
-}
-function createwallets(){
-
-    wallets.forEach(function(w){
-
-        wallet.list[wallet.list.length] = createWallet(w);
-    });
-    let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(wallet.list)));
-    wallet.key = sodium.to_hex(h);
-    ret = {msg: "Wallet created", cssClass:"success"};
-    // download('wallet_contribox.dat', JSON.stringify(wallet));
-    walletLoaded = true;
-}
-function download(filename, text) {
-
-    let element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-    element.style.display = 'none';
-
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-}
 async function sig(publicKey, hash) {
 
     return '';
@@ -190,38 +148,8 @@ async function send(transaction, template, publicAddress) {
         .then(res => console.log(res))
         .catch(err => console.error(err));
 }
-function createTemplate(){
-
-    let data = Template.GetData();
-    let From = data.publickeyListfrom;
-    let To = data.publickeyListto;
-    let Template = data.publickeyListfrom;
-    let amount = data.publickeyListfrom;
-    let proof = data.publickeyListfrom;
-    let proofEncryptionKey = data.publickeyListfrom;
-    let user = data.publickeyListfrom;
-    let userEncryptionKey = data.publickeyListfrom;
-
-    let transaction = createTransaction(From, To, Template, amount, proof, proofEncryptionKey, user, userEncryptionKey);
-
-    wallets.list.forEach(function(w){
-
-        if(role === w.role) {
-
-            return send(transaction, template, w.pubkey0);
-        }
-    });
-}
 // END SDK
-// START CONFIGURE
-function msgHtml() {
-
-    let msgElem = document.getElementById("msg");
-    msgElem.innerText = ret.msg;
-    msgElem.classList.value = '';
-    if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
-}
-// END CONFIGURE
+var ret;
 var fileSelectElem = document.getElementById("fileSelect");
 var dlElem = document.getElementById("upload");
 var dlElemCreate = document.getElementById("create");
@@ -230,6 +158,27 @@ var sep2 = document.getElementById("sep2");
 var provePay = document.getElementById("provePay");
 var templateElm = document.getElementById("template");
 var createTemplate = document.getElementById("createTemplate");
+
+function msgHtml() {
+
+    let msgElem = document.getElementById("msg");
+    msgElem.innerText = ret.msg;
+    msgElem.classList.value = '';
+    if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
+}s
+function walletListUpade(){
+
+    wallet.list.forEach(function (w) {
+        var option = document.createElement("option");
+        option.value=w.pubkey0;
+        option.text=w.role;
+        FromElm.appendChild(option);
+        var option2 = document.createElement("option");
+        option2.value=w.pubkey0;
+        option2.text=w.role;
+        FromPubElm.appendChild(option2);
+    });
+}
 
 dlElem.addEventListener("click", function (e) {
     if (fileSelectElem) {
@@ -241,20 +190,10 @@ dlElem.addEventListener("click", function (e) {
 
 dlElemCreate.addEventListener("click", function (e) {
 
-    createwallets();
+    wallet.createwallets();
 
     var FromElm = document.getElementsByName("from")[0];
     var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
-    wallet.list.forEach(function (w) {
-        var option = document.createElement("option");
-        option.value=w.pubkey0;
-        option.text=w.role;
-        FromElm.appendChild(option);
-        var option2 = document.createElement("option");
-        option2.value=w.pubkey0;
-        option2.text=w.role;
-        FromPubElm.appendChild(option2);
-    });
     dlElem.style.display = "none";
     dlElemCreate.style.display = "none";
     sep1.style.display = "none";
@@ -262,13 +201,17 @@ dlElemCreate.addEventListener("click", function (e) {
     createTemplate.style.display = "initial";
     provePay.style.display = "initial";
 
+    walletListUpade();
+    ret = {msg: "Wallet created", cssClass:"success"};
     msgHtml();
 
 }, false);
 
 createTemplate.addEventListener("click", function (e) {
 
-    createTemplate();
+    template.createTemplate();
+    ret = {msg: "Template created", cssClass:"success"};
+    msgHtml();
 
 }, false);
 
@@ -278,22 +221,18 @@ fileSelectElem.addEventListener("change", function (e) {
     let reader = new FileReader();
 
     reader.addEventListener("load", function () {
-       wallet = reader.result;
-       walletLoaded = true;
+
+        wallet.load()
+
         dlElem.style.display = "none";
         dlElemCreate.style.display = "none";
         sep1.style.display = "none";
         sep2.style.display = "none";
         provePay.style.display = "initial";
-       ret = {msg: "Wallet uploaded", cssClass:"success"};
-        msgHtml();
+        ret = {msg: "Wallet uploaded", cssClass:"success"};
 
-        console.info(wallet);
-        let walletJ = JSON.parse(wallet.toString());
-        walletJ.list.forEach(w => function () {
-            from.xPubList[from.xPubList.length] = w.pubkey0;
-            publickeyListFrom.append('<option value="' + w.pubkey0 + '">' + w.wallet_nale + '</option>');
-        });
+        walletListUpade();
+        msgHtml();
     }, false);
 
     if (file) {

@@ -2,20 +2,6 @@
 
 class SdkHtml {
 
-    public static function definitionJs(string $name, $obj): string {
-
-        $cp = new stdClass();
-        $class = get_class($obj);
-
-        foreach (get_class_vars($class) as $name => $default) {
-
-            if (isset($class::$$name)) {
-
-                $cp->$name = $class::$$name;
-            }
-        }
-        return 'var ' . $class.$name . ' = ' . json_encode($cp) . ';';
-    }
     public static function optionHtml(array $tab, string $value = ''): string {
 
         $optionHtml = '';

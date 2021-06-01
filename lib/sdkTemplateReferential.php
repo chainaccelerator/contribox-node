@@ -39,8 +39,4 @@ class SdkTemplateReferential {
 <select name="definition'.$this->type.'">'.$o.'</select>
 ';
     }
-    public function definitionJs(): string {
-
-        return SdkHtml::definitionJs($this->type, $this);
-    }
 }

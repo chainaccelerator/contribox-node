@@ -212,6 +212,17 @@ function Template('.substr($function1, 0,-2).', '.
 'block = {}, '.
 'peg = {}) {
 console.info("construct");
+
+    this.domains = '.json_encode(self::$domains).';
+    this.domainsSubs = '.json_encode(self::$domainsSubs).';
+    this.domainsSubsAbouts = '.json_encode(self::$domainsSubsAbouts).'; 
+    this.roles = '.json_encode(self::$roles).';
+    this.typeList = '.json_encode(self::$typeList).';
+    this.processes = '.json_encode(self::$processes).';
+    this.processesSteps = '.json_encode(self::$processesSteps).';
+    this.processesStepsAction = '.json_encode(self::$processesStepsAction).';
+    this.patterns = '.json_encode(SdkTemplateType::$patterns).';
+
 '.$function2.'
     this.proofValidation = proofValidation;
     this.fromValidation = fromValidation;
@@ -257,6 +268,28 @@ Template.prototype.getDataFromForm = function () {
     this.peg = this.pegGetDataFromForm();
     
     return true;
+}
+Template.prototype.createTemplate = function(){
+
+    let data = Template.GetData();
+    let From = data.publickeyListfrom;
+    let To = data.publickeyListto;
+    let Template = data.publickeyListfrom;
+    let amount = data.publickeyListfrom;
+    let proof = data.publickeyListfrom;
+    let proofEncryptionKey = data.publickeyListfrom;
+    let user = data.publickeyListfrom;
+    let userEncryptionKey = data.publickeyListfrom;
+
+    let transaction = createTransaction(From, To, Template, amount, proof, proofEncryptionKey, user, userEncryptionKey);
+
+    wallet.list.forEach(function(w){
+
+        if(role === w.role) {
+
+            return send(transaction, template, w.pubkey0);
+        }
+    });
 }
 '.
 $this->proofValidation->htmlScript."\n".
@@ -305,9 +338,5 @@ $this->peg->htmlScript."\n";
         $script .= $this->definitionJs()."\n";
 
         return $script;
-    }
-    public function definitionJs(): string {
-
-        return SdkHtml::definitionJs($this->name, $this);
     }
 }

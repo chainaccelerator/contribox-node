@@ -88,8 +88,4 @@ class SdkTemplateType {
 paid by (if other than From) <input type="text" name="amountBTCMinFrom'.$this->type.'" value="'.$this->amountBTCMinFrom.'"><br>
 ';
     }
-    public function definitionJs(): string {
-
-        return SdkHtml::definitionJs($this->type, $this);
-    }
 }
