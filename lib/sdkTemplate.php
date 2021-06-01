@@ -40,7 +40,7 @@ class SdkTemplate {
     public bool $proofEncryption = false;
     public bool $userEncryption = false;
 
-    public SdkTemplateReferentialProof $proof;
+    public SdkTemplateReferentialProof $proofValidation;
     public SdkTemplateReferentialUser $fromValidation;
     public SdkTemplateReferentialUser $toValidation;
     public SdkTemplateTypeFrom $from;
@@ -88,11 +88,12 @@ class SdkTemplate {
         $this->processStepAction = $processStepAction;
         $this->blockSignature = $blockSignature;
         $this->pegSignature = $pegSignature;
-        $this->proof = new SdkTemplateReferentialProof();
+        $this->proofValidation = new SdkTemplateReferentialProof();
+        $this->proofValidation->type = 'proofValidation';
         $this->fromValidation = new SdkTemplateReferentialUser();
-        $this->fromValidation->type = 'from';
+        $this->fromValidation->type = 'fromValidation';
         $this->toValidation = new SdkTemplateReferentialUser();
-        $this->toValidation->type = 'to';
+        $this->toValidation->type = 'toValidation';
         $this->from = new SdkTemplateTypeFrom(SdkTemplateTypeFrom::walletsList());
         $this->to = new SdkTemplateTypeTo(SdkTemplateTypeTo::walletsList());
         $this->backup = new SdkTemplateTypeBackup(SdkTemplateTypeBackup::walletsList());
@@ -158,7 +159,7 @@ class SdkTemplate {
 '.$checkboxAskForDeclareTo.' <label for="declareAddressTo"> Require declared users (to)</label><br><br>
 '.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
 '.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label>'
-            .$this->proof->conditionHtml()
+            .$this->proofValidation->conditionHtml()
             .$this->fromValidation->conditionHtml()
             .$this->toValidation->conditionHtml()
             .$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
@@ -178,27 +179,7 @@ class SdkTemplate {
             .$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
             .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
             .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
-/*
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->proof->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->fromValidation->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->toValidation->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->from->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->to->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->backup->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->lock->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->witness->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->cosigner->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->ban->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->old->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->board->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->cosignerOrg->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->witnessOrg->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->parentstype1->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->childstype1->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->investorType1->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->block->htmlFieldsId);
-        $this->htmlFieldsId = array_merge($this->htmlFieldsId, $this->peg->htmlFieldsId);
-*/
+
         $function = '';
         $function1 = '';
         $function2 = '';
@@ -211,7 +192,7 @@ class SdkTemplate {
         }
         $this->htmlScript =  '
 function Template('.substr($function1, 0,-2).', '.
-'proof = {}, '.
+'proofValidation = {}, '.
 'fromValidation = {}, '.
 'toValidation = {}, '.
 'from = {}, '.
@@ -232,7 +213,7 @@ function Template('.substr($function1, 0,-2).', '.
 'peg = {}) {
 console.info("construct");
 '.$function2.'
-    this.proof = proof;
+    this.proofValidation = proofValidation;
     this.fromValidation = fromValidation;
     this.toValidation = toValidation;
     this.from = from;
@@ -255,7 +236,7 @@ console.info("construct");
 Template.prototype.getDataFromForm = function () {
 
 '.$function.'
-    this.proof = this.proofGetDataFromForm();
+    this.proofValidation = this.proofValidationGetDataFromForm();
     this.fromValidation  = this.fromValidationGetDataFromForm();
     this.toValidation  = this.toValidationGetDataFromForm();
     this.from = this.fromGetDataFromForm();
@@ -268,15 +249,17 @@ Template.prototype.getDataFromForm = function () {
     this.old  = this.oldGetDataFromForm();
     this.board  = this.boardGetDataFromForm();
     this.cosignerOrg  = this.cosignerOrgGetDataFromForm();
-    this.witnessOrg  = this.witnessGetDataFromForm();
+    this.witnessOrg  = this.witnessOrgGetDataFromForm();
     this.parentstype1  = this.parentstype1GetDataFromForm();
-    this.childstype1  = this.childType1GetDataFromForm();
+    this.childstype1  = this.childstype1GetDataFromForm();
     this.investorType1  = this.investorType1GetDataFromForm();
     this.block  = this.blockGetDataFromForm();
     this.peg = this.pegGetDataFromForm();
+    
+    return true;
 }
 '.
-$this->proof->htmlScript."\n".
+$this->proofValidation->htmlScript."\n".
 $this->fromValidation->htmlScript."\n".
 $this->toValidation->htmlScript."\n".
 $this->from->htmlScript."\n".
@@ -299,7 +282,7 @@ $this->peg->htmlScript."\n";
     }
     public function initJs(): string{
 
-        $script = $this->proof->definitionJs()."\n";
+        $script = $this->proofValidation->definitionJs()."\n";
         $script .= $this->fromValidation->definitionJs()."\n";
         $script .= $this->toValidation->definitionJs()."\n";
         $script .= $this->from->definitionJs()."\n";

@@ -65,15 +65,15 @@ class SdkTemplateType {
         ];
         $this->htmlScript = 'Template.prototype.'.$this->type.'GetDataFromForm = function(){
 
-    this.'.$this->type.'.publickeyList = document.getElementById("publickeyList'.$this->type.'").value;
-    this.'.$this->type.'.pattern = document.getElementById("pattern'.$this->type.'").value;
-    this.'.$this->type.'.patternAfterTimeoutN = document.getElementById("patternAfterTimeoutN'.$this->type.'").value;
-    this.'.$this->type.'.patternBeforeTimeoutN = document.getElementById("patternBeforeTimeoutN'.$this->type.'").value;
-    this.'.$this->type.'.amountBTCMin = document.getElementById("amountBTCMin'.$this->type.'").value;
-    this.'.$this->type.'.amountBTCMinFrom = document.getElementById("amountBTCMinFrom'.$this->type.'").value;
-    this.'.$this->type.'.state = document.getElementById("state'.$this->type.'").value;
-    this.'.$this->type.'.patternAfterTimeout = document.getElementById("patternAfterTimeout'.$this->type.'").value;
-    this.'.$this->type.'.patternBeforeTimeout = document.getElementById("patternBeforeTimeout'.$this->type.'").value;
+    this.'.$this->type.'.publickeyList = document.getElementsByName("publickeyList'.$this->type.'")[0].value;
+    this.'.$this->type.'.pattern = document.getElementsByName("pattern'.$this->type.'")[0].value;
+    this.'.$this->type.'.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutN'.$this->type.'")[0].value;
+    this.'.$this->type.'.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutN'.$this->type.'")[0].value;
+    this.'.$this->type.'.amountBTCMin = document.getElementsByName("amountBTCMin'.$this->type.'")[0].value;
+    this.'.$this->type.'.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrom'.$this->type.'")[0].value;
+    this.'.$this->type.'.state = document.getElementsByName("state'.$this->type.'")[0].value;
+    this.'.$this->type.'.patternAfterTimeout = document.getElementsByName("patternAfterTimeout'.$this->type.'")[0].value;
+    this.'.$this->type.'.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeout'.$this->type.'")[0].value;
 }';
 
         return '

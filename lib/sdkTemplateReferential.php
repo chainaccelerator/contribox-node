@@ -25,6 +25,11 @@ class SdkTemplateReferential {
     this.'.$this->type.'.state = document.getElementsByName("state'.$this->type.'")[0].value;
     this.'.$this->type.'.definition = document.getElementsByName("definition'.$this->type.'")[0].value;
 }';
+        $this->htmlScript = 'Template.prototype.'.$this->type.'GetDataFromForm = function(){
+
+    this.'.$this->type.'.state = document.getElementsByName("state'.$this->type.'")[0].value;
+    this.'.$this->type.'.definition = document.getElementsByName("definition'.$this->type.'")[0].value;
+}';
 
         return '
 <br>
