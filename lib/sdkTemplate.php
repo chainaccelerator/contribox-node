@@ -159,26 +159,26 @@ class SdkTemplate {
 '.$checkboxAskForDeclareTo.' <label for="declareAddressTo"> Require declared users (to)</label><br><br>
 '.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
 '.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label>'
-            .$this->proofValidation->conditionHtml()
-            .$this->fromValidation->conditionHtml()
-            .$this->toValidation->conditionHtml()
-            .$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
-            .$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
-            .$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
-            .$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
-            .$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
-            .$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
-            .$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
-            .$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
-            .$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
-            .$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
-            .$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
-            .$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
-            .$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
-            .$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
-            .$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
-            .$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
-            .$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
+.$this->proofValidation->conditionHtml()
+.$this->fromValidation->conditionHtml()
+.$this->toValidation->conditionHtml()
+.$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
+.$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
+.$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
+.$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
+.$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
+.$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
+.$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
+.$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
+.$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
+.$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
+.$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
+.$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
+.$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
+.$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
+.$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
+.$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
+.$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
 
         $function = '';
         $function1 = '';
@@ -271,23 +271,15 @@ Template.prototype.getDataFromForm = function () {
 }
 Template.prototype.createTemplate = function(){
 
-    let data = Template.GetData();
-    let From = data.publickeyListfrom;
-    let To = data.publickeyListto;
-    let Template = data.publickeyListfrom;
-    let amount = data.publickeyListfrom;
-    let proof = data.publickeyListfrom;
-    let proofEncryptionKey = data.publickeyListfrom;
-    let user = data.publickeyListfrom;
-    let userEncryptionKey = data.publickeyListfrom;
-
-    let transaction = createTransaction(From, To, Template, amount, proof, proofEncryptionKey, user, userEncryptionKey);
-
+    console.info(template);
+    console.info(template.role);
     wallet.list.forEach(function(w){
 
-        if(role === w.role) {
+    console.info(w);
+        if(w.role === "api") {
 
-            return send(transaction, template, w.pubkey0);
+            console.info("found");
+            // return send(transaction, template, w.pubkey0);
         }
     });
 }

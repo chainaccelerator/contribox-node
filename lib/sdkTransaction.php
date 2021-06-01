@@ -55,6 +55,10 @@ Transaction.prototype.getDataFromForm = function () {
 
     '.$function.'
 }
+Transaction.prototype.createTransaction = function () {
+
+    
+}
 ';
 
         return '
