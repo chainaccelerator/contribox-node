@@ -15,6 +15,8 @@ fi
 echo -e "${GREEN_LIGHT}START${NCOLOR}"
 rm  -rf $BC_API_LOG_FILE
 php -d error_reporting=E_ALL -d error_log=$BC_API_LOG_FILE -S $HOST_IP:$API_PORT -t $BC_APP_API_DIR > /dev/null 2>&1 &
+php -d error_reporting=E_ALL -d error_log=client_$BC_API_LOG_FILE -S $HOST_IP:7001 -t $BC_APP_ROOT_DIR/client > /dev/null 2>&1 &
+php -d error_reporting=E_ALL -d error_log=client_$BC_API_LOG_FILE -S $HOST_IP:7002 -t $BC_APP_ROOT_DIR/clientApi > /dev/null 2>&1 &
 
 source $BC_APP_INSTALL_DIR/bitcoin.sh
 
