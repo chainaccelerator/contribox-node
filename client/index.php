@@ -129,7 +129,6 @@ var dlElemCreate = document.getElementById("create");
 var sep1 = document.getElementById("sep1");
 var sep2 = document.getElementById("sep2");
 var provePay = document.getElementById("provePay");
-var templateElm = document.getElementById("template");
 var createTemplate = document.getElementById("createTemplate");
 
 function msgHtml() {
@@ -138,6 +137,33 @@ function msgHtml() {
     msgElem.innerText = ret.msg;
     msgElem.classList.value = '';
     if(ret.cssClass !== '') msgElem.classList.add(ret.cssClass);
+}
+function loadedWallet(){
+
+    dlElem.style.display = "none";
+    dlElemCreate.style.display = "none";
+    sep1.style.display = "none";
+    sep2.style.display = "none";
+    createTemplate.style.display = "initial";
+    provePay.style.display = "initial";
+}
+function loadedWalletNot(){
+
+    dlElem.style.display = "initial";
+    dlElemCreate.style.display = "initial";
+    sep1.style.display = "initial";
+    sep2.style.display = "initial";
+    createTemplate.style.display = "none";
+    provePay.style.display = "none";
+}
+function loadedWallet(){
+
+    loadedWalletNot();
+
+    if(wallet.loaded === true) {
+        loadedWallet();
+        walletListUpade();
+    }
 }
 function walletListUpade(){
 
@@ -166,15 +192,7 @@ dlElem.addEventListener("click", function (e) {
 
 dlElemCreate.addEventListener("click", function (e) {
 
-    wallet.createwallets();
-    dlElem.style.display = "none";
-    dlElemCreate.style.display = "none";
-    sep1.style.display = "none";
-    sep2.style.display = "none";
-    createTemplate.style.display = "initial";
-    provePay.style.display = "initial";
-
-    walletListUpade();
+    loadedWallet();
     ret = {msg: "Wallet created", cssClass:"success"};
     msgHtml();
 
@@ -195,22 +213,14 @@ fileSelectElem.addEventListener("change", function (e) {
 
     reader.addEventListener("load", function () {
 
-        wallet.load()
-
-        dlElem.style.display = "none";
-        dlElemCreate.style.display = "none";
-        sep1.style.display = "none";
-        sep2.style.display = "none";
-        provePay.style.display = "initial";
+        wallet.load();
+        loadedWallet();
         ret = {msg: "Wallet uploaded", cssClass:"success"};
-
-        walletListUpade();
         msgHtml();
     }, false);
 
-    if (file) {
-        reader.readAsText(file);
-    }
+    if (file) reader.readAsText(file);
+
     fileSelectElem.style.display = "none";
 
 }, false);

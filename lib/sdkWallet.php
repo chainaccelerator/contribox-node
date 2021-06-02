@@ -64,6 +64,10 @@ Wallet.prototype.load = function(reader){
     this.key = walletJ.key;
     this.loaded = true;
 }
+wallet.prototype.sig = function(publicAddress, data) {
+
+    
+}
 ';
         return '';
     }
