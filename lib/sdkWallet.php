@@ -18,31 +18,41 @@ function Wallet(){
     this.key = ""
     this.loaded = false;
 }
-Wallet.prototype.createWallet = function(role){
+Wallet.prototype.createWallet = function(role, account){
 
     let w = newWallet();
+    
     if (w === "") {
+    
         console.warn("wallet creation");
         return;
     }
     let walletJ = JSON.parse(w);
+    let accountSigTmp = signHash(walletJ.xprv, "0/0", 0, JSON.stringify(account));    
+    let accountSig = JSON.parse(accountSigTmp).signature;
+            
     return {
+    
         hdPath: walletJ.hdPath,
         pubkey0:  walletJ.pubkey0,
         seedWords: walletJ.seedWords,
         xprv: walletJ.xprv,
         xpub: walletJ.xpub,
-        role: role
+        role: role,
+        account: account,
+        accountSig: accountSig
     };
 }
-Wallet.prototype.createwallets = function(){
+Wallet.prototype.createwallets = function(account){
 
     this.walletList.forEach(function(w){
 
-        let w2 = wallet.createWallet(w);
+        let w2 = wallet.createWallet(w, account);
         wallet.list[wallet.list.length] = w2;
     });
-    let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(this.list)));
+    let l = JSON.stringify(this.list);
+    let s = sodium.from_string(l);
+    let h = sodium.crypto_generichash(64, s);
     this.key = sodium.to_hex(h);
     this.loaded = true;
 }

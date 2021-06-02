@@ -1,12 +1,43 @@
+function Account(){
 
+    this.firstname = '';
+    this.lastname = '';
+    this.identityId = '';
+    this.professionalId = '';
+    this.identityIdProof1 = {};
+    this.professionalIdProof1 = {};
+    this.setToken();
+}
+Account.prototype.setToken = function(){
+
+    let array = new Uint32Array(10);
+    this.identityToken = window.crypto.getRandomValues(array).toString();
+}
+Account.prototype.update = function(){
+
+    this.firstname = document.getElementsByName('firstname')[0].value;
+    this.lastname = document.getElementsByName('lastname')[0].value;
+    this.identityId = document.getElementsByName('identityId')[0].value;
+    this.professionalId = document.getElementsByName('professionalId')[0].value;
+}
+Account.prototype.setIdentityIdProof1 = function(reader){
+
+    this.identityIdProof1 = reader;
+}
+Account.prototype.setPprofessionalIdProof1 = function(reader){
+
+    this.professionalIdProof1 = reader;
+}
+var account = new Account();
 var ret;
+let accountElem = document.getElementById("account");
 var fileSelectElem = document.getElementById("fileSelect");
 var dlElem = document.getElementById("upload");
 var dlElemCreate = document.getElementById("create");
-var sep1 = document.getElementById("sep1");
-var sep2 = document.getElementById("sep2");
 var provePay = document.getElementById("provePay");
 var createTemplate = document.getElementById("createTemplate");
+var proof1 = document.getElementById("proof1");
+var proof2 = document.getElementById("proof2");
 
 function msgHtml() {
 
@@ -17,30 +48,20 @@ function msgHtml() {
 }
 function loadedWallet(){
 
-    dlElem.style.display = "none";
-    dlElemCreate.style.display = "none";
-    sep1.style.display = "none";
-    sep2.style.display = "none";
+    accountElem.style.display = "none";
     createTemplate.style.display = "initial";
     provePay.style.display = "initial";
 }
 function loadedWalletNot(){
 
-    dlElem.style.display = "initial";
-    dlElemCreate.style.display = "initial";
-    sep1.style.display = "initial";
-    sep2.style.display = "initial";
+    accountElem.style.display = "initial";
     createTemplate.style.display = "none";
     provePay.style.display = "none";
 }
-function loadedWallet(){
+function loadedWalletTest(){
 
-    loadedWalletNot();
-
-    if(wallet.loaded === true) {
-        loadedWallet();
-        walletListUpade();
-    }
+    if(wallet.loaded == false) loadedWalletNot();
+    else loadedWallet();
 }
 function walletListUpade(){
 
@@ -59,6 +80,8 @@ function walletListUpade(){
     });
 }
 
+loadedWalletTest();
+
 dlElem.addEventListener("click", function (e) {
     if (fileSelectElem) {
         fileSelectElem.click();
@@ -69,7 +92,11 @@ dlElem.addEventListener("click", function (e) {
 
 dlElemCreate.addEventListener("click", function (e) {
 
-    loadedWallet();
+    account.update();
+    wallet.createwallets(account);
+    walletListUpade();
+    loadedWalletTest();
+    wallet.download();
     ret = {msg: "Wallet created", cssClass:"success"};
     msgHtml();
 
@@ -90,8 +117,9 @@ fileSelectElem.addEventListener("change", function (e) {
 
     reader.addEventListener("load", function () {
 
-        wallet.load();
-        loadedWallet();
+        wallet.load(reader);
+        walletListUpade();
+        loadedWalletTest();
         ret = {msg: "Wallet uploaded", cssClass:"success"};
         msgHtml();
     }, false);
@@ -99,5 +127,33 @@ fileSelectElem.addEventListener("change", function (e) {
     if (file) reader.readAsText(file);
 
     fileSelectElem.style.display = "none";
+
+}, false);
+
+proof1.addEventListener("change", function (e) {
+
+    let file1 = this.files[0];
+    let reader1 = new FileReader();
+
+    reader1.addEventListener("load", function () {
+
+        account.setIdentityIdProof1(reader1);
+    }, false);
+
+    if (file1) reader1.readAsText(file1);
+
+}, false);
+
+proof2.addEventListener("change", function (e) {
+
+    let file2 = this.files[0];
+    let reader2 = new FileReader();
+
+    reader2.addEventListener("load", function () {
+
+        account.setPprofessionalIdProof1(reader2);
+    }, false);
+
+    if (file2) reader2.readAsText(file2);
 
 }, false);
