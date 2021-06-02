@@ -30,7 +30,8 @@ Account.prototype.setPprofessionalIdProof1 = function(reader){
 }
 var account = new Account();
 var ret;
-let accountElem = document.getElementById("account");
+var FromElm = document.getElementsByName("from")[0];
+var accountElem = document.getElementById("account");
 var fileSelectElem = document.getElementById("fileSelect");
 var dlElem = document.getElementById("upload");
 var dlElemCreate = document.getElementById("create");
@@ -65,7 +66,6 @@ function loadedWalletTest(){
 }
 function walletListUpade(){
 
-    var FromElm = document.getElementsByName("from")[0];
     var FromPubElm = document.getElementsByName("publickeyListfrom")[0];
 
     wallet.list.forEach(function (w) {
@@ -156,4 +156,18 @@ proof2.addEventListener("change", function (e) {
 
     if (file2) reader2.readAsText(file2);
 
+}, false);
+
+FromElm.addEventListener("change", function (e) {
+
+    let userElem = document.getElementsByName("user")[0];
+
+    wallet.list.forEach(function (w) {
+
+        if(w.pubkey0 == FromElm.value) {
+
+            w.account.signature = w.accountSig;
+            userElem.value = JSON.stringify(w.account);
+        }
+    });
 }, false);
