@@ -64,11 +64,13 @@ Wallet.prototype.load = function(reader){
     this.key = walletJ.key;
     this.loaded = true;
 }
-wallet.prototype.sig = function(publicAddress, data) {
+Wallet.prototype.sig = function(publicAddress, data) {
 
     
 }
 ';
+        $c = get_class($this);
+        file_put_contents('js/'.$c.'.js', $this->htmlScript);
         return '';
     }
 }

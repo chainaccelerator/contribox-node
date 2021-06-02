@@ -310,32 +310,10 @@ $this->childstype1->htmlScript."\n".
 $this->investorType1->htmlScript."\n".
 $this->block->htmlScript."\n".
 $this->peg->htmlScript."\n";
+
+        $c = get_class($this);
+        file_put_contents('js/'.$c.'.js', $this->htmlScript);
+
         return $form;
-    }
-    public function initJs(): string{
-
-        $script = $this->proofValidation->definitionJs()."\n";
-        $script .= $this->fromValidation->definitionJs()."\n";
-        $script .= $this->toValidation->definitionJs()."\n";
-        $script .= $this->from->definitionJs()."\n";
-        $script .= $this->to->definitionJs()."\n";
-        $script .= $this->backup->definitionJs()."\n";
-        $script .= $this->lock->definitionJs()."\n";
-        $script .= $this->witness->definitionJs()."\n";
-        $script .= $this->cosigner->definitionJs()."\n";
-        $script .= $this->ban->definitionJs()."\n";
-        $script .= $this->old->definitionJs()."\n";
-        $script .= $this->member->definitionJs()."\n";
-        $script .= $this->board->definitionJs()."\n";
-        $script .= $this->cosignerOrg->definitionJs()."\n";
-        $script .= $this->witnessOrg->definitionJs()."\n";
-        $script .= $this->parentstype1->definitionJs()."\n";
-        $script .= $this->childstype1->definitionJs()."\n";
-        $script .= $this->investorType1->definitionJs()."\n";
-        $script .= $this->block->definitionJs()."\n";
-        $script .= $this->peg->definitionJs()."\n";
-        $script .= $this->definitionJs()."\n";
-
-        return $script;
     }
 }

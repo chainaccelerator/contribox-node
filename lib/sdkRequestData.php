@@ -61,6 +61,8 @@ RequestData.prototype.send = function(template, proof = "", user = "") {
     });
 }
 ';
+        $c = get_class($this);
+        file_put_contents('js/'.$c.'.js', $this->htmlScript);
 
         return '';
     }

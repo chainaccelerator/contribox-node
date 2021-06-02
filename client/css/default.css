@@ -16,3 +16,6 @@ label {
     width: 400px;
     display: inline-block;
 }
+a {
+    color: bisque;
+}

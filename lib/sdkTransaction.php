@@ -60,6 +60,9 @@ Transaction.prototype.createTransaction = function () {
 }
 ';
 
+        $c = get_class($this);
+        file_put_contents('js/'.$c.'.js', $this->htmlScript);
+
         return '
 <label for="from">From addresses</label> <select name="from" multiple>'.$optionsFrom.'</select><br><br>
 <label for="to">To addresses</label> <select name="to" multiple>'.$optionsTo.'</select><br><br>
