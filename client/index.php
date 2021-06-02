@@ -121,10 +121,6 @@ var wallet = new Wallet();
 <?php echo $requestDataDefault->htmlScript; ?>
 var requestData = new RequestData();
 
-async function sig(publicKey, hash) {
-
-    return '';
-}
 // END SDK
 var ret;
 var fileSelectElem = document.getElementById("fileSelect");

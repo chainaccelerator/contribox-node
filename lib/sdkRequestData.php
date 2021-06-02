@@ -22,10 +22,11 @@ function RequestData() {
 RequestData.prototype.send = function(transaction, template, publicAddress) {
 
     let urlClient = "http://localhost:7000/api/index.php";
-    let dataToHash = requestData;
-    delete dataToHash.pow;
-    requestData.pow.hash = await hash(dataToHash);
-    requestData.sig.sig = await sig(publicAddress, requestData.pow.hash);
+    let dataToHash = this;
+    console.info(dataToHash);
+    delete dataToHash.request.pow;
+    this.request.pow.hash = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(dataToHash)));
+    this.request.sig.sig = wallet.sig(publicAddress, requestData.pow.hash);
 
     // request options
     const options = {
