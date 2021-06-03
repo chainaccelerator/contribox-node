@@ -106,7 +106,7 @@ dlElemCreate.addEventListener("click", function (e) {
 createTemplate.addEventListener("click", function (e) {
 
     template.getDataFromForm();
-    template.createTemplate(template.name, template);
+    template.createTemplate();
     ret = {msg: "Template created", cssClass:"success"};
     msgHtml();
 

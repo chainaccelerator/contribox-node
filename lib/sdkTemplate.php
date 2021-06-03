@@ -25,6 +25,7 @@ class SdkTemplate {
 
     public int $amount = 0;
     public string $name = '';
+    public string $validationName = '';
     public string $version = 'v0';
     public string $role = '';
     public string $domain = '';
@@ -292,9 +293,30 @@ Template.prototype.getDataFromForm = function () {
             
     return true;
 }
-Template.prototype.createTemplate = function(user){
+Template.prototype.createTemplate = function(){
 
-    return requestData.send("CoreTemplate", template, user);
+    let user = w.account;
+    let userEncryptionKey = "";
+    let proofEncryptionKey = "";
+    le user = false;
+    
+    wallet.list.forEach(function(w) {
+    
+        if(w.role == "api" ) user = w.account;
+    }
+    template.list.forEach(function(t) {
+    
+        if(t.name == "default") {
+        
+            let templateDefault = t;                    
+            let transaction = new Transaction(templateDefault.from, templateDefault.to, templateDefault.name, templateDefault.amount, template, proofEncryptionKey, user, userEncryptionKey);
+            transaction.from = template.from;
+            transaction.to = template.to;
+    
+            return requestData.send("default", transaction, this);
+        }
+    }); 
+    return false;
 }
 '.
 $this->proofValidation->htmlScript."\n".
