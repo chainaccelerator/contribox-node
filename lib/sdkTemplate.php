@@ -236,7 +236,6 @@ function Template('.substr($function1, 0,-2).', '.
 'investorType1 = {}, '.
 'block = {}, '.
 'peg = {}) {
-console.info("construct");
 
     this.domains = '.json_encode(self::$domains).';
     this.domainsSubs = '.json_encode(self::$domainsSubs).';

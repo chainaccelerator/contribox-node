@@ -1,6 +1,5 @@
 
 function Template(amount = 0, role = "owner", domain = "Core", process = "Identifier", blockSignature = false, pegSignature = false, declareAddressFrom = false, declareAddressTo = false, proofEncryption = false, userEncryption = false, templateValidation = "CoreTemplateValidation", proofValidation = {}, fromValidation = {}, toValidation = {}, from = {}, to = {}, backup = {}, lock = {}, witness = {}, cosigner = {}, ban = {}, old = {}, board = {}, cosignerOrg = {}, witnessOrg = {}, parentstype1 = {}, childstype1 = {}, investorType1 = {}, block = {}, peg = {}) {
-console.info("construct");
 
     this.domains = ["Laeka","Core"];
     this.domainsSubs = {"Laeka":["healthRecord"],"Core":["user","proof"]};

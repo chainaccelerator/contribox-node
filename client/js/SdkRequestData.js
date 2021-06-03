@@ -17,7 +17,7 @@ RequestData.prototype.send = function(templateName, transaction) {
             let pubkey = w.pubkey0; 
             let urlClient = "http://localhost:7001/api/index.php";
             let ref = JSON.stringify(requestData);
-            requestData.request.pow.pow =  this.pow(ref);
+            requestData.request.pow.pow =  requestData.pow(ref);
             requestData.request.sig.sig = wallet.sig(w, ref);
         
             const options = {

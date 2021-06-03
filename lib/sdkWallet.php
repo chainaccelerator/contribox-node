@@ -29,7 +29,6 @@ Wallet.prototype.createWallet = function(role, account){
     }
     let walletJ = JSON.parse(w);
     let accountSig = this.sig(walletJ, JSON.stringify(account));
-    console.info(accountSig);
             
     return {
     
