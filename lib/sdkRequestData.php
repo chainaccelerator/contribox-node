@@ -41,9 +41,10 @@ RequestData.prototype.send = function(templateName, transaction) {
                             
             let pubkey = w.pubkey0; 
             let urlClient = "http://localhost:7001/api/index.php";
-            let ref = requestData.sha256(JSON.stringify(requestData));
-            requestData.request.pow.pow =  requestData.pow(ref);
-            requestData.request.sig.sig = wallet.sig(w, ref);
+            requestData.pow(requestData);
+            console.info("pow", requestData.request.pow.pow);
+            console.info("nonce", requestData.request.pow.nonce);
+            requestData.request.sig.sig = wallet.sig(w, requestData);
         
             const options = {
             
@@ -71,16 +72,18 @@ RequestData.prototype.sha256 = function(message) {
 }
 RequestData.prototype.pow = function(data){
 
-  let dataStr = JSON.stringify(data);
   let pattern = Array(this.request.pow.difficulty + 1).join(this.request.pow.difficultyPatthern);
+  this.request.pow.hash = this.sha256(data);
+  this.request.pow.pow = "";
   
-  while (this.request.pow.hash.substring(0, this.request.pow.difficulty) !== pattern) {
-  
+  while (this.request.pow.pow.substring(0, this.request.pow.difficulty) != pattern) {
+     
     this.request.pow.nonce++;
-    this.request.pow.hash = this.sha256(this.request.pow.previousHash + this.timestamp + dataStr + this.request.pow.nonce);
+    this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce);
     
-    if(this.request.pow.nonce > 1000) return false;
+    if(this.request.pow.nonce > 100000) return false;
   }  
+  console.info("found", this.request.pow.pow.substring(0, this.request.pow.difficulty));
 }
 ';
         $c = get_class($this);
