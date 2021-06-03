@@ -126,11 +126,17 @@ class SdkTemplate {
         foreach($files as $file) {
 
             $o = json_decode(file_get_contents($file));
-            self::$list[] = $o->transaction->template;
+            self::$list[] = $o;
         }
     }
     public function conditionHtml(): string {
 
+        $templateList = array();
+
+        foreach(self::$list as $k => $v){
+
+            $templateList[] = $v->name;
+        }
         $optionsRoles = SdkHtml::optionHtml(self::$roles, $this->role);
         $optionsDomains = SdkHtml::optionHtml(self::$domains, $this->domain);
         $optionsDomainSubs = SdkHtml::optionHtml(self::$domainsSubs[$this->domain], $this->domainSub);
@@ -138,7 +144,7 @@ class SdkTemplate {
         $optionsProcesses = SdkHtml::optionHtml(self::$processes, $this->process);
         $optionsProcessesSteps = SdkHtml::optionHtml(self::$processesSteps, $this->processStep);
         $optionsProcessesStepActions = SdkHtml::optionHtml(self::$processesStepsAction, $this->processStepAction);
-        $optionsTemplates = SdkHtml::optionHtml(self::$list, 'CoreTemplateValidation');
+        $optionsTemplates = SdkHtml::optionHtml($templateList, 'Default');
         $checkboxBlock = SdkHtml::checkboxHtml('blockSignature', $this->blockSignature);
         $checkboxPeg = SdkHtml::checkboxHtml('pegSignature', $this->pegSignature);
         $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('declareAddressFrom', $this->declareAddressFrom);
@@ -205,8 +211,10 @@ class SdkTemplate {
         }
         $l = array();
 
-        foreach(self::$list as $name) $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$name.'.json'));
+        foreach(self::$list as $o) {
 
+            $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$o->name.'.json'));
+        }
         $this->htmlScript =  '
 function Template('.substr($function1, 0,-2).', '.
 'proofValidation = {}, '.
@@ -295,15 +303,14 @@ Template.prototype.getDataFromForm = function () {
 }
 Template.prototype.createTemplate = function(){
 
-    let user = w.account;
     let userEncryptionKey = "";
     let proofEncryptionKey = "";
-    le user = false;
+    let u = false;
     
     wallet.list.forEach(function(w) {
     
         if(w.role == "api" ) user = w.account;
-    }
+    });
     template.list.forEach(function(t) {
     
         if(t.name == "default") {

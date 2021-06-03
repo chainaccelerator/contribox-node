@@ -27,15 +27,16 @@ RequestData.prototype.send = function(templateName, transaction, proof) {
     wallet.list.forEach(function(w){
 
         if(w.role == "api") {
-                                
                             
             let pubkey = w.pubkey0; 
             let urlClient = "http://localhost:7001/api/index.php";
-            let dataToHash = this;
-            console.info(dataToHash);
+            let b = requestData.request.pow;
+            let dataToHash = requestData;
             delete dataToHash.request.pow;
-            this.request.pow.hash = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(dataToHash)));
-            this.request.sig.sig = wallet.sig(publicAddress, requestData.pow.hash);
+            let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(dataToHash)));
+            dataToHash.request.pow = b;
+            dataToHash.request.hash = h;
+            dataToHash.request.sig.sig = wallet.sig(w.pubkey0, requestData.request.pow.hash);
         
             // request options
             const options = {
