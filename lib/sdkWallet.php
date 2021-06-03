@@ -28,8 +28,8 @@ Wallet.prototype.createWallet = function(role, account){
         return;
     }
     let walletJ = JSON.parse(w);
-    let accountSigTmp = signHash(walletJ.xprv, "0/0", 0, JSON.stringify(account));    
-    let accountSig = JSON.parse(accountSigTmp).signature;
+    let accountSig = this.sig(walletJ, JSON.stringify(account));
+    console.info(accountSig);
             
     return {
     
@@ -40,7 +40,8 @@ Wallet.prototype.createWallet = function(role, account){
         xpub: walletJ.xpub,
         role: role,
         account: account,
-        accountSig: accountSig
+        accountPubKeySig: accountSig.signature,
+        accountSig: accountSig.pubkey0
     };
 }
 Wallet.prototype.createwallets = function(account){
@@ -74,9 +75,10 @@ Wallet.prototype.load = function(reader){
     this.key = walletJ.key;
     this.loaded = true;
 }
-Wallet.prototype.sig = function(publicAddress, data) {
+Wallet.prototype.sig = function(w, data) {
 
-    
+    let s = signHash(w.xprv, "0/0", 0, data);
+    return JSON.parse(s);
 }
 ';
         $c = get_class($this);

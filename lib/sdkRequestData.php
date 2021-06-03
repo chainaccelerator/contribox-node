@@ -19,10 +19,11 @@ function RequestData() {
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
-RequestData.prototype.send = function(templateName, transaction, proof) {
-
-    let userEncryptionKey = "";
-    let proofEncryptionKey = "";
+RequestData.prototype.send = function(templateName, transaction) {
+            
+    this.route.template = templateName;
+    this.route.transaction = transaction;
+    this.route.timestamp = new Date().getTime();
             
     wallet.list.forEach(function(w){
 
@@ -30,29 +31,28 @@ RequestData.prototype.send = function(templateName, transaction, proof) {
                             
             let pubkey = w.pubkey0; 
             let urlClient = "http://localhost:7001/api/index.php";
-            let b = requestData.request.pow;
-            let dataToHash = requestData;
-            delete dataToHash.request.pow;
-            let h = sodium.crypto_generichash(64, sodium.from_string(JSON.stringify(dataToHash)));
-            dataToHash.request.pow = b;
-            dataToHash.request.hash = h;
-            dataToHash.request.sig.sig = wallet.sig(w.pubkey0, requestData.request.pow.hash);
+            let ref = JSON.stringify(requestData);
+            requestData.request.pow.pow =  requestData.pow(ref);
+            requestData.request.sig.sig = wallet.sig(w, ref);
         
-            // request options
             const options = {
-                    method: "POST",
+            
+                method: "POST",
                 body: JSON.stringify(requestData),
                 headers: {
-                        "Content-Type": "application/json"
+                    "Content-Type": "application/json"
                 }
             }
-            // send post request
             fetch(urlClient, options)
             .then(res => res.json())
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
         }
     });
+}
+RequestData.prototype.pow = function(){
+
+    
 }
 ';
         $c = get_class($this);
