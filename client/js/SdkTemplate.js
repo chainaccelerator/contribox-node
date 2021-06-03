@@ -79,10 +79,8 @@ Template.prototype.getDataFromForm = function () {
     this.investorType1GetDataFromForm();
     this.blockGetDataFromForm();
     this.pegGetDataFromForm();    
-    this.name = this.role+this.domain+this.domainSub+this.domainSubAbout+this.process+this.processStep+this.processStepAction+this.version;    
-    let s = sodium.from_string(this.name);
-    let h = sodium.crypto_generichash(64, s);
-    this.hash = sodium.to_hex(h);
+    this.name = this.role+this.domain+this.domainSub+this.domainSubAbout+this.process+this.processStep+this.processStepAction+this.version;
+    this.hash = requestData.sha256(this);
             
     return true;
 }

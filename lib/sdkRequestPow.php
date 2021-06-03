@@ -6,4 +6,5 @@ class SdkRequestPow {
     public int $difficulty = 4;
     public string $difficultyPatthern = 'c';
     public string $hash = '';
+    public string $previousHash = '';
 }

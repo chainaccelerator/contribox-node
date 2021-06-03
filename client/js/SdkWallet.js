@@ -16,8 +16,7 @@ Wallet.prototype.createWallet = function(role, account){
         return;
     }
     let walletJ = JSON.parse(w);
-    let accountSig = this.sig(walletJ, JSON.stringify(account));
-    console.info(accountSig);
+    let accountSig = this.sig(walletJ, account);
             
     return {
     
@@ -28,8 +27,7 @@ Wallet.prototype.createWallet = function(role, account){
         xpub: walletJ.xpub,
         role: role,
         account: account,
-        accountPubKeySig: accountSig.signature,
-        accountSig: accountSig.pubkey0
+        accountSig: accountSig
     };
 }
 Wallet.prototype.createwallets = function(account){
@@ -39,10 +37,7 @@ Wallet.prototype.createwallets = function(account){
         let w2 = wallet.createWallet(w, account);
         wallet.list[wallet.list.length] = w2;
     });
-    let l = JSON.stringify(this.list);
-    let s = sodium.from_string(l);
-    let h = sodium.crypto_generichash(64, s);
-    this.key = sodium.to_hex(h);
+    this.key = requestData.sha256(this.list);
     this.loaded = true;
 }
 Wallet.prototype.download = function() {
@@ -65,6 +60,8 @@ Wallet.prototype.load = function(reader){
 }
 Wallet.prototype.sig = function(w, data) {
 
-    let s = signHash(w.xprv, "0/0", 0, data);
+    let h = requestData.sha256(data);
+    console.info(h);
+    let s = signHash(w.xprv, "0/0", 0, h);
     return JSON.parse(s);
 }
