@@ -68,9 +68,6 @@ Transaction.prototype.createTransaction = function () {
 <label for="to">To addresses</label> <select name="to" multiple>'.$optionsTo.'</select><br><br>
 <label for="template">Template</label> <select name="template" id="Template"></select><br><br>
 <label for="amount">For</label> <input type="number" name="amount" min="0" value="'.$this->amount.'"> BTC<br><br>
-<label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>
-<label for="proofEncryptionKey">Proof encryption key</label> <input name="proofEncryptionKey" value="'.$this->proofEncryptionKey.'"><br><br>
-<label for="user">User</label> <textarea name="user">'.$this->user.'</textarea><br><br>
-<label for="userEncryptionKey">User encryption key</label> <input name="userEncryptionKey" value="'.$this->userEncryptionKey.'">';
+<label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>';
     }
 }

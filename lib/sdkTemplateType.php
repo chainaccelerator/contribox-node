@@ -73,7 +73,8 @@ class SdkTemplateType {
     this.'.$this->type.'.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrom'.$this->type.'")[0].value;
     this.'.$this->type.'.state = document.getElementsByName("state'.$this->type.'")[0].value;
     this.'.$this->type.'.patternAfterTimeout = document.getElementsByName("patternAfterTimeout'.$this->type.'")[0].value;
-    this.'.$this->type.'.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeout'.$this->type.'")[0].value;
+    this.'.$this->type.'.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeout'.$this->type.'")[0].value;    
+    this.'.$this->type.'.type = "";
 }';
 
         return '

@@ -19,7 +19,7 @@ function RequestData() {
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
-RequestData.prototype.send = function(template, proof = "", user = "") {
+RequestData.prototype.send = function(template, proof) {
 
     let userEncryptionKey = "";
     let proofEncryptionKey = "";
@@ -27,13 +27,13 @@ RequestData.prototype.send = function(template, proof = "", user = "") {
     template.list.forEach(function(t) {
     
         if(t.templateValidation = template+"Validation") {
-        
-            let transaction = new Transaction(t.from, t.to, t.templateValidation, t.amount, t.proof, t.proofEncryptionKey, t.user, t.userEncryptionKey);
-    
+            
             wallet.list.forEach(function(w){
         
                 if(w.role == "api") {
-                    
+                                
+                    let transaction = new Transaction(t.from, t.to, t.templateValidation, t.amount, t.proof, proofEncryptionKey, w.account, userEncryptionKey);
+                                    
                     let pubkey = w.pubkey0; 
                     let urlClient = "http://localhost:7001/api/index.php";
                     let dataToHash = this;

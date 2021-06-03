@@ -169,7 +169,7 @@ class SdkTemplate {
 '.$checkboxAskForDeclareFrom.' <label for="declareAddressFrom"> Require declared users (from)</label><br><br>
 '.$checkboxAskForDeclareTo.' <label for="declareAddressTo"> Require declared users (to)</label><br><br>
 '.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
-'.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label>
+'.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label><br><br>
 <label for="templateValidation">Template</label> <select name="templateValidation">'.$optionsTemplates.'</select>'
 .$this->proofValidation->conditionHtml()
 .$this->fromValidation->conditionHtml()
@@ -264,31 +264,37 @@ console.info("construct");
 Template.prototype.getDataFromForm = function () {
 
 '.$function.'
-    this.proofValidation = this.proofValidationGetDataFromForm();
-    this.fromValidation  = this.fromValidationGetDataFromForm();
-    this.toValidation  = this.toValidationGetDataFromForm();
-    this.from = this.fromGetDataFromForm();
-    this.to  = this.toGetDataFromForm();
-    this.backup  = this.backupGetDataFromForm();
-    this.lock  = this.lockGetDataFromForm();
-    this.witness  = this.witnessGetDataFromForm();
-    this.cosigner  = this.cosignerGetDataFromForm();
-    this.ban  = this.banGetDataFromForm();
-    this.old  = this.oldGetDataFromForm();
-    this.board  = this.boardGetDataFromForm();
-    this.cosignerOrg  = this.cosignerOrgGetDataFromForm();
-    this.witnessOrg  = this.witnessOrgGetDataFromForm();
-    this.parentstype1  = this.parentstype1GetDataFromForm();
-    this.childstype1  = this.childstype1GetDataFromForm();
-    this.investorType1  = this.investorType1GetDataFromForm();
-    this.block  = this.blockGetDataFromForm();
-    this.peg = this.pegGetDataFromForm();
-    
+    this.proofValidationGetDataFromForm();
+    this.proofValidation.type = "proofValidation";
+    this.fromValidationGetDataFromForm();
+    this.fromValidation.type = "fromValidation";
+    this.toValidationGetDataFromForm();
+    this.fromGetDataFromForm();
+    this.toGetDataFromForm();
+    this.backupGetDataFromForm();
+    this.lockGetDataFromForm();
+    this.witnessGetDataFromForm();
+    this.cosignerGetDataFromForm();
+    this.banGetDataFromForm();
+    this.oldGetDataFromForm();
+    this.boardGetDataFromForm();
+    this.cosignerOrgGetDataFromForm();
+    this.witnessOrgGetDataFromForm();
+    this.parentstype1GetDataFromForm();
+    this.childstype1GetDataFromForm();
+    this.investorType1GetDataFromForm();
+    this.blockGetDataFromForm();
+    this.pegGetDataFromForm();    
+    this.name = this.role+this.domain+this.domainSub+this.domainSubAbout+this.process+this.processStep+this.processStepAction+this.version;    
+    let s = sodium.from_string(this.name);
+    let h = sodium.crypto_generichash(64, s);
+    this.hash = sodium.to_hex(h);
+            
     return true;
 }
-Template.prototype.createTemplate = function(){
+Template.prototype.createTemplate = function(user){
 
-    return requestData.send("CoreTemplate");
+    return requestData.send("CoreTemplate", template, user);
 }
 '.
 $this->proofValidation->htmlScript."\n".

@@ -60,7 +60,9 @@ Template.prototype.getDataFromForm = function () {
 	this.templateValidation = document.getElementsByName("templateValidation")[0].value;
 
     this.proofValidation = this.proofValidationGetDataFromForm();
+    this.proofValidation.type = "proofValidation";
     this.fromValidation  = this.fromValidationGetDataFromForm();
+    this.fromValidation.type = "fromValidation";
     this.toValidation  = this.toValidationGetDataFromForm();
     this.from = this.fromGetDataFromForm();
     this.to  = this.toGetDataFromForm();
@@ -77,28 +79,35 @@ Template.prototype.getDataFromForm = function () {
     this.childstype1  = this.childstype1GetDataFromForm();
     this.investorType1  = this.investorType1GetDataFromForm();
     this.block  = this.blockGetDataFromForm();
-    this.peg = this.pegGetDataFromForm();
-    
+    this.peg = this.pegGetDataFromForm();    
+    this.name = this.role+this.domain+this.domainSub+this.domainSubAbout+this.process+this.processStep+this.processStepAction+this.version;    
+    let s = sodium.from_string(this.name);
+    let h = sodium.crypto_generichash(64, s);
+    this.hash = sodium.to_hex(h);
+            
     return true;
 }
-Template.prototype.createTemplate = function(){
+Template.prototype.createTemplate = function(user){
 
-    return requestData.send("CoreTemplate");
+    return requestData.send("CoreTemplate", template, user);
 }
 Template.prototype.proofValidationGetDataFromForm = function(){
 
     this.proofValidation.state = document.getElementsByName("stateproofValidation")[0].value;
-    this.proofValidation.definition = document.getElementsByName("definitionproofValidation")[0].value;
+    this.proofValidation.definition = document.getElementsByName("definitionproofValidation")[0].value;    
+    this.proofValidation.type = "";
 }
 Template.prototype.fromValidationGetDataFromForm = function(){
 
     this.fromValidation.state = document.getElementsByName("statefromValidation")[0].value;
-    this.fromValidation.definition = document.getElementsByName("definitionfromValidation")[0].value;
+    this.fromValidation.definition = document.getElementsByName("definitionfromValidation")[0].value;    
+    this.fromValidation.type = "";
 }
 Template.prototype.toValidationGetDataFromForm = function(){
 
     this.toValidation.state = document.getElementsByName("statetoValidation")[0].value;
-    this.toValidation.definition = document.getElementsByName("definitiontoValidation")[0].value;
+    this.toValidation.definition = document.getElementsByName("definitiontoValidation")[0].value;    
+    this.toValidation.type = "";
 }
 Template.prototype.fromGetDataFromForm = function(){
 
@@ -110,7 +119,8 @@ Template.prototype.fromGetDataFromForm = function(){
     this.from.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromfrom")[0].value;
     this.from.state = document.getElementsByName("statefrom")[0].value;
     this.from.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutfrom")[0].value;
-    this.from.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutfrom")[0].value;
+    this.from.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutfrom")[0].value;    
+    this.from.type = "";
 }
 Template.prototype.toGetDataFromForm = function(){
 
@@ -122,7 +132,8 @@ Template.prototype.toGetDataFromForm = function(){
     this.to.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromto")[0].value;
     this.to.state = document.getElementsByName("stateto")[0].value;
     this.to.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutto")[0].value;
-    this.to.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutto")[0].value;
+    this.to.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutto")[0].value;    
+    this.to.type = "";
 }
 Template.prototype.backupGetDataFromForm = function(){
 
@@ -134,7 +145,8 @@ Template.prototype.backupGetDataFromForm = function(){
     this.backup.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrombackup")[0].value;
     this.backup.state = document.getElementsByName("statebackup")[0].value;
     this.backup.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutbackup")[0].value;
-    this.backup.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutbackup")[0].value;
+    this.backup.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutbackup")[0].value;    
+    this.backup.type = "";
 }
 Template.prototype.lockGetDataFromForm = function(){
 
@@ -146,7 +158,8 @@ Template.prototype.lockGetDataFromForm = function(){
     this.lock.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromlock")[0].value;
     this.lock.state = document.getElementsByName("statelock")[0].value;
     this.lock.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutlock")[0].value;
-    this.lock.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutlock")[0].value;
+    this.lock.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutlock")[0].value;    
+    this.lock.type = "";
 }
 Template.prototype.witnessGetDataFromForm = function(){
 
@@ -158,7 +171,8 @@ Template.prototype.witnessGetDataFromForm = function(){
     this.witness.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromwitness")[0].value;
     this.witness.state = document.getElementsByName("statewitness")[0].value;
     this.witness.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutwitness")[0].value;
-    this.witness.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitness")[0].value;
+    this.witness.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitness")[0].value;    
+    this.witness.type = "";
 }
 Template.prototype.cosignerGetDataFromForm = function(){
 
@@ -170,7 +184,8 @@ Template.prototype.cosignerGetDataFromForm = function(){
     this.cosigner.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromcosigner")[0].value;
     this.cosigner.state = document.getElementsByName("statecosigner")[0].value;
     this.cosigner.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutcosigner")[0].value;
-    this.cosigner.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosigner")[0].value;
+    this.cosigner.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosigner")[0].value;    
+    this.cosigner.type = "";
 }
 Template.prototype.banGetDataFromForm = function(){
 
@@ -182,7 +197,8 @@ Template.prototype.banGetDataFromForm = function(){
     this.ban.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromban")[0].value;
     this.ban.state = document.getElementsByName("stateban")[0].value;
     this.ban.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutban")[0].value;
-    this.ban.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutban")[0].value;
+    this.ban.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutban")[0].value;    
+    this.ban.type = "";
 }
 Template.prototype.oldGetDataFromForm = function(){
 
@@ -194,7 +210,8 @@ Template.prototype.oldGetDataFromForm = function(){
     this.old.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromold")[0].value;
     this.old.state = document.getElementsByName("stateold")[0].value;
     this.old.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutold")[0].value;
-    this.old.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutold")[0].value;
+    this.old.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutold")[0].value;    
+    this.old.type = "";
 }
 Template.prototype.boardGetDataFromForm = function(){
 
@@ -206,7 +223,8 @@ Template.prototype.boardGetDataFromForm = function(){
     this.board.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromboard")[0].value;
     this.board.state = document.getElementsByName("stateboard")[0].value;
     this.board.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutboard")[0].value;
-    this.board.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutboard")[0].value;
+    this.board.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutboard")[0].value;    
+    this.board.type = "";
 }
 Template.prototype.cosignerOrgGetDataFromForm = function(){
 
@@ -218,7 +236,8 @@ Template.prototype.cosignerOrgGetDataFromForm = function(){
     this.cosignerOrg.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromcosignerOrg")[0].value;
     this.cosignerOrg.state = document.getElementsByName("statecosignerOrg")[0].value;
     this.cosignerOrg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutcosignerOrg")[0].value;
-    this.cosignerOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosignerOrg")[0].value;
+    this.cosignerOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosignerOrg")[0].value;    
+    this.cosignerOrg.type = "";
 }
 Template.prototype.witnessOrgGetDataFromForm = function(){
 
@@ -230,7 +249,8 @@ Template.prototype.witnessOrgGetDataFromForm = function(){
     this.witnessOrg.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromwitnessOrg")[0].value;
     this.witnessOrg.state = document.getElementsByName("statewitnessOrg")[0].value;
     this.witnessOrg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutwitnessOrg")[0].value;
-    this.witnessOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitnessOrg")[0].value;
+    this.witnessOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitnessOrg")[0].value;    
+    this.witnessOrg.type = "";
 }
 Template.prototype.parentstype1GetDataFromForm = function(){
 
@@ -242,7 +262,8 @@ Template.prototype.parentstype1GetDataFromForm = function(){
     this.parentstype1.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromparentstype1")[0].value;
     this.parentstype1.state = document.getElementsByName("stateparentstype1")[0].value;
     this.parentstype1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutparentstype1")[0].value;
-    this.parentstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutparentstype1")[0].value;
+    this.parentstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutparentstype1")[0].value;    
+    this.parentstype1.type = "";
 }
 Template.prototype.childstype1GetDataFromForm = function(){
 
@@ -254,7 +275,8 @@ Template.prototype.childstype1GetDataFromForm = function(){
     this.childstype1.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromchildstype1")[0].value;
     this.childstype1.state = document.getElementsByName("statechildstype1")[0].value;
     this.childstype1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutchildstype1")[0].value;
-    this.childstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutchildstype1")[0].value;
+    this.childstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutchildstype1")[0].value;    
+    this.childstype1.type = "";
 }
 Template.prototype.investorType1GetDataFromForm = function(){
 
@@ -266,7 +288,8 @@ Template.prototype.investorType1GetDataFromForm = function(){
     this.investorType1.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrominvestorType1")[0].value;
     this.investorType1.state = document.getElementsByName("stateinvestorType1")[0].value;
     this.investorType1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutinvestorType1")[0].value;
-    this.investorType1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutinvestorType1")[0].value;
+    this.investorType1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutinvestorType1")[0].value;    
+    this.investorType1.type = "";
 }
 Template.prototype.blockGetDataFromForm = function(){
 
@@ -278,7 +301,8 @@ Template.prototype.blockGetDataFromForm = function(){
     this.block.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromblock")[0].value;
     this.block.state = document.getElementsByName("stateblock")[0].value;
     this.block.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutblock")[0].value;
-    this.block.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutblock")[0].value;
+    this.block.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutblock")[0].value;    
+    this.block.type = "";
 }
 Template.prototype.pegGetDataFromForm = function(){
 
@@ -290,5 +314,6 @@ Template.prototype.pegGetDataFromForm = function(){
     this.peg.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrompeg")[0].value;
     this.peg.state = document.getElementsByName("statepeg")[0].value;
     this.peg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutpeg")[0].value;
-    this.peg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutpeg")[0].value;
+    this.peg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutpeg")[0].value;    
+    this.peg.type = "";
 }

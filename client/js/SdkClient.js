@@ -39,6 +39,7 @@ var provePay = document.getElementById("provePay");
 var createTemplate = document.getElementById("createTemplate");
 var proof1 = document.getElementById("proof1");
 var proof2 = document.getElementById("proof2");
+var userElem = document.getElementsByName("user")[0];
 
 function msgHtml() {
 
@@ -104,7 +105,8 @@ dlElemCreate.addEventListener("click", function (e) {
 
 createTemplate.addEventListener("click", function (e) {
 
-    template.createTemplate();
+    template.getDataFromForm();
+    template.createTemplate(template.name, template);
     ret = {msg: "Template created", cssClass:"success"};
     msgHtml();
 
@@ -156,18 +158,4 @@ proof2.addEventListener("change", function (e) {
 
     if (file2) reader2.readAsText(file2);
 
-}, false);
-
-FromElm.addEventListener("change", function (e) {
-
-    let userElem = document.getElementsByName("user")[0];
-
-    wallet.list.forEach(function (w) {
-
-        if(w.pubkey0 == FromElm.value) {
-
-            w.account.signature = w.accountSig;
-            userElem.value = JSON.stringify(w.account);
-        }
-    });
 }, false);
