@@ -315,9 +315,9 @@ Template.prototype.createTemplate = function(){
         if(t.name == "default") {
         
             let templateDefault = t;               
-            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+            let transaction = new Transaction(proof.from.publickeyList, proof.to.publicKeyList, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
                 
-            return requestData.send("default", transaction, this);
+            return requestData.send(transaction);
         }
     }); 
     return false;

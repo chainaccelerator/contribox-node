@@ -5,7 +5,6 @@ class SdkTransaction {
     public int $amount = 0;
     public array $from = [];
     public array $to = [];
-    public string $template = '';
     public string $proof = '{data: "", version: "v0"}';
     public string $user = '{data: "", version: "v0"}';
     public string $proofEncryptionKey = '';

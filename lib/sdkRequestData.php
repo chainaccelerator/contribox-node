@@ -19,33 +19,48 @@ function RequestData() {
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
-RequestData.prototype.send = function(templateName, transaction) {
-            
+RequestData.prototype.send = function(transaction) {
+    
     this.route.transaction = transaction;
     this.request.timestamp = new Date().getTime();
-    this.route.template = templateName;
-    delete this.route.template.domains;
-    delete this.route.template.domainsSubs;
-    delete this.route.template.domainsSubsAbouts; 
-    delete this.route.template.roles;
-    delete this.route.template.typeList;
-    delete this.route.template.processes;
-    delete this.route.template.processesSteps;
-    delete this.route.template.processesStepsAction;
-    delete this.route.template.list;
-    delete this.route.template.patterns;
     
-    let dest = [];
+    
+    template.list.forEach(function(t) {
+    
+        if(t.name == this.route.transaction.template) {
+                
+            delete this.route.transaction.template;
+            let p = this.route.transaction.proof;
+            let u = this.route.transaction.proof;
             
-    wallet.list.forEach(function(w){
-
-        if(w.role == "api") {
-                            
-            let pubkey = w.pubkey0; 
-            let urlClient = "http://localhost:7001/api/index.php";
             requestData.pow(requestData);
-            requestData.request.sig = wallet.sig(w, requestData);
-        
+            requestData.sig(requestData);
+            
+            let dest = [];
+            
+            requestData.transaction.backup.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.ban.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.block.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.board.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.childsType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.from.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.investorType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.lock.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.old.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.parentstype1.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.peg.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.to.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.witness.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.transaction.witnessOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+    
+            proofEncryptionKey = requestData.walletCreate();
+            proof = requestData.encrypt(p, proofEncryptionKey.publicKey);
+            userEncryptionKey = requestData.walletCreate();
+            user = requestData.encrypt(u, userEncryptionKey.publicKey);
+            
+            let urlClient = "http://localhost:7001/api/index.php";            
             const options = {
             
                 method: "POST",
@@ -59,7 +74,7 @@ RequestData.prototype.send = function(templateName, transaction) {
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
         }
-    });
+    });                                        
 }
 RequestData.prototype.sha256 = function(message) {
 
@@ -74,6 +89,54 @@ RequestData.prototype.sha256 = function(message) {
     // let hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
     
     return hex;
+}
+RequestData.prototype.encrypt = function(message, publicKey) {
+
+  let m = JSON.stringify(message);
+  let enc = new TextEncoder();
+  let encoded = enc.encode(m);
+  
+  return window.crypto.subtle.encrypt(
+    {
+      name: "RSA-OAEP"
+    },
+    publicKey,
+    encoded
+  );
+}
+RequestData.prototype.decrypt = function(ciphertext, privateKey) {
+
+  return window.crypto.subtle.decrypt(
+    {
+      name: "RSA-OAEP"
+    },
+    privateKey,
+    ciphertext
+  );
+}
+RequestData.prototype.walletCreate = function(){
+
+    return = window.crypto.subtle.generateKey(
+      {
+        name: "RSA-OAEP",
+        modulusLength: 4096,
+        publicExponent: new Uint8Array([1, 0, 1]),
+        hash: "SHA-256"
+      },
+      true,
+      ["encrypt", "decrypt"]
+    );
+}
+RequestData.prototype.sig = function(data){
+
+    wallet.list.forEach(function(w){
+    
+        if(w.role == "api") {
+        
+            this.request.sig = wallet.sig(w, data);
+        }
+    )};
+    return false;
 }
 RequestData.prototype.pow = function(data){
 
