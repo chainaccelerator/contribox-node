@@ -21,6 +21,8 @@ function RequestData() {
 }
 RequestData.prototype.send = function(templateName, transaction) {
             
+    this.route.transaction = transaction;
+    this.request.timestamp = new Date().getTime();
     this.route.template = templateName;
     delete this.route.template.domains;
     delete this.route.template.domainsSubs;
@@ -32,8 +34,8 @@ RequestData.prototype.send = function(templateName, transaction) {
     delete this.route.template.processesStepsAction;
     delete this.route.template.list;
     delete this.route.template.patterns;
-    this.route.transaction = transaction;
-    this.route.timestamp = new Date().getTime();
+    
+    let dest = [];
             
     wallet.list.forEach(function(w){
 
@@ -42,9 +44,7 @@ RequestData.prototype.send = function(templateName, transaction) {
             let pubkey = w.pubkey0; 
             let urlClient = "http://localhost:7001/api/index.php";
             requestData.pow(requestData);
-            console.info("pow", requestData.request.pow.pow);
-            console.info("nonce", requestData.request.pow.nonce);
-            requestData.request.sig.sig = wallet.sig(w, requestData);
+            requestData.request.sig = wallet.sig(w, requestData);
         
             const options = {
             
@@ -68,6 +68,11 @@ RequestData.prototype.sha256 = function(message) {
     let h = sodium.crypto_generichash(64, s);
     let hex = sodium.to_hex(h);
     
+    // let msgUint8 = new TextEncoder().encode(message);
+    // let hashBuffer = await crypto.subtle.digest("SHA-256", msgUint8);
+    // let hashArray = Array.from(new Uint8Array(hashBuffer));
+    // let hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    
     return hex;
 }
 RequestData.prototype.pow = function(data){
@@ -81,9 +86,10 @@ RequestData.prototype.pow = function(data){
     this.request.pow.nonce++;
     this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce);
     
-    if(this.request.pow.nonce > 100000) return false;
-  }  
-  console.info("found", this.request.pow.pow.substring(0, this.request.pow.difficulty));
+    if(this.request.pow.nonce > 400000) return false;
+  } 
+  console.info("pow", requestData.request.pow.pow);
+  console.info("nonce", requestData.request.pow.nonce);
 }
 ';
         $c = get_class($this);
@@ -91,6 +97,4 @@ RequestData.prototype.pow = function(data){
 
         return '';
     }
-
-
 }

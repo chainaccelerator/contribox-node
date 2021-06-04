@@ -300,9 +300,11 @@ Template.prototype.getDataFromForm = function () {
 }
 Template.prototype.createTemplate = function(){
 
+    this.getDataFromForm();
     let userEncryptionKey = "";
     let proofEncryptionKey = "";
     let u = false;
+    let proof = template;
     
     wallet.list.forEach(function(w) {
     
@@ -312,11 +314,9 @@ Template.prototype.createTemplate = function(){
     
         if(t.name == "default") {
         
-            let templateDefault = t;                    
-            let transaction = new Transaction(templateDefault.from, templateDefault.to, templateDefault.name, templateDefault.amount, template, proofEncryptionKey, user, userEncryptionKey);
-            transaction.from = template.from;
-            transaction.to = template.to;
-    
+            let templateDefault = t;               
+            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+                
             return requestData.send("default", transaction, this);
         }
     }); 

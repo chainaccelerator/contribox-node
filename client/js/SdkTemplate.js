@@ -86,9 +86,11 @@ Template.prototype.getDataFromForm = function () {
 }
 Template.prototype.createTemplate = function(){
 
+    this.getDataFromForm();
     let userEncryptionKey = "";
     let proofEncryptionKey = "";
     let u = false;
+    let proof = template;
     
     wallet.list.forEach(function(w) {
     
@@ -98,11 +100,9 @@ Template.prototype.createTemplate = function(){
     
         if(t.name == "default") {
         
-            let templateDefault = t;                    
-            let transaction = new Transaction(templateDefault.from, templateDefault.to, templateDefault.name, templateDefault.amount, template, proofEncryptionKey, user, userEncryptionKey);
-            transaction.from = template.from;
-            transaction.to = template.to;
-    
+            let templateDefault = t;               
+            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+                
             return requestData.send("default", transaction, this);
         }
     }); 
@@ -128,7 +128,12 @@ Template.prototype.toValidationGetDataFromForm = function(){
 }
 Template.prototype.fromGetDataFromForm = function(){
 
-    this.from.publickeyList = document.getElementsByName("publickeyListfrom")[0].value;
+     this.from.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.from.publickeyList[i] = selList[i].value;
+     }   
+         
     this.from.pattern = document.getElementsByName("patternfrom")[0].value;
     this.from.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNfrom")[0].value;
     this.from.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNfrom")[0].value;
@@ -141,7 +146,12 @@ Template.prototype.fromGetDataFromForm = function(){
 }
 Template.prototype.toGetDataFromForm = function(){
 
-    this.to.publickeyList = document.getElementsByName("publickeyListto")[0].value;
+     this.to.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.to.publickeyList[i] = selList[i].value;
+     }   
+         
     this.to.pattern = document.getElementsByName("patternto")[0].value;
     this.to.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNto")[0].value;
     this.to.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNto")[0].value;
@@ -154,7 +164,12 @@ Template.prototype.toGetDataFromForm = function(){
 }
 Template.prototype.backupGetDataFromForm = function(){
 
-    this.backup.publickeyList = document.getElementsByName("publickeyListbackup")[0].value;
+     this.backup.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.backup.publickeyList[i] = selList[i].value;
+     }   
+         
     this.backup.pattern = document.getElementsByName("patternbackup")[0].value;
     this.backup.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNbackup")[0].value;
     this.backup.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNbackup")[0].value;
@@ -167,7 +182,12 @@ Template.prototype.backupGetDataFromForm = function(){
 }
 Template.prototype.lockGetDataFromForm = function(){
 
-    this.lock.publickeyList = document.getElementsByName("publickeyListlock")[0].value;
+     this.lock.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.lock.publickeyList[i] = selList[i].value;
+     }   
+         
     this.lock.pattern = document.getElementsByName("patternlock")[0].value;
     this.lock.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNlock")[0].value;
     this.lock.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNlock")[0].value;
@@ -180,7 +200,12 @@ Template.prototype.lockGetDataFromForm = function(){
 }
 Template.prototype.witnessGetDataFromForm = function(){
 
-    this.witness.publickeyList = document.getElementsByName("publickeyListwitness")[0].value;
+     this.witness.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.witness.publickeyList[i] = selList[i].value;
+     }   
+         
     this.witness.pattern = document.getElementsByName("patternwitness")[0].value;
     this.witness.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNwitness")[0].value;
     this.witness.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNwitness")[0].value;
@@ -193,7 +218,12 @@ Template.prototype.witnessGetDataFromForm = function(){
 }
 Template.prototype.cosignerGetDataFromForm = function(){
 
-    this.cosigner.publickeyList = document.getElementsByName("publickeyListcosigner")[0].value;
+     this.cosigner.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.cosigner.publickeyList[i] = selList[i].value;
+     }   
+         
     this.cosigner.pattern = document.getElementsByName("patterncosigner")[0].value;
     this.cosigner.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNcosigner")[0].value;
     this.cosigner.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNcosigner")[0].value;
@@ -206,7 +236,12 @@ Template.prototype.cosignerGetDataFromForm = function(){
 }
 Template.prototype.banGetDataFromForm = function(){
 
-    this.ban.publickeyList = document.getElementsByName("publickeyListban")[0].value;
+     this.ban.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.ban.publickeyList[i] = selList[i].value;
+     }   
+         
     this.ban.pattern = document.getElementsByName("patternban")[0].value;
     this.ban.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNban")[0].value;
     this.ban.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNban")[0].value;
@@ -219,7 +254,12 @@ Template.prototype.banGetDataFromForm = function(){
 }
 Template.prototype.oldGetDataFromForm = function(){
 
-    this.old.publickeyList = document.getElementsByName("publickeyListold")[0].value;
+     this.old.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.old.publickeyList[i] = selList[i].value;
+     }   
+         
     this.old.pattern = document.getElementsByName("patternold")[0].value;
     this.old.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNold")[0].value;
     this.old.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNold")[0].value;
@@ -232,7 +272,12 @@ Template.prototype.oldGetDataFromForm = function(){
 }
 Template.prototype.boardGetDataFromForm = function(){
 
-    this.board.publickeyList = document.getElementsByName("publickeyListboard")[0].value;
+     this.board.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.board.publickeyList[i] = selList[i].value;
+     }   
+         
     this.board.pattern = document.getElementsByName("patternboard")[0].value;
     this.board.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNboard")[0].value;
     this.board.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNboard")[0].value;
@@ -245,7 +290,12 @@ Template.prototype.boardGetDataFromForm = function(){
 }
 Template.prototype.cosignerOrgGetDataFromForm = function(){
 
-    this.cosignerOrg.publickeyList = document.getElementsByName("publickeyListcosignerOrg")[0].value;
+     this.cosignerOrg.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.cosignerOrg.publickeyList[i] = selList[i].value;
+     }   
+         
     this.cosignerOrg.pattern = document.getElementsByName("patterncosignerOrg")[0].value;
     this.cosignerOrg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNcosignerOrg")[0].value;
     this.cosignerOrg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNcosignerOrg")[0].value;
@@ -258,7 +308,12 @@ Template.prototype.cosignerOrgGetDataFromForm = function(){
 }
 Template.prototype.witnessOrgGetDataFromForm = function(){
 
-    this.witnessOrg.publickeyList = document.getElementsByName("publickeyListwitnessOrg")[0].value;
+     this.witnessOrg.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.witnessOrg.publickeyList[i] = selList[i].value;
+     }   
+         
     this.witnessOrg.pattern = document.getElementsByName("patternwitnessOrg")[0].value;
     this.witnessOrg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNwitnessOrg")[0].value;
     this.witnessOrg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNwitnessOrg")[0].value;
@@ -271,7 +326,12 @@ Template.prototype.witnessOrgGetDataFromForm = function(){
 }
 Template.prototype.parentstype1GetDataFromForm = function(){
 
-    this.parentstype1.publickeyList = document.getElementsByName("publickeyListparentstype1")[0].value;
+     this.parentstype1.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.parentstype1.publickeyList[i] = selList[i].value;
+     }   
+         
     this.parentstype1.pattern = document.getElementsByName("patternparentstype1")[0].value;
     this.parentstype1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNparentstype1")[0].value;
     this.parentstype1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNparentstype1")[0].value;
@@ -284,7 +344,12 @@ Template.prototype.parentstype1GetDataFromForm = function(){
 }
 Template.prototype.childstype1GetDataFromForm = function(){
 
-    this.childstype1.publickeyList = document.getElementsByName("publickeyListchildstype1")[0].value;
+     this.childstype1.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.childstype1.publickeyList[i] = selList[i].value;
+     }   
+         
     this.childstype1.pattern = document.getElementsByName("patternchildstype1")[0].value;
     this.childstype1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNchildstype1")[0].value;
     this.childstype1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNchildstype1")[0].value;
@@ -297,7 +362,12 @@ Template.prototype.childstype1GetDataFromForm = function(){
 }
 Template.prototype.investorType1GetDataFromForm = function(){
 
-    this.investorType1.publickeyList = document.getElementsByName("publickeyListinvestorType1")[0].value;
+     this.investorType1.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.investorType1.publickeyList[i] = selList[i].value;
+     }   
+         
     this.investorType1.pattern = document.getElementsByName("patterninvestorType1")[0].value;
     this.investorType1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNinvestorType1")[0].value;
     this.investorType1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNinvestorType1")[0].value;
@@ -310,7 +380,12 @@ Template.prototype.investorType1GetDataFromForm = function(){
 }
 Template.prototype.blockGetDataFromForm = function(){
 
-    this.block.publickeyList = document.getElementsByName("publickeyListblock")[0].value;
+     this.block.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.block.publickeyList[i] = selList[i].value;
+     }   
+         
     this.block.pattern = document.getElementsByName("patternblock")[0].value;
     this.block.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNblock")[0].value;
     this.block.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNblock")[0].value;
@@ -323,7 +398,12 @@ Template.prototype.blockGetDataFromForm = function(){
 }
 Template.prototype.pegGetDataFromForm = function(){
 
-    this.peg.publickeyList = document.getElementsByName("publickeyListpeg")[0].value;
+     this.peg.publickeyList = [];
+     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.peg.publickeyList[i] = selList[i].value;
+     }   
+         
     this.peg.pattern = document.getElementsByName("patternpeg")[0].value;
     this.peg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNpeg")[0].value;
     this.peg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNpeg")[0].value;

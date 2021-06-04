@@ -65,7 +65,12 @@ class SdkTemplateType {
         ];
         $this->htmlScript = 'Template.prototype.'.$this->type.'GetDataFromForm = function(){
 
-    this.'.$this->type.'.publickeyList = document.getElementsByName("publickeyList'.$this->type.'")[0].value;
+     this.'.$this->type.'.publickeyList = [];
+     let selList= document.getElementsByName("publickeyList'.$this->type.'")[0].selectedOptions;
+     for (var i = 0; i < selList.length; i++) {
+        this.'.$this->type.'.publickeyList[i] = selList[i].value;
+     }   
+         
     this.'.$this->type.'.pattern = document.getElementsByName("pattern'.$this->type.'")[0].value;
     this.'.$this->type.'.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutN'.$this->type.'")[0].value;
     this.'.$this->type.'.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutN'.$this->type.'")[0].value;
