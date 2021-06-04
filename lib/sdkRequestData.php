@@ -23,37 +23,38 @@ RequestData.prototype.send = function(transaction) {
     
     this.route.transaction = transaction;
     this.request.timestamp = new Date().getTime();
-    
+                
+    delete requestData.route.transaction.template;
+    let p = requestData.route.transaction.proof;
+    let u = requestData.route.transaction.proof;    
     
     template.list.forEach(function(t) {
     
-        if(t.name == this.route.transaction.template) {
-                
-            delete this.route.transaction.template;
-            let p = this.route.transaction.proof;
-            let u = this.route.transaction.proof;
+        if(t.name == requestData.route.transaction.template) {
             
             requestData.pow(requestData);
             requestData.sig(requestData);
             
             let dest = [];
             
-            requestData.transaction.backup.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.ban.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.block.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.board.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.childsType1.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.from.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.investorType1.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.lock.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.old.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.parentstype1.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.peg.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.to.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.witness.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.transaction.witnessOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.backup.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.ban.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.block.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.board.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.childsType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.from.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.investorType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.lock.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.old.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.parentstype1.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.peg.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.to.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.witness.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.witnessOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            
+            console.info(dest);
     
             proofEncryptionKey = requestData.walletCreate();
             proof = requestData.encrypt(p, proofEncryptionKey.publicKey);
@@ -116,7 +117,7 @@ RequestData.prototype.decrypt = function(ciphertext, privateKey) {
 }
 RequestData.prototype.walletCreate = function(){
 
-    return = window.crypto.subtle.generateKey(
+    return window.crypto.subtle.generateKey(
       {
         name: "RSA-OAEP",
         modulusLength: 4096,
@@ -133,9 +134,9 @@ RequestData.prototype.sig = function(data){
     
         if(w.role == "api") {
         
-            this.request.sig = wallet.sig(w, data);
+            requestData.request.sig = wallet.sig(w, data);
         }
-    )};
+    });
     return false;
 }
 RequestData.prototype.pow = function(data){

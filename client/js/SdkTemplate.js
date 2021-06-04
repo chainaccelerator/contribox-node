@@ -101,9 +101,9 @@ Template.prototype.createTemplate = function(){
         if(t.name == "default") {
         
             let templateDefault = t;               
-            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+            let transaction = new Transaction(proof.from.publickeyList, proof.to.publicKeyList, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
                 
-            return requestData.send("default", transaction, this);
+            return requestData.send(transaction);
         }
     }); 
     return false;
@@ -147,7 +147,7 @@ Template.prototype.fromGetDataFromForm = function(){
 Template.prototype.toGetDataFromForm = function(){
 
      this.to.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListto")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.to.publickeyList[i] = selList[i].value;
      }   
@@ -165,7 +165,7 @@ Template.prototype.toGetDataFromForm = function(){
 Template.prototype.backupGetDataFromForm = function(){
 
      this.backup.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListbackup")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.backup.publickeyList[i] = selList[i].value;
      }   
@@ -183,7 +183,7 @@ Template.prototype.backupGetDataFromForm = function(){
 Template.prototype.lockGetDataFromForm = function(){
 
      this.lock.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListlock")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.lock.publickeyList[i] = selList[i].value;
      }   
@@ -201,7 +201,7 @@ Template.prototype.lockGetDataFromForm = function(){
 Template.prototype.witnessGetDataFromForm = function(){
 
      this.witness.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListwitness")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.witness.publickeyList[i] = selList[i].value;
      }   
@@ -219,7 +219,7 @@ Template.prototype.witnessGetDataFromForm = function(){
 Template.prototype.cosignerGetDataFromForm = function(){
 
      this.cosigner.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListcosigner")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.cosigner.publickeyList[i] = selList[i].value;
      }   
@@ -237,7 +237,7 @@ Template.prototype.cosignerGetDataFromForm = function(){
 Template.prototype.banGetDataFromForm = function(){
 
      this.ban.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListban")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.ban.publickeyList[i] = selList[i].value;
      }   
@@ -255,7 +255,7 @@ Template.prototype.banGetDataFromForm = function(){
 Template.prototype.oldGetDataFromForm = function(){
 
      this.old.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListold")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.old.publickeyList[i] = selList[i].value;
      }   
@@ -273,7 +273,7 @@ Template.prototype.oldGetDataFromForm = function(){
 Template.prototype.boardGetDataFromForm = function(){
 
      this.board.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListboard")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.board.publickeyList[i] = selList[i].value;
      }   
@@ -291,7 +291,7 @@ Template.prototype.boardGetDataFromForm = function(){
 Template.prototype.cosignerOrgGetDataFromForm = function(){
 
      this.cosignerOrg.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListcosignerOrg")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.cosignerOrg.publickeyList[i] = selList[i].value;
      }   
@@ -309,7 +309,7 @@ Template.prototype.cosignerOrgGetDataFromForm = function(){
 Template.prototype.witnessOrgGetDataFromForm = function(){
 
      this.witnessOrg.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListwitnessOrg")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.witnessOrg.publickeyList[i] = selList[i].value;
      }   
@@ -327,7 +327,7 @@ Template.prototype.witnessOrgGetDataFromForm = function(){
 Template.prototype.parentstype1GetDataFromForm = function(){
 
      this.parentstype1.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListparentstype1")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.parentstype1.publickeyList[i] = selList[i].value;
      }   
@@ -345,7 +345,7 @@ Template.prototype.parentstype1GetDataFromForm = function(){
 Template.prototype.childstype1GetDataFromForm = function(){
 
      this.childstype1.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListchildstype1")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.childstype1.publickeyList[i] = selList[i].value;
      }   
@@ -363,7 +363,7 @@ Template.prototype.childstype1GetDataFromForm = function(){
 Template.prototype.investorType1GetDataFromForm = function(){
 
      this.investorType1.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListinvestorType1")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.investorType1.publickeyList[i] = selList[i].value;
      }   
@@ -381,7 +381,7 @@ Template.prototype.investorType1GetDataFromForm = function(){
 Template.prototype.blockGetDataFromForm = function(){
 
      this.block.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListblock")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.block.publickeyList[i] = selList[i].value;
      }   
@@ -399,7 +399,7 @@ Template.prototype.blockGetDataFromForm = function(){
 Template.prototype.pegGetDataFromForm = function(){
 
      this.peg.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
+     let selList= document.getElementsByName("publickeyListpeg")[0].selectedOptions;
      for (var i = 0; i < selList.length; i++) {
         this.peg.publickeyList[i] = selList[i].value;
      }   

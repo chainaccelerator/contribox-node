@@ -41,12 +41,12 @@ function convertToString(ptr, label) {
 
 // this must be called once before calling any other functions below
 function init() {
-  console.log("Initializing libwally");
+  // console.log("Initializing libwally");
   if (ccall("wally_init", 'number', ['number'], [0]) !== 0) {
     return -1;
   };
 
-  console.log("Initializing PRNG");
+  // console.log("Initializing PRNG");
   let entropy_ctx = new Uint8Array(32); // WALLY_SECP_RANDOMIZE_LEN
   window.crypto.getRandomValues(entropy_ctx);
 
@@ -54,7 +54,7 @@ function init() {
     return -1;
   };
 
-  console.log("Checking that libwally has been compiled with elements");
+  // console.log("Checking that libwally has been compiled with elements");
   let is_elements = ccall('is_elements', 'number', [], [])
 
   if (is_elements !== 1) {
@@ -133,7 +133,7 @@ function generateWallet(mnemonic) {
 }
 
 function newWallet() {
-  console.log("Creating new wallet");
+  // console.log("Creating new wallet");
 
   // First generate some entropy to generate the seed
   // FIXME: maybe it could be safer to move entropy generation on the wasm module side
@@ -283,7 +283,7 @@ function signHash(xprv, hdPath, range, hash) {
     return "";
   }
 
-  console.log("message to sign is " + hash);
+  // console.log("message to sign is " + hash);
 
   // get the pubkey
   if ((pubkey_ptr = ccall('pubkeyFromPrivkey', 'number', ['string'], [signingKey])) === 0) {
@@ -293,15 +293,15 @@ function signHash(xprv, hdPath, range, hash) {
   if ((pubkey = convertToString(pubkey_ptr, "pubkey")) === "") {
     return "";
   }
-  console.log("signingkey is " + signingKey);
-  console.log("corresponding pubkey is " + pubkey);
+  // console.log("signingkey is " + signingKey);
+  // console.log("corresponding pubkey is " + pubkey);
 
   // get the address corresponding to this private key
   if ((address = JSON.parse(getP2pkhAddressFromPubkey(pubkey))) === "") {
     console.error("getP2pkhAddressFromPubkey failed");
     return "";
   }
-  console.log("address is " + address.unconfidentialAddress);
+  // console.log("address is " + address.unconfidentialAddress);
 
   // format the message to be signed
   if ((message_ptr = ccall('createMessageToSign', 'number', ['string'], [hash])) === 0) {
@@ -313,7 +313,7 @@ function signHash(xprv, hdPath, range, hash) {
     return "";
   }
 
-  console.log("formated message is " + message);
+  // console.log("formated message is " + message);
 
   // sign the message with key
   if ((signature_ptr = ccall('signHashWithKey', 'number', ['string', 'string'], [signingKey, message])) === 0) {

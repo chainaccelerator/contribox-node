@@ -72,8 +72,7 @@ Wallet.prototype.load = function(reader){
 }
 Wallet.prototype.sig = function(w, data) {
 
-    let h = requestData.sha256(data);
-    console.info(h);
+    let h = requestData.sha256(data);    
     let s = signHash(w.xprv, "0/0", 0, h);
     return JSON.parse(s);
 }
