@@ -72,7 +72,7 @@ function main() {
 window.sodium = {
     onload: function (sodium) {
         let h = sodium.crypto_generichash(64, sodium.from_string('test'));
-        console.log(sodium.to_hex(h));
+        // console.log(sodium.to_hex(h));
     }
 };
 </script>
