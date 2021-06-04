@@ -53,7 +53,7 @@ $requestData = $requestDataDefault->conditionHtml();
 <script>
 var Module = {
     onRuntimeInitialized: async function () {
-        console.info('onRuntimeInitialized');
+        // console.info('onRuntimeInitialized');
         main();
     }
 };
@@ -63,7 +63,7 @@ function main() {
         alert("initialization failed");
         return;
     }
-    console.log("Cleanup and terminating");
+    // console.log("Cleanup and terminating");
 }
 </script>
 <script async type="text/javascript" src="js/contribox.js"></script>
