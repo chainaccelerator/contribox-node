@@ -327,8 +327,8 @@ Template.prototype.createTemplate = function(){
             delete proof.patterns;
              
             let templateDefault = t;
-            proof.from.publickeyList = template.from;
-            proof.to.publickeyList = template.to;
+            proof.from = template.from;
+            proof.to = template.to;
             let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
 
             template.list = tl;

@@ -7,17 +7,18 @@ function RequestData() {
 RequestData.prototype.send = function(transaction) {
         
     this.route.transaction = transaction;
+    this.route.template = transaction.template;
     this.request.timestamp = new Date().getTime();
                 
     let p = requestData.route.transaction.proof;
     let u = requestData.route.transaction.proof;
     
-    console.info("send");
-    
+    delete transaction.template;
+        
     template.list.forEach(function(t) {
     
-        if(t.name == requestData.route.transaction.template) {
-            
+        if(t.name == requestData.route.template) {
+                        
             requestData.pow(requestData);
             requestData.sig(requestData);
             
@@ -27,7 +28,7 @@ RequestData.prototype.send = function(transaction) {
             t.ban.publickeyList.forEach(function(p) { dest[p] = p;});
             t.block.publickeyList.forEach(function(p) { dest[p] = p;});
             t.board.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.childsType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.childstype1.publickeyList.forEach(function(p) { dest[p] = p;});
             t.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
             t.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
             t.from.publickeyList.forEach(function(p) { dest[p] = p;});
