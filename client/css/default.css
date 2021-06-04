@@ -4,7 +4,7 @@ body {
     color: bisque;
 }
 textarea, input, select, button {
-    width: 250px;
+    width: 200px;
 }
 input[type=checkbox] {
     width: initial;

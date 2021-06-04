@@ -304,6 +304,7 @@ Template.prototype.createTemplate = function(){
     let userEncryptionKey = "";
     let proofEncryptionKey = "";
     let u = false;
+    let tl = template.list;
     let proof = template;
     
     wallet.list.forEach(function(w) {
@@ -313,10 +314,25 @@ Template.prototype.createTemplate = function(){
     template.list.forEach(function(t) {
     
         if(t.name == "default") {
-        
-            let templateDefault = t;               
-            let transaction = new Transaction(proof.from.publickeyList, proof.to.publicKeyList, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
-                
+            
+            delete proof.domains;
+            delete proof.domainsSubs;
+            delete proof.domainsSubsAbouts;
+            delete proof.roles;
+            delete proof.typeList;
+            delete proof.processes;
+            delete proof.processesSteps;
+            delete proof.processesStepsAction;
+            delete proof.list;
+            delete proof.patterns;
+             
+            let templateDefault = t;
+            proof.from.publickeyList = template.from;
+            proof.to.publickeyList = template.to;
+            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+
+            template.list = tl;
+            
             return requestData.send(transaction);
         }
     }); 

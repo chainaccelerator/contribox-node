@@ -22,7 +22,7 @@ class SdkTemplateType {
         $type = $class::$name;
 
         for($i=1;$i<100;$i++){
-            $class::$patterns[] = ((string) $i).'%';
+            $class::$patterns[$i] = ((string) $i).'%';
         }
         $this->type =$type;
         $this->pubList = $pubList;
@@ -48,10 +48,9 @@ class SdkTemplateType {
         }
         return $res;
     }
-    public function conditionHtml(array $pubList = array()): string {
+    public function conditionHtml(array $pubList = array(), string $optionPubKeys = ''): string {
 
         $optionPatterns = SdkHtml::optionHtml(self::$patterns, $this->pattern);
-        $optionPubKeys = '<option selected>None</option>';
 
         if($this->type !== 'from') {
 

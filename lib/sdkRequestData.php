@@ -20,13 +20,14 @@ function RequestData() {
     this.route = '.json_encode($this->route).';
 }
 RequestData.prototype.send = function(transaction) {
-    
+        
     this.route.transaction = transaction;
     this.request.timestamp = new Date().getTime();
                 
-    delete requestData.route.transaction.template;
     let p = requestData.route.transaction.proof;
-    let u = requestData.route.transaction.proof;    
+    let u = requestData.route.transaction.proof;
+    
+    console.info("send");
     
     template.list.forEach(function(t) {
     
@@ -37,22 +38,22 @@ RequestData.prototype.send = function(transaction) {
             
             let dest = [];
             
-            requestData.route.transaction.backup.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.ban.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.block.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.board.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.childsType1.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.from.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.investorType1.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.lock.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.old.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.parentstype1.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.peg.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.to.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.witness.publickeyList.forEach(function(p) { dest[p] = p;});
-            requestData.route.transaction.witnessOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.backup.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.ban.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.block.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.board.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.childsType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.from.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.investorType1.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.lock.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.old.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.parentstype1.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.peg.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.transaction.to.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.transaction.witness.publickeyList.forEach(function(p) { dest[p] = p;});
+            t.transaction.witnessOrg.publickeyList.forEach(function(p) { dest[p] = p;});
             
             console.info(dest);
     

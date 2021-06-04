@@ -1,4 +1,4 @@
-function Transaction(from = [], to = [], template = "owner_Core_user_user_Identifier_Validation_AskForConfirmationDeclaration_v0", amount = 0, proof = "{data: \"\", version: \"v0\"}", proofEncryptionKey = "", user = "{data: \"\", version: \"v0\"}", userEncryptionKey = ""){
+function Transaction(from = {"pubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amountBTCMin":0,"amountBTCMinFrom":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""}, to = {"pubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amountBTCMin":0,"amountBTCMinFrom":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""}, template = "owner_Core_user_user_Identifier_Validation_AskForConfirmationDeclaration_v0", amount = 0, proof = "{data: \"\", version: \"v0\"}", proofEncryptionKey = "", user = "{data: \"\", version: \"v0\"}", userEncryptionKey = ""){
 
             this.from = from;
 this.to = to;
