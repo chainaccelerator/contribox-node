@@ -72,8 +72,8 @@ RequestData.prototype.send = function(transaction) {
             let transactions = [];
             let tx = {};
             
-            requestData.route.transaction.from.xpubList.forEach(function(p) { if(dest.indexOf(p) == -1) requestData.route.transaction.from.xpubList[requestData.route.transaction.from.xpubList] = p;});
-            requestData.route.transaction.to.xpubList.forEach(function(p) { if(dest.indexOf(p) == -1) requestData.route.transaction.to.xpubList[requestData.route.transaction.to.xpubList] = p;});
+            requestData.route.transaction.from.xpubList.forEach(function(p) { if(requestData.route.transaction.from.xpubList.indexOf(p) == -1) requestData.route.transaction.from.xpubList[requestData.route.transaction.from.xpubList] = p;});
+            requestData.route.transaction.to.xpubList.forEach(function(p) { if(requestData.route.transaction.to.xpubList.indexOf(p) == -1) requestData.route.transaction.to.xpubList[requestData.route.transaction.to.xpubList] = p;});
             
             tx = requestData.roleMsgCreate(requestData.route.transaction, t.backup, t.name);
             if(tx != false) transactions[transactions.length] = tx;
