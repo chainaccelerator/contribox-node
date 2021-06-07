@@ -35,9 +35,7 @@ $wallet = $walletDefault->conditionHtml();
 $templateDefault = new SdkTemplate($conf->role, $conf->domain,$conf->domainSub, $conf->process, $conf->processStep, $conf->processStepAction, $conf->about, $conf->amount, $conf->blockSignature, $conf->pegSignature, $conf->version);
 $template = $templateDefault->conditionHtml();
 
-$from = new SdkTemplateTypeFrom($conf->from, 'any', true, 300, false, 1, 0);
-$to = new SdkTemplateTypeTo($conf->to, 'any', true, 300, false, 1, 0);
-$transactionDefault = new SdkTransaction($from, $to, $templateDefault->name, $conf->amount, $conf->proof, $conf->user);
+$transactionDefault = new SdkTransaction($conf->from, $conf->to, $templateDefault->name, $conf->amount, $conf->proof, $conf->user);
 $operation = $transactionDefault->conditionHtml(array(), SdkTemplateTypeTo::walletsList());
 
 $requestDataDefault= new SdkRequestData();

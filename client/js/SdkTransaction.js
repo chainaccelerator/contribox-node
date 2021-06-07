@@ -1,4 +1,4 @@
-function Transaction(from = {"xpubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""}, to = {"xpubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""}, template = "owner_Core_user_user_Identifier_Validation_AskForConfirmationDeclaration_0", amount = 0, proof = "{data: \"\", version: \"v0\"}", user = "{data: \"\", version: \"v0\"}"){
+function Transaction(from = [], to = [], template = "owner_Core_user_user_Identifier_Validation_AskForConfirmationDeclaration_0", amount = 0, proof = "{data: \"\", version: \"v0\"}", user = "{data: \"\", version: \"v0\"}"){
 
             this.from = from;
 this.to = to;

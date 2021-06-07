@@ -268,16 +268,15 @@ Template.prototype.getDataFromForm = function () {
 Template.prototype.createTemplate = function(){
 
     this.getDataFromForm();
-    let u = false;
     let tl = template.list;
     let proof = this;
-    
-    wallet.list.forEach(function(w) {
-    
-        if(w.role == "api" ) user = w.account;
-    });
+        
     template.list.forEach(function(t) {
     
+        wallet.list.forEach(function(w) {
+        
+            if(w.role == "api" ) user = w.account;
+        });    
         if(t.name == "default") {
             
             delete proof.domains;
@@ -290,18 +289,16 @@ Template.prototype.createTemplate = function(){
             delete proof.processesStepsAction;
             delete proof.list;
             delete proof.patterns;
-             
-            let templateDefault = t;
             
-            console.info("from 00", proof);
+            let trs = new Transaction(proof.from.xpubList, [], "default", 0, proof, user);
             
-            let transaction = new Transaction(proof.from.xpubList, proof.to.xpubList, templateDefault.name, templateDefault.to.amount, proof, user);
-            
-            template.list = tl;
-            
-            return requestData.send(transaction);
+            //template.list = tl;  
+            console.info("trs", trs);
+                    
+            return requestData.send(trs);
         }
     }); 
+    
     return false;
 }
 '.

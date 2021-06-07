@@ -3,8 +3,8 @@
 class SdkTransaction {
 
     public int $amount = 0;
-    public SdkTemplateTypeFrom $from;
-    public SdkTemplateTypeTo $to;
+    public array $from = [];
+    public array $to = [];
     public string $proof = '{data: "", version: "v0"}';
     public string $user = '{data: "", version: "v0"}';
     public string $template = '';
@@ -12,7 +12,7 @@ class SdkTransaction {
     public string $htmlScript = '';
     public string $type = '';
 
-    public function __construct(SdkTemplateTypeFrom $from, SdkTemplateTypeTo $to, string $template = '', int $amount = 0, string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
+    public function __construct(array $from = [], array $to = [], string $template = '', int $amount = 0, string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
 
         $this->from = $from;
         $this->to = $to;
