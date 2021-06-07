@@ -7,37 +7,34 @@ function RequestData() {
 RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, templateName) {
 
     let tx0 = JSON.parse(JSON.stringify(tx));
-    console.info("tx0", tx0);
-    console.info("roleInfo", roleInfo);
-
+    let toList = JSON.parse(JSON.stringify(roleInfo.xpubList));
     if(roleInfo.state != true) return false;
-    if(roleInfo.xpubList == []) return false;
-    
+    if(toList.length == 0) return false;
+
     tx0.template = templateName;
     tx0.amount = roleInfo.amount;
     tx0.from = fromXpubIdList;
-    tx0.to = roleInfo.xpubList;
+    tx0.to = toList;
     tx0.patternAfterTimeout = roleInfo.patternAfterTimeout;
     tx0.patternAfterTimeoutN = roleInfo.patternAfterTimeoutN;
     tx0.patternBeforeTimeout = roleInfo.patternBeforeTimeout;
     tx0.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
-    tx0.type = roleInfo.type;
-    
+    tx0.type = roleInfo.type;    
     let l = [];
     
-    if(roleInfo.userProofSharing == false) tx0.proof = "";
-    if(roleInfo.proofSharing == false) tx0.user = "";
+    console.info("tx0", tx0);
     
-    for(i=0; i<roleInfo.xpubList.length;i++){
+    if(roleInfo.userProofSharing != true) tx0.proof = "";
+    if(roleInfo.proofSharing != true) tx0.user = "";
+    
+    for(i=0; i<toList.length;i++){
         
-        let test = this.encrypt(tx0, roleInfo.xpubList[i]);
+        let test = this.encrypt(tx0, toList[i]);
         
         console.info("test", test);
         
         l[l.length] = test;
-    }
-    console.info("l", l);
-      
+    }      
     return l;
 }
 
