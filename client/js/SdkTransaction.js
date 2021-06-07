@@ -1,11 +1,11 @@
-function Transaction(from = [], to = [], template = "owner_Core_user_user_Identifier_Validation_AskForConfirmationDeclaration_0", amount = 0, proof = "{data: \"\", version: \"v0\"}", user = "{data: \"\", version: \"v0\"}"){
+function Transaction(fr = [], to = [], template = "", amount = 0, pr = "{data: \"\", version: \"v0\"}", us = "{data: \"\", version: \"v0\"}"){
 
-            this.from = from;
-this.to = to;
-this.template = template;
-this.amount = amount;
-this.proof = proof;
-this.user = user;
+    this.from = fr;
+    this.to = to;
+    this.template = template;
+    this.amount = amount;
+    this.proof = pr;
+    this.user = us;
 
 }
 Transaction.prototype.getDataFromForm = function () {

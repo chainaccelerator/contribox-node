@@ -44,9 +44,15 @@ class SdkTransaction {
             $function1 .= $id.' = '.json_encode($this->$id).', ';
             $function2 .= 'this.'.$id.' = '.$id.';'."\n";
         }
-        $this->htmlScript = 'function Transaction('.substr($function1, 0,-2).'){
+        $this->htmlScript = 'function Transaction(fr = [], to = [], template = "", amount = 0, pr = "{data: \"\", version: \"v0\"}", us = "{data: \"\", version: \"v0\"}"){
 
-            '.$function2.'
+    this.from = fr;
+    this.to = to;
+    this.template = template;
+    this.amount = amount;
+    this.proof = pr;
+    this.user = us;
+
 }
 Transaction.prototype.getDataFromForm = function () {
 

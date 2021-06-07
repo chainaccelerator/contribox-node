@@ -4,17 +4,18 @@ function RequestData() {
     this.request = {"timestamp":0,"peerList":[],"pow":{"nonce":0,"difficulty":4,"difficultyPatthern":"d","hash":"default","pow":"default","previousHash":"default"},"sig":{"address":"","hash":"default","hdPath":"0\/0","range":"0","signature":"","xpub":""}};
     this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":[],"to":[],"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","template":"","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
-RequestData.prototype.roleMsgCreate = function(tx, roleInfo, templateName) {
+RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, templateName) {
 
     console.info("tx0", tx);
     console.info("roleInfo", roleInfo);
 
-    if(roleInfo.xpubList == []) return false;
     if(roleInfo.state != true) return false;
+    if(roleInfo.xpubList == []) return false;
     
     tx.template = templateName;
     tx.amount = roleInfo.amount;
-    tx.from = roleInfo.from;
+    tx.from = fromXpubIdList;
+    tx.to = roleInfo.xpubList;
     tx.patternAfterTimeout = roleInfo.patternAfterTimeout;
     tx.patternAfterTimeoutN = roleInfo.patternAfterTimeoutN;
     tx.patternBeforeTimeout = roleInfo.patternBeforeTimeout;
@@ -41,19 +42,13 @@ RequestData.prototype.roleMsgCreate = function(tx, roleInfo, templateName) {
 
 RequestData.prototype.send = function(tr) {
         
-     console.info("tr", tr);
-        
-    this.route.transaction = tr;
-    this.route.template = tr.template;
+    this.route.transaction = JSON.parse(JSON.stringify(tr));
+    this.route.template = JSON.parse(JSON.stringify(tr.template));
     this.request.timestamp = new Date().getTime();
                 
-    let p = requestData.route.transaction.proof;
-    console.info(p);
-    let u = requestData.route.transaction.user;
-    console.info(u);
-    
-    delete transaction.template;
-            
+    let p = JSON.parse(JSON.stringify(requestData.route.transaction.proof));
+    let u = JSON.parse(JSON.stringify(requestData.route.transaction.user));
+                
     template.list.forEach(function(t) {
     
         if(t.name == requestData.route.template) {
@@ -64,62 +59,58 @@ RequestData.prototype.send = function(tr) {
             let transactions = [];
             let tx = {};
             
-            console.info("from xpublist", requestData.route.transaction.from.xpubList);
+            requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList] = p;});
+            requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList] = p;});
             
-            tr.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList] = p;});
-            tr.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList] = p;});
-            
-            if(tr.amount > 0)  t.to.amount = tr.amount;
-            if(tr.amount < 0)  t.from.amount = tr.amount; 
+            if(requestData.route.transaction.amount > 0)  t.to.amount = this.route.transaction.amount;
+            if(requestData.route.transaction.amount < 0)  t.from.amount = this.route.transaction.amount;
 
-            console.info("from", t.from);
-
-            tx = requestData.roleMsgCreate(tr, t.from, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.from, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.to, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.to, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.backup, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.backup, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.ban, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.ban, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.block, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.block, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.board, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.board, t.name);
+            if(tx != false) transactions[this.route.transaction.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.childstype1, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.childstype1, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.cosigner, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.cosigner, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.cosignerOrg, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.cosignerOrg, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.investorType1, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.investorType1, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.lock, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.lock, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.old, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.old, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.parentstype1, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.parentstype1, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.peg, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.peg, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.witness, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(tr, t.witness, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(tr, t.witnessOrg, t.name);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.witnessOrg, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
             console.info("transactions", transactions);

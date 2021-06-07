@@ -266,34 +266,35 @@ Template.prototype.getDataFromForm = function () {
     return true;
 }
 Template.prototype.createTemplate = function(){
-
-    this.getDataFromForm();
-    let tl = template.list;
-    let proof = this;
-        
+            
     template.list.forEach(function(t) {
+    
+        var u = {};
     
         wallet.list.forEach(function(w) {
         
-            if(w.role == "api" ) user = w.account;
+            if(w.role == "api" ) u = w.account;
         });    
         if(t.name == "default") {
+                    
+            template.getDataFromForm();
             
-            delete proof.domains;
-            delete proof.domainsSubs;
-            delete proof.domainsSubsAbouts;
-            delete proof.roles;
-            delete proof.typeList;
-            delete proof.processes;
-            delete proof.processesSteps;
-            delete proof.processesStepsAction;
-            delete proof.list;
-            delete proof.patterns;
-            
-            let trs = new Transaction(proof.from.xpubList, [], "default", 0, proof, user);
-            
-            //template.list = tl;  
+            var p = JSON.parse(JSON.stringify(template));            
+            delete p.domains;
+            delete p.domainsSubs;
+            delete p.domainsSubsAbouts;
+            delete p.roles;
+            delete p.typeList;
+            delete p.processes;
+            delete p.processesSteps;
+            delete p.processesStepsAction;
+            delete p.list;
+            delete p.patterns;
+                        
+            let trs = new Transaction(JSON.parse(JSON.stringify(p.from.xpubList)), [], "default", 0, JSON.parse(JSON.stringify(p)), JSON.parse(JSON.stringify(u)));
+                                    
             console.info("trs", trs);
+            console.info("trsFrom", trs.from);
                     
             return requestData.send(trs);
         }
