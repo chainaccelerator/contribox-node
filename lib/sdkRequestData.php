@@ -22,9 +22,6 @@ function RequestData() {
 RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, templateName) {
 
     let tx0 = JSON.parse(JSON.stringify(tx));
-    console.info("tx0", tx0);
-    console.info("roleInfo", roleInfo);
-
     if(roleInfo.state != true) return false;
     if(roleInfo.xpubList == []) return false;
     
@@ -50,9 +47,7 @@ RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, tem
         console.info("test", test);
         
         l[l.length] = test;
-    }
-    console.info("l", l);
-      
+    }      
     return l;
 }
 

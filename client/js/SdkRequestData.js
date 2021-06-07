@@ -6,30 +6,31 @@ function RequestData() {
 }
 RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, templateName) {
 
-    console.info("tx0", tx);
+    let tx0 = JSON.parse(JSON.stringify(tx));
+    console.info("tx0", tx0);
     console.info("roleInfo", roleInfo);
 
     if(roleInfo.state != true) return false;
     if(roleInfo.xpubList == []) return false;
     
-    tx.template = templateName;
-    tx.amount = roleInfo.amount;
-    tx.from = fromXpubIdList;
-    tx.to = roleInfo.xpubList;
-    tx.patternAfterTimeout = roleInfo.patternAfterTimeout;
-    tx.patternAfterTimeoutN = roleInfo.patternAfterTimeoutN;
-    tx.patternBeforeTimeout = roleInfo.patternBeforeTimeout;
-    tx.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
-    tx.type = roleInfo.type;
+    tx0.template = templateName;
+    tx0.amount = roleInfo.amount;
+    tx0.from = fromXpubIdList;
+    tx0.to = roleInfo.xpubList;
+    tx0.patternAfterTimeout = roleInfo.patternAfterTimeout;
+    tx0.patternAfterTimeoutN = roleInfo.patternAfterTimeoutN;
+    tx0.patternBeforeTimeout = roleInfo.patternBeforeTimeout;
+    tx0.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
+    tx0.type = roleInfo.type;
     
     let l = [];
     
-    if(roleInfo.userProofSharing == false) tx.proof = "";
-    if(roleInfo.proofSharing == false) tx.user = "";
+    if(roleInfo.userProofSharing == false) tx0.proof = "";
+    if(roleInfo.proofSharing == false) tx0.user = "";
     
     for(i=0; i<roleInfo.xpubList.length;i++){
         
-        let test = this.encrypt(tx, roleInfo.xpubList[i]);
+        let test = this.encrypt(tx0, roleInfo.xpubList[i]);
         
         console.info("test", test);
         
