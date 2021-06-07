@@ -38,7 +38,7 @@ Wallet.prototype.createwallets = function(account){
         wallet.list[wallet.list.length] = w2;
     });
     this.key = requestData.sha256(this.list);
-    this.loaded = true;
+    this.loaded = true;    
 }
 Wallet.prototype.download = function() {
 

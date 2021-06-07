@@ -7,11 +7,16 @@ class SdkTransaction {
     public SdkTemplateTypeTo $to;
     public string $proof = '{data: "", version: "v0"}';
     public string $user = '{data: "", version: "v0"}';
-    public string $proofEncryptionKey = '';
-    public string $userEncryptionKey = '';
+    public bool $proofSharing = false;
+    public bool $userProofSharing = false;
     public string $template = '';
     public array $htmlFieldsId = array();
     public string $htmlScript = '';
+    public bool $patternAfterTimeout = false;
+    public int $patternAfterTimeoutN = 0;
+    public bool $patternBeforeTimeout = false;
+    public int $patternBeforeTimeoutN = 0;
+    public string $type = '';
 
     public function __construct(SdkTemplateTypeFrom $from, SdkTemplateTypeTo $to, string $template = '', int $amount = 0, string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
 
@@ -33,9 +38,14 @@ class SdkTransaction {
             'template',
             'amount',
             'proof',
-            'proofEncryptionKey',
+            'proofSharing',
             'user',
-            'userEncryptionKey'
+            'userProofSharing',
+            'patternAfterTimeout',
+            'patternAfterTimeoutN',
+            'patternBeforeTimeout',
+            'patternBeforeTimeoutN',
+            'type'
         ];
         $function = '';
         $function1 = '';
@@ -68,6 +78,11 @@ Transaction.prototype.createTransaction = function () {
 <label for="to">To addresses</label> <select name="to" multiple>'.$optionsTo.'</select><br><br>
 <label for="template">Template</label> <select name="template" id="Template"></select><br><br>
 <label for="amount">For</label> <input type="number" name="amount" min="0" value="'.$this->amount.'"> BTC<br><br>
-<label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>';
+<label for="proof">Proof</label> <textarea name="proof">'.$this->proof.'</textarea><br><br>
+<input type="checkbox" name="proofSharing"> Proof sharing<br><br>
+<input type="checkbox" name="userProofSharing"> User proof sharing<br><br>
+<input type="checkbox" name="patternBeforeTimeout"> before <input name ="patternBeforeTimeoutN" type="number" value="1"> bloc(s) timeout<br><br>
+<input type="checkbox" name="patternAfterTimeout"> after <input name ="patternAfterTimeoutN" type="number" value="300"> bloc(s) timeout<br><br>
+';
     }
 }

@@ -301,8 +301,6 @@ Template.prototype.getDataFromForm = function () {
 Template.prototype.createTemplate = function(){
 
     this.getDataFromForm();
-    let userEncryptionKey = "";
-    let proofEncryptionKey = "";
     let u = false;
     let tl = template.list;
     let proof = template;
@@ -329,7 +327,8 @@ Template.prototype.createTemplate = function(){
             let templateDefault = t;
             proof.from = template.from;
             proof.to = template.to;
-            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+            
+            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, t.proofSharing, user, t.userSharing, t.patternAfterTimeout, t.patternAfterTimeoutN, t.patternBeforeTimeout, t.patternBeforeTimeoutN, t.type);
 
             template.list = tl;
             

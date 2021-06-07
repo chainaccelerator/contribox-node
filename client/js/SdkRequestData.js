@@ -2,8 +2,38 @@
 function RequestData() {
 
     this.request = {"timestamp":0,"peerList":[],"pow":{"nonce":0,"difficulty":4,"difficultyPatthern":"d","hash":"default","pow":"default","previousHash":"default"},"sig":{"address":"","hash":"default","hdPath":"0\/0","range":"0","signature":"","xpub":""}};
-    this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":{"pubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amountBTCMin":0,"amountBTCMinFrom":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"to":{"pubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amountBTCMin":0,"amountBTCMinFrom":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","proofEncryptionKey":"","userEncryptionKey":"","template":"","htmlFieldsId":[],"htmlScript":""}};
+    this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":{"xpubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"to":{"xpubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","proofSharing":false,"userProofSharing":false,"template":"","htmlFieldsId":[],"htmlScript":"","patternAfterTimeout":false,"patternAfterTimeoutN":0,"patternBeforeTimeout":false,"patternBeforeTimeoutN":0,"type":""}};
 }
+RequestData.prototype.roleMsgCreate = function(tx, roleInfo, templateName) {
+
+    if(roleInfo.xpubList == []) return false;
+    if(roleInfo.state == "off") return false;
+    
+    tx.template = templateName;
+    tx.amount = roleInfo.amount;
+    tx.from = roleInfo.from;
+    tx.patternAfterTimeout = roleInfo.patternAfterTimeout;
+    tx.patternAfterTimeoutN = roleInfo.patternAfterTimeoutN;
+    tx.patternBeforeTimeout = roleInfo.patternBeforeTimeout;
+    tx.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
+    tx.type = roleInfo.type;
+    
+    if(roleInfo.proof == "on") {
+    
+     for(i=0; i<roleInfo.xpubList.length;i++){
+        
+            if(tx.proofEncryption != "on") tx.proof =  "";
+            
+            if(tx.userEncryption != "on") tx.user =  "";
+        }
+    }
+    console.info("tx", tx);
+    
+    requestData.encrypt(tx, roleInfo.xpubList[i]);
+    
+    return transaction;
+}
+
 RequestData.prototype.send = function(transaction) {
         
     this.route.transaction = transaction;
@@ -11,10 +41,12 @@ RequestData.prototype.send = function(transaction) {
     this.request.timestamp = new Date().getTime();
                 
     let p = requestData.route.transaction.proof;
-    let u = requestData.route.transaction.proof;
+    console.info(p);
+    let u = requestData.route.transaction.user;
+    console.info(u);
     
     delete transaction.template;
-        
+            
     template.list.forEach(function(t) {
     
         if(t.name == requestData.route.template) {
@@ -22,31 +54,61 @@ RequestData.prototype.send = function(transaction) {
             requestData.pow(requestData);
             requestData.sig(requestData);
             
-            let dest = [];
+            let transactions = [];
+            let tx = {};
             
-            t.backup.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.ban.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.block.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.board.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.childstype1.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.cosigner.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.cosignerOrg.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.from.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.investorType1.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.lock.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.old.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.parentstype1.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.peg.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.transaction.to.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.transaction.witness.publickeyList.forEach(function(p) { dest[p] = p;});
-            t.transaction.witnessOrg.publickeyList.forEach(function(p) { dest[p] = p;});
+            requestData.route.transaction.from.xpubList.forEach(function(p) { if(dest.indexOf(p) == -1) requestData.route.transaction.from.xpubList[requestData.route.transaction.from.xpubList] = p;});
+            requestData.route.transaction.to.xpubList.forEach(function(p) { if(dest.indexOf(p) == -1) requestData.route.transaction.to.xpubList[requestData.route.transaction.to.xpubList] = p;});
             
-            console.info(dest);
-    
-            proofEncryptionKey = requestData.walletCreate();
-            proof = requestData.encrypt(p, proofEncryptionKey.publicKey);
-            userEncryptionKey = requestData.walletCreate();
-            user = requestData.encrypt(u, userEncryptionKey.publicKey);
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.backup, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.ban, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.block, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.board, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.childstype1, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.cosigner, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.cosignerOrg, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.investorType1, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.lock, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.old, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.parentstype1, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.peg, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.to, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.witness, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.witnessOrg, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            console.info("transactions", transactions);
             
             let urlClient = "http://localhost:7001/api/index.php";            
             const options = {
@@ -78,42 +140,50 @@ RequestData.prototype.sha256 = function(message) {
     
     return hex;
 }
-RequestData.prototype.encrypt = function(message, publicKey) {
+RequestData.prototype.encrypt = function(message, xpub) {
 
-  let m = JSON.stringify(message);
-  let enc = new TextEncoder();
-  let encoded = enc.encode(m);
-  
-  return window.crypto.subtle.encrypt(
-    {
-      name: "RSA-OAEP"
-    },
-    publicKey,
-    encoded
-  );
+    let m = JSON.stringify(message);
+    hdPath = "0/0";
+    range = 100;
+    
+    return encryptMessageWithXpub(m, xpub, hdPath, range);
+    
+    // return sodium.crypto_aead_xchacha20poly1305_ietf_encrypt(message, null, null, wallet.nonce3, wallet.key3);
+        
+    // let m = JSON.stringify(message);
+    // let enc = new TextEncoder();
+    // let encoded = enc.encode(m);
+    
+    // return window.crypto.subtle.encrypt(
+    //   {
+    //      name: "RSA-OAEP"
+    //   },
+    //   publicKey,
+    //   encoded
+    // );
 }
-RequestData.prototype.decrypt = function(ciphertext, privateKey) {
+RequestData.prototype.decrypt = function(newCipher, xprv) {
 
-  return window.crypto.subtle.decrypt(
-    {
-      name: "RSA-OAEP"
-    },
-    privateKey,
-    ciphertext
-  );
-}
-RequestData.prototype.walletCreate = function(){
+    encryptedMessage = newCipher.encryptedMessage;
+    hdPath = newCipher.hdPath;
+    range = newCipher.range;
+    xpub = newCipher.xpub;
+    pubkey = newCipher.pubkey;
+    senderPubkey = newCipher.encryptedMessage;
 
-    return window.crypto.subtle.generateKey(
-      {
-        name: "RSA-OAEP",
-        modulusLength: 4096,
-        publicExponent: new Uint8Array([1, 0, 1]),
-        hash: "SHA-256"
-      },
-      true,
-      ["encrypt", "decrypt"]
-    );
+    let message = decryptMessage(encryptedMessage, xprv, hdPath, range, pubkey, senderPubkey);
+    
+    return JSON.parse(message);    
+
+    // return sodium.crypto_aead_xchacha20poly1305_ietf_decrypt(null, ciphertext, null, wallet.nonce3, wallet.key3);
+
+    // return window.crypto.subtle.decrypt(
+    // {
+    //   name: "RSA-OAEP"
+    // },
+    // privateKey,
+    // ciphertext
+    // );
 }
 RequestData.prototype.sig = function(data){
 
@@ -137,7 +207,7 @@ RequestData.prototype.pow = function(data){
     this.request.pow.nonce++;
     this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce);
     
-    if(this.request.pow.nonce > 400000) return false;
+    if(this.request.pow.nonce > 800000) return false;
   } 
   console.info("pow", requestData.request.pow.pow);
   console.info("nonce", requestData.request.pow.nonce);

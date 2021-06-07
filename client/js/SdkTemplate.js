@@ -9,7 +9,7 @@ function Template(amount = 0, role = "owner", domain = "Core", process = "Identi
     this.processes = ["Core","Authorizations","HealthCare","Sells","Finance","Maintenance"];
     this.processesSteps = ["Proposal","Realization","Test","Validation","Advertising","InitialVersion","NewVersion"];
     this.processesStepsAction = ["AskForConfirmationDeclaration","AskForConfirmationBan","AskForConfirmationOutboard","AskForConfirmationOutboard","AskForConfirmationShare","AskForTemplateUpdate","AskForTechnicalInfos"];
-    this.list = [{"name":"default","amount":1.0e-5,"role":"Author","domain":"Core","process":"Core","blockSignature":"on","pegSignature":"on","declareAddressFrom":"on","declareAddressTo":"on","proofEncryption":"on","userEncryption":"on","templateValidation":"default","proofValidation":{"state":"on","definition":"","type":"proofValidation"},"fromValidation":{"state":"on","definition":"","type":"fromValidation"},"toValidation":{"state":"on","definition":"","type":""},"from":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"to":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"backup":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"lock":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"witness":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"cosigner":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"ban":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"old":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"board":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"cosignerOrg":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"witnessOrg":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"parentstype1":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"childstype1":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"investorType1":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"block":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"peg":{"publickeyList":[],"pattern":"any","patternAfterTimeoutN":"300","patternBeforeTimeoutN":"1","amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":"on","patternAfterTimeout":"on","patternBeforeTimeout":"on","type":""},"hash":""}];
+    this.list = [{"name":"default","amount":1.0e-5,"role":"Author","domain":"Core","process":"Core","blockSignature":true,"pegSignature":true,"proofSharing":true,"userSharing":true,"patternAfterTimeout":false,"patternAfterTimeoutN":1,"patternBeforeTimeout":false,"patternBeforeTimeoutN":300,"templateValidation":"default","proofValidation":{"state":true,"definition":"","type":"proofValidation"},"fromValidation":{"state":true,"definition":"","type":"fromValidation"},"toValidation":{"state":true,"definition":"","type":""},"from":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"to":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"backup":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"lock":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"witness":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"cosigner":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"ban":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"old":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"board":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"cosignerOrg":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"witnessOrg":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"parentstype1":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"childstype1":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"investorType1":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"block":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"peg":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amountBTCMin":"0","amountBTCMinFrom":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"hash":""}];
     this.patterns = ["none","1%","2%","3%","4%","5%","6%","7%","8%","9%","10%","11%","12%","13%","14%","15%","16%","17%","18%","19%","20%","21%","22%","23%","24%","25%","26%","27%","28%","29%","30%","31%","32%","33%","34%","35%","36%","37%","38%","39%","40%","41%","42%","43%","44%","45%","46%","47%","48%","49%","50%","51%","52%","53%","54%","55%","56%","57%","58%","59%","60%","61%","62%","63%","64%","65%","66%","67%","68%","69%","70%","71%","72%","73%","74%","75%","76%","77%","78%","79%","80%","81%","82%","83%","84%","85%","86%","87%","88%","89%","90%","91%","92%","93%","94%","95%","96%","97%","98%","99%"];
 
 	this.amount = amount;
@@ -87,8 +87,6 @@ Template.prototype.getDataFromForm = function () {
 Template.prototype.createTemplate = function(){
 
     this.getDataFromForm();
-    let userEncryptionKey = "";
-    let proofEncryptionKey = "";
     let u = false;
     let tl = template.list;
     let proof = template;
@@ -115,7 +113,8 @@ Template.prototype.createTemplate = function(){
             let templateDefault = t;
             proof.from = template.from;
             proof.to = template.to;
-            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, proofEncryptionKey, user, userEncryptionKey);
+            
+            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, t.proofSharing, user, t.userSharing, t.patternAfterTimeout, t.patternAfterTimeoutN, t.patternBeforeTimeout, t.patternBeforeTimeoutN, t.type);
 
             template.list = tl;
             
@@ -144,289 +143,577 @@ Template.prototype.toValidationGetDataFromForm = function(){
 }
 Template.prototype.fromGetDataFromForm = function(){
 
-     this.from.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListfrom")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.from.publickeyList[i] = selList[i].value;
-     }   
+        this.from.xpubList = [];
+        let selList= document.getElementsByName("xpubListfrom")[0].selectedOptions;
          
-    this.from.pattern = document.getElementsByName("patternfrom")[0].value;
-    this.from.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNfrom")[0].value;
-    this.from.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNfrom")[0].value;
-    this.from.amountBTCMin = document.getElementsByName("amountBTCMinfrom")[0].value;
-    this.from.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromfrom")[0].value;
-    this.from.state = document.getElementsByName("statefrom")[0].value;
-    this.from.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutfrom")[0].value;
-    this.from.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutfrom")[0].value;    
-    this.from.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.from.xpubList[i] = selList[i].value;
+        }   
+        this.from.pattern = document.getElementsByName("patternfrom")[0].value;
+        this.from.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNfrom")[0].value;                
+        this.from.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNfrom")[0].value;
+        this.from.amount = document.getElementsByName("amountfrom")[0].value;
+        this.from.from = document.getElementsByName("fromfrom")[0].value;
+        this.from.state = document.getElementsByName("statefrom")[0].value;
+        this.from.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutfrom")[0].value;
+        
+        if(this.from.patternAfterTimeout == "on") this.from.patternAfterTimeout = true;
+        else this.from.patternAfterTimeout = false;
+        
+        this.from.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutfrom")[0].value;  
+        
+        if(this.from.patternBeforeTimeout == "on") this.from.patternBeforeTimeout = true;
+        else this.from.patternBeforeTimeout = false;
+        
+        this.from.proof = document.getElementsByName("prooffrom")[0].value;
+                
+        if(this.from.proof == "on") this.from.proof = true;
+        else this.from.proof = false;
+        
+        this.from.user = document.getElementsByName("userfrom")[0].value;
+                
+        if(this.from.user == "on") this.from.user = true;
+        else this.from.user = false;
+        
+        this.from.type = "from";
 }
 Template.prototype.toGetDataFromForm = function(){
 
-     this.to.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListto")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.to.publickeyList[i] = selList[i].value;
-     }   
+        this.to.xpubList = [];
+        let selList= document.getElementsByName("xpubListto")[0].selectedOptions;
          
-    this.to.pattern = document.getElementsByName("patternto")[0].value;
-    this.to.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNto")[0].value;
-    this.to.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNto")[0].value;
-    this.to.amountBTCMin = document.getElementsByName("amountBTCMinto")[0].value;
-    this.to.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromto")[0].value;
-    this.to.state = document.getElementsByName("stateto")[0].value;
-    this.to.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutto")[0].value;
-    this.to.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutto")[0].value;    
-    this.to.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.to.xpubList[i] = selList[i].value;
+        }   
+        this.to.pattern = document.getElementsByName("patternto")[0].value;
+        this.to.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNto")[0].value;                
+        this.to.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNto")[0].value;
+        this.to.amount = document.getElementsByName("amountto")[0].value;
+        this.to.from = document.getElementsByName("fromto")[0].value;
+        this.to.state = document.getElementsByName("stateto")[0].value;
+        this.to.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutto")[0].value;
+        
+        if(this.to.patternAfterTimeout == "on") this.to.patternAfterTimeout = true;
+        else this.to.patternAfterTimeout = false;
+        
+        this.to.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutto")[0].value;  
+        
+        if(this.to.patternBeforeTimeout == "on") this.to.patternBeforeTimeout = true;
+        else this.to.patternBeforeTimeout = false;
+        
+        this.to.proof = document.getElementsByName("proofto")[0].value;
+                
+        if(this.to.proof == "on") this.to.proof = true;
+        else this.to.proof = false;
+        
+        this.to.user = document.getElementsByName("userto")[0].value;
+                
+        if(this.to.user == "on") this.to.user = true;
+        else this.to.user = false;
+        
+        this.to.type = "to";
 }
 Template.prototype.backupGetDataFromForm = function(){
 
-     this.backup.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListbackup")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.backup.publickeyList[i] = selList[i].value;
-     }   
+        this.backup.xpubList = [];
+        let selList= document.getElementsByName("xpubListbackup")[0].selectedOptions;
          
-    this.backup.pattern = document.getElementsByName("patternbackup")[0].value;
-    this.backup.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNbackup")[0].value;
-    this.backup.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNbackup")[0].value;
-    this.backup.amountBTCMin = document.getElementsByName("amountBTCMinbackup")[0].value;
-    this.backup.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrombackup")[0].value;
-    this.backup.state = document.getElementsByName("statebackup")[0].value;
-    this.backup.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutbackup")[0].value;
-    this.backup.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutbackup")[0].value;    
-    this.backup.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.backup.xpubList[i] = selList[i].value;
+        }   
+        this.backup.pattern = document.getElementsByName("patternbackup")[0].value;
+        this.backup.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNbackup")[0].value;                
+        this.backup.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNbackup")[0].value;
+        this.backup.amount = document.getElementsByName("amountbackup")[0].value;
+        this.backup.from = document.getElementsByName("frombackup")[0].value;
+        this.backup.state = document.getElementsByName("statebackup")[0].value;
+        this.backup.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutbackup")[0].value;
+        
+        if(this.backup.patternAfterTimeout == "on") this.backup.patternAfterTimeout = true;
+        else this.backup.patternAfterTimeout = false;
+        
+        this.backup.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutbackup")[0].value;  
+        
+        if(this.backup.patternBeforeTimeout == "on") this.backup.patternBeforeTimeout = true;
+        else this.backup.patternBeforeTimeout = false;
+        
+        this.backup.proof = document.getElementsByName("proofbackup")[0].value;
+                
+        if(this.backup.proof == "on") this.backup.proof = true;
+        else this.backup.proof = false;
+        
+        this.backup.user = document.getElementsByName("userbackup")[0].value;
+                
+        if(this.backup.user == "on") this.backup.user = true;
+        else this.backup.user = false;
+        
+        this.backup.type = "backup";
 }
 Template.prototype.lockGetDataFromForm = function(){
 
-     this.lock.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListlock")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.lock.publickeyList[i] = selList[i].value;
-     }   
+        this.lock.xpubList = [];
+        let selList= document.getElementsByName("xpubListlock")[0].selectedOptions;
          
-    this.lock.pattern = document.getElementsByName("patternlock")[0].value;
-    this.lock.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNlock")[0].value;
-    this.lock.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNlock")[0].value;
-    this.lock.amountBTCMin = document.getElementsByName("amountBTCMinlock")[0].value;
-    this.lock.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromlock")[0].value;
-    this.lock.state = document.getElementsByName("statelock")[0].value;
-    this.lock.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutlock")[0].value;
-    this.lock.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutlock")[0].value;    
-    this.lock.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.lock.xpubList[i] = selList[i].value;
+        }   
+        this.lock.pattern = document.getElementsByName("patternlock")[0].value;
+        this.lock.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNlock")[0].value;                
+        this.lock.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNlock")[0].value;
+        this.lock.amount = document.getElementsByName("amountlock")[0].value;
+        this.lock.from = document.getElementsByName("fromlock")[0].value;
+        this.lock.state = document.getElementsByName("statelock")[0].value;
+        this.lock.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutlock")[0].value;
+        
+        if(this.lock.patternAfterTimeout == "on") this.lock.patternAfterTimeout = true;
+        else this.lock.patternAfterTimeout = false;
+        
+        this.lock.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutlock")[0].value;  
+        
+        if(this.lock.patternBeforeTimeout == "on") this.lock.patternBeforeTimeout = true;
+        else this.lock.patternBeforeTimeout = false;
+        
+        this.lock.proof = document.getElementsByName("prooflock")[0].value;
+                
+        if(this.lock.proof == "on") this.lock.proof = true;
+        else this.lock.proof = false;
+        
+        this.lock.user = document.getElementsByName("userlock")[0].value;
+                
+        if(this.lock.user == "on") this.lock.user = true;
+        else this.lock.user = false;
+        
+        this.lock.type = "lock";
 }
 Template.prototype.witnessGetDataFromForm = function(){
 
-     this.witness.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListwitness")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.witness.publickeyList[i] = selList[i].value;
-     }   
+        this.witness.xpubList = [];
+        let selList= document.getElementsByName("xpubListwitness")[0].selectedOptions;
          
-    this.witness.pattern = document.getElementsByName("patternwitness")[0].value;
-    this.witness.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNwitness")[0].value;
-    this.witness.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNwitness")[0].value;
-    this.witness.amountBTCMin = document.getElementsByName("amountBTCMinwitness")[0].value;
-    this.witness.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromwitness")[0].value;
-    this.witness.state = document.getElementsByName("statewitness")[0].value;
-    this.witness.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutwitness")[0].value;
-    this.witness.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitness")[0].value;    
-    this.witness.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.witness.xpubList[i] = selList[i].value;
+        }   
+        this.witness.pattern = document.getElementsByName("patternwitness")[0].value;
+        this.witness.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNwitness")[0].value;                
+        this.witness.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNwitness")[0].value;
+        this.witness.amount = document.getElementsByName("amountwitness")[0].value;
+        this.witness.from = document.getElementsByName("fromwitness")[0].value;
+        this.witness.state = document.getElementsByName("statewitness")[0].value;
+        this.witness.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutwitness")[0].value;
+        
+        if(this.witness.patternAfterTimeout == "on") this.witness.patternAfterTimeout = true;
+        else this.witness.patternAfterTimeout = false;
+        
+        this.witness.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitness")[0].value;  
+        
+        if(this.witness.patternBeforeTimeout == "on") this.witness.patternBeforeTimeout = true;
+        else this.witness.patternBeforeTimeout = false;
+        
+        this.witness.proof = document.getElementsByName("proofwitness")[0].value;
+                
+        if(this.witness.proof == "on") this.witness.proof = true;
+        else this.witness.proof = false;
+        
+        this.witness.user = document.getElementsByName("userwitness")[0].value;
+                
+        if(this.witness.user == "on") this.witness.user = true;
+        else this.witness.user = false;
+        
+        this.witness.type = "witness";
 }
 Template.prototype.cosignerGetDataFromForm = function(){
 
-     this.cosigner.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListcosigner")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.cosigner.publickeyList[i] = selList[i].value;
-     }   
+        this.cosigner.xpubList = [];
+        let selList= document.getElementsByName("xpubListcosigner")[0].selectedOptions;
          
-    this.cosigner.pattern = document.getElementsByName("patterncosigner")[0].value;
-    this.cosigner.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNcosigner")[0].value;
-    this.cosigner.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNcosigner")[0].value;
-    this.cosigner.amountBTCMin = document.getElementsByName("amountBTCMincosigner")[0].value;
-    this.cosigner.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromcosigner")[0].value;
-    this.cosigner.state = document.getElementsByName("statecosigner")[0].value;
-    this.cosigner.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutcosigner")[0].value;
-    this.cosigner.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosigner")[0].value;    
-    this.cosigner.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.cosigner.xpubList[i] = selList[i].value;
+        }   
+        this.cosigner.pattern = document.getElementsByName("patterncosigner")[0].value;
+        this.cosigner.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNcosigner")[0].value;                
+        this.cosigner.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNcosigner")[0].value;
+        this.cosigner.amount = document.getElementsByName("amountcosigner")[0].value;
+        this.cosigner.from = document.getElementsByName("fromcosigner")[0].value;
+        this.cosigner.state = document.getElementsByName("statecosigner")[0].value;
+        this.cosigner.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutcosigner")[0].value;
+        
+        if(this.cosigner.patternAfterTimeout == "on") this.cosigner.patternAfterTimeout = true;
+        else this.cosigner.patternAfterTimeout = false;
+        
+        this.cosigner.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosigner")[0].value;  
+        
+        if(this.cosigner.patternBeforeTimeout == "on") this.cosigner.patternBeforeTimeout = true;
+        else this.cosigner.patternBeforeTimeout = false;
+        
+        this.cosigner.proof = document.getElementsByName("proofcosigner")[0].value;
+                
+        if(this.cosigner.proof == "on") this.cosigner.proof = true;
+        else this.cosigner.proof = false;
+        
+        this.cosigner.user = document.getElementsByName("usercosigner")[0].value;
+                
+        if(this.cosigner.user == "on") this.cosigner.user = true;
+        else this.cosigner.user = false;
+        
+        this.cosigner.type = "cosigner";
 }
 Template.prototype.banGetDataFromForm = function(){
 
-     this.ban.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListban")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.ban.publickeyList[i] = selList[i].value;
-     }   
+        this.ban.xpubList = [];
+        let selList= document.getElementsByName("xpubListban")[0].selectedOptions;
          
-    this.ban.pattern = document.getElementsByName("patternban")[0].value;
-    this.ban.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNban")[0].value;
-    this.ban.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNban")[0].value;
-    this.ban.amountBTCMin = document.getElementsByName("amountBTCMinban")[0].value;
-    this.ban.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromban")[0].value;
-    this.ban.state = document.getElementsByName("stateban")[0].value;
-    this.ban.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutban")[0].value;
-    this.ban.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutban")[0].value;    
-    this.ban.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.ban.xpubList[i] = selList[i].value;
+        }   
+        this.ban.pattern = document.getElementsByName("patternban")[0].value;
+        this.ban.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNban")[0].value;                
+        this.ban.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNban")[0].value;
+        this.ban.amount = document.getElementsByName("amountban")[0].value;
+        this.ban.from = document.getElementsByName("fromban")[0].value;
+        this.ban.state = document.getElementsByName("stateban")[0].value;
+        this.ban.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutban")[0].value;
+        
+        if(this.ban.patternAfterTimeout == "on") this.ban.patternAfterTimeout = true;
+        else this.ban.patternAfterTimeout = false;
+        
+        this.ban.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutban")[0].value;  
+        
+        if(this.ban.patternBeforeTimeout == "on") this.ban.patternBeforeTimeout = true;
+        else this.ban.patternBeforeTimeout = false;
+        
+        this.ban.proof = document.getElementsByName("proofban")[0].value;
+                
+        if(this.ban.proof == "on") this.ban.proof = true;
+        else this.ban.proof = false;
+        
+        this.ban.user = document.getElementsByName("userban")[0].value;
+                
+        if(this.ban.user == "on") this.ban.user = true;
+        else this.ban.user = false;
+        
+        this.ban.type = "ban";
 }
 Template.prototype.oldGetDataFromForm = function(){
 
-     this.old.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListold")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.old.publickeyList[i] = selList[i].value;
-     }   
+        this.old.xpubList = [];
+        let selList= document.getElementsByName("xpubListold")[0].selectedOptions;
          
-    this.old.pattern = document.getElementsByName("patternold")[0].value;
-    this.old.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNold")[0].value;
-    this.old.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNold")[0].value;
-    this.old.amountBTCMin = document.getElementsByName("amountBTCMinold")[0].value;
-    this.old.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromold")[0].value;
-    this.old.state = document.getElementsByName("stateold")[0].value;
-    this.old.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutold")[0].value;
-    this.old.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutold")[0].value;    
-    this.old.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.old.xpubList[i] = selList[i].value;
+        }   
+        this.old.pattern = document.getElementsByName("patternold")[0].value;
+        this.old.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNold")[0].value;                
+        this.old.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNold")[0].value;
+        this.old.amount = document.getElementsByName("amountold")[0].value;
+        this.old.from = document.getElementsByName("fromold")[0].value;
+        this.old.state = document.getElementsByName("stateold")[0].value;
+        this.old.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutold")[0].value;
+        
+        if(this.old.patternAfterTimeout == "on") this.old.patternAfterTimeout = true;
+        else this.old.patternAfterTimeout = false;
+        
+        this.old.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutold")[0].value;  
+        
+        if(this.old.patternBeforeTimeout == "on") this.old.patternBeforeTimeout = true;
+        else this.old.patternBeforeTimeout = false;
+        
+        this.old.proof = document.getElementsByName("proofold")[0].value;
+                
+        if(this.old.proof == "on") this.old.proof = true;
+        else this.old.proof = false;
+        
+        this.old.user = document.getElementsByName("userold")[0].value;
+                
+        if(this.old.user == "on") this.old.user = true;
+        else this.old.user = false;
+        
+        this.old.type = "old";
 }
 Template.prototype.boardGetDataFromForm = function(){
 
-     this.board.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListboard")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.board.publickeyList[i] = selList[i].value;
-     }   
+        this.board.xpubList = [];
+        let selList= document.getElementsByName("xpubListboard")[0].selectedOptions;
          
-    this.board.pattern = document.getElementsByName("patternboard")[0].value;
-    this.board.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNboard")[0].value;
-    this.board.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNboard")[0].value;
-    this.board.amountBTCMin = document.getElementsByName("amountBTCMinboard")[0].value;
-    this.board.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromboard")[0].value;
-    this.board.state = document.getElementsByName("stateboard")[0].value;
-    this.board.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutboard")[0].value;
-    this.board.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutboard")[0].value;    
-    this.board.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.board.xpubList[i] = selList[i].value;
+        }   
+        this.board.pattern = document.getElementsByName("patternboard")[0].value;
+        this.board.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNboard")[0].value;                
+        this.board.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNboard")[0].value;
+        this.board.amount = document.getElementsByName("amountboard")[0].value;
+        this.board.from = document.getElementsByName("fromboard")[0].value;
+        this.board.state = document.getElementsByName("stateboard")[0].value;
+        this.board.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutboard")[0].value;
+        
+        if(this.board.patternAfterTimeout == "on") this.board.patternAfterTimeout = true;
+        else this.board.patternAfterTimeout = false;
+        
+        this.board.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutboard")[0].value;  
+        
+        if(this.board.patternBeforeTimeout == "on") this.board.patternBeforeTimeout = true;
+        else this.board.patternBeforeTimeout = false;
+        
+        this.board.proof = document.getElementsByName("proofboard")[0].value;
+                
+        if(this.board.proof == "on") this.board.proof = true;
+        else this.board.proof = false;
+        
+        this.board.user = document.getElementsByName("userboard")[0].value;
+                
+        if(this.board.user == "on") this.board.user = true;
+        else this.board.user = false;
+        
+        this.board.type = "board";
 }
 Template.prototype.cosignerOrgGetDataFromForm = function(){
 
-     this.cosignerOrg.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListcosignerOrg")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.cosignerOrg.publickeyList[i] = selList[i].value;
-     }   
+        this.cosignerOrg.xpubList = [];
+        let selList= document.getElementsByName("xpubListcosignerOrg")[0].selectedOptions;
          
-    this.cosignerOrg.pattern = document.getElementsByName("patterncosignerOrg")[0].value;
-    this.cosignerOrg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNcosignerOrg")[0].value;
-    this.cosignerOrg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNcosignerOrg")[0].value;
-    this.cosignerOrg.amountBTCMin = document.getElementsByName("amountBTCMincosignerOrg")[0].value;
-    this.cosignerOrg.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromcosignerOrg")[0].value;
-    this.cosignerOrg.state = document.getElementsByName("statecosignerOrg")[0].value;
-    this.cosignerOrg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutcosignerOrg")[0].value;
-    this.cosignerOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosignerOrg")[0].value;    
-    this.cosignerOrg.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.cosignerOrg.xpubList[i] = selList[i].value;
+        }   
+        this.cosignerOrg.pattern = document.getElementsByName("patterncosignerOrg")[0].value;
+        this.cosignerOrg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNcosignerOrg")[0].value;                
+        this.cosignerOrg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNcosignerOrg")[0].value;
+        this.cosignerOrg.amount = document.getElementsByName("amountcosignerOrg")[0].value;
+        this.cosignerOrg.from = document.getElementsByName("fromcosignerOrg")[0].value;
+        this.cosignerOrg.state = document.getElementsByName("statecosignerOrg")[0].value;
+        this.cosignerOrg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutcosignerOrg")[0].value;
+        
+        if(this.cosignerOrg.patternAfterTimeout == "on") this.cosignerOrg.patternAfterTimeout = true;
+        else this.cosignerOrg.patternAfterTimeout = false;
+        
+        this.cosignerOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutcosignerOrg")[0].value;  
+        
+        if(this.cosignerOrg.patternBeforeTimeout == "on") this.cosignerOrg.patternBeforeTimeout = true;
+        else this.cosignerOrg.patternBeforeTimeout = false;
+        
+        this.cosignerOrg.proof = document.getElementsByName("proofcosignerOrg")[0].value;
+                
+        if(this.cosignerOrg.proof == "on") this.cosignerOrg.proof = true;
+        else this.cosignerOrg.proof = false;
+        
+        this.cosignerOrg.user = document.getElementsByName("usercosignerOrg")[0].value;
+                
+        if(this.cosignerOrg.user == "on") this.cosignerOrg.user = true;
+        else this.cosignerOrg.user = false;
+        
+        this.cosignerOrg.type = "cosignerOrg";
 }
 Template.prototype.witnessOrgGetDataFromForm = function(){
 
-     this.witnessOrg.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListwitnessOrg")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.witnessOrg.publickeyList[i] = selList[i].value;
-     }   
+        this.witnessOrg.xpubList = [];
+        let selList= document.getElementsByName("xpubListwitnessOrg")[0].selectedOptions;
          
-    this.witnessOrg.pattern = document.getElementsByName("patternwitnessOrg")[0].value;
-    this.witnessOrg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNwitnessOrg")[0].value;
-    this.witnessOrg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNwitnessOrg")[0].value;
-    this.witnessOrg.amountBTCMin = document.getElementsByName("amountBTCMinwitnessOrg")[0].value;
-    this.witnessOrg.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromwitnessOrg")[0].value;
-    this.witnessOrg.state = document.getElementsByName("statewitnessOrg")[0].value;
-    this.witnessOrg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutwitnessOrg")[0].value;
-    this.witnessOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitnessOrg")[0].value;    
-    this.witnessOrg.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.witnessOrg.xpubList[i] = selList[i].value;
+        }   
+        this.witnessOrg.pattern = document.getElementsByName("patternwitnessOrg")[0].value;
+        this.witnessOrg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNwitnessOrg")[0].value;                
+        this.witnessOrg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNwitnessOrg")[0].value;
+        this.witnessOrg.amount = document.getElementsByName("amountwitnessOrg")[0].value;
+        this.witnessOrg.from = document.getElementsByName("fromwitnessOrg")[0].value;
+        this.witnessOrg.state = document.getElementsByName("statewitnessOrg")[0].value;
+        this.witnessOrg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutwitnessOrg")[0].value;
+        
+        if(this.witnessOrg.patternAfterTimeout == "on") this.witnessOrg.patternAfterTimeout = true;
+        else this.witnessOrg.patternAfterTimeout = false;
+        
+        this.witnessOrg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutwitnessOrg")[0].value;  
+        
+        if(this.witnessOrg.patternBeforeTimeout == "on") this.witnessOrg.patternBeforeTimeout = true;
+        else this.witnessOrg.patternBeforeTimeout = false;
+        
+        this.witnessOrg.proof = document.getElementsByName("proofwitnessOrg")[0].value;
+                
+        if(this.witnessOrg.proof == "on") this.witnessOrg.proof = true;
+        else this.witnessOrg.proof = false;
+        
+        this.witnessOrg.user = document.getElementsByName("userwitnessOrg")[0].value;
+                
+        if(this.witnessOrg.user == "on") this.witnessOrg.user = true;
+        else this.witnessOrg.user = false;
+        
+        this.witnessOrg.type = "witnessOrg";
 }
 Template.prototype.parentstype1GetDataFromForm = function(){
 
-     this.parentstype1.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListparentstype1")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.parentstype1.publickeyList[i] = selList[i].value;
-     }   
+        this.parentstype1.xpubList = [];
+        let selList= document.getElementsByName("xpubListparentstype1")[0].selectedOptions;
          
-    this.parentstype1.pattern = document.getElementsByName("patternparentstype1")[0].value;
-    this.parentstype1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNparentstype1")[0].value;
-    this.parentstype1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNparentstype1")[0].value;
-    this.parentstype1.amountBTCMin = document.getElementsByName("amountBTCMinparentstype1")[0].value;
-    this.parentstype1.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromparentstype1")[0].value;
-    this.parentstype1.state = document.getElementsByName("stateparentstype1")[0].value;
-    this.parentstype1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutparentstype1")[0].value;
-    this.parentstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutparentstype1")[0].value;    
-    this.parentstype1.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.parentstype1.xpubList[i] = selList[i].value;
+        }   
+        this.parentstype1.pattern = document.getElementsByName("patternparentstype1")[0].value;
+        this.parentstype1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNparentstype1")[0].value;                
+        this.parentstype1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNparentstype1")[0].value;
+        this.parentstype1.amount = document.getElementsByName("amountparentstype1")[0].value;
+        this.parentstype1.from = document.getElementsByName("fromparentstype1")[0].value;
+        this.parentstype1.state = document.getElementsByName("stateparentstype1")[0].value;
+        this.parentstype1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutparentstype1")[0].value;
+        
+        if(this.parentstype1.patternAfterTimeout == "on") this.parentstype1.patternAfterTimeout = true;
+        else this.parentstype1.patternAfterTimeout = false;
+        
+        this.parentstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutparentstype1")[0].value;  
+        
+        if(this.parentstype1.patternBeforeTimeout == "on") this.parentstype1.patternBeforeTimeout = true;
+        else this.parentstype1.patternBeforeTimeout = false;
+        
+        this.parentstype1.proof = document.getElementsByName("proofparentstype1")[0].value;
+                
+        if(this.parentstype1.proof == "on") this.parentstype1.proof = true;
+        else this.parentstype1.proof = false;
+        
+        this.parentstype1.user = document.getElementsByName("userparentstype1")[0].value;
+                
+        if(this.parentstype1.user == "on") this.parentstype1.user = true;
+        else this.parentstype1.user = false;
+        
+        this.parentstype1.type = "parentstype1";
 }
 Template.prototype.childstype1GetDataFromForm = function(){
 
-     this.childstype1.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListchildstype1")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.childstype1.publickeyList[i] = selList[i].value;
-     }   
+        this.childstype1.xpubList = [];
+        let selList= document.getElementsByName("xpubListchildstype1")[0].selectedOptions;
          
-    this.childstype1.pattern = document.getElementsByName("patternchildstype1")[0].value;
-    this.childstype1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNchildstype1")[0].value;
-    this.childstype1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNchildstype1")[0].value;
-    this.childstype1.amountBTCMin = document.getElementsByName("amountBTCMinchildstype1")[0].value;
-    this.childstype1.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromchildstype1")[0].value;
-    this.childstype1.state = document.getElementsByName("statechildstype1")[0].value;
-    this.childstype1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutchildstype1")[0].value;
-    this.childstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutchildstype1")[0].value;    
-    this.childstype1.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.childstype1.xpubList[i] = selList[i].value;
+        }   
+        this.childstype1.pattern = document.getElementsByName("patternchildstype1")[0].value;
+        this.childstype1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNchildstype1")[0].value;                
+        this.childstype1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNchildstype1")[0].value;
+        this.childstype1.amount = document.getElementsByName("amountchildstype1")[0].value;
+        this.childstype1.from = document.getElementsByName("fromchildstype1")[0].value;
+        this.childstype1.state = document.getElementsByName("statechildstype1")[0].value;
+        this.childstype1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutchildstype1")[0].value;
+        
+        if(this.childstype1.patternAfterTimeout == "on") this.childstype1.patternAfterTimeout = true;
+        else this.childstype1.patternAfterTimeout = false;
+        
+        this.childstype1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutchildstype1")[0].value;  
+        
+        if(this.childstype1.patternBeforeTimeout == "on") this.childstype1.patternBeforeTimeout = true;
+        else this.childstype1.patternBeforeTimeout = false;
+        
+        this.childstype1.proof = document.getElementsByName("proofchildstype1")[0].value;
+                
+        if(this.childstype1.proof == "on") this.childstype1.proof = true;
+        else this.childstype1.proof = false;
+        
+        this.childstype1.user = document.getElementsByName("userchildstype1")[0].value;
+                
+        if(this.childstype1.user == "on") this.childstype1.user = true;
+        else this.childstype1.user = false;
+        
+        this.childstype1.type = "childstype1";
 }
 Template.prototype.investorType1GetDataFromForm = function(){
 
-     this.investorType1.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListinvestorType1")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.investorType1.publickeyList[i] = selList[i].value;
-     }   
+        this.investorType1.xpubList = [];
+        let selList= document.getElementsByName("xpubListinvestorType1")[0].selectedOptions;
          
-    this.investorType1.pattern = document.getElementsByName("patterninvestorType1")[0].value;
-    this.investorType1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNinvestorType1")[0].value;
-    this.investorType1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNinvestorType1")[0].value;
-    this.investorType1.amountBTCMin = document.getElementsByName("amountBTCMininvestorType1")[0].value;
-    this.investorType1.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrominvestorType1")[0].value;
-    this.investorType1.state = document.getElementsByName("stateinvestorType1")[0].value;
-    this.investorType1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutinvestorType1")[0].value;
-    this.investorType1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutinvestorType1")[0].value;    
-    this.investorType1.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.investorType1.xpubList[i] = selList[i].value;
+        }   
+        this.investorType1.pattern = document.getElementsByName("patterninvestorType1")[0].value;
+        this.investorType1.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNinvestorType1")[0].value;                
+        this.investorType1.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNinvestorType1")[0].value;
+        this.investorType1.amount = document.getElementsByName("amountinvestorType1")[0].value;
+        this.investorType1.from = document.getElementsByName("frominvestorType1")[0].value;
+        this.investorType1.state = document.getElementsByName("stateinvestorType1")[0].value;
+        this.investorType1.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutinvestorType1")[0].value;
+        
+        if(this.investorType1.patternAfterTimeout == "on") this.investorType1.patternAfterTimeout = true;
+        else this.investorType1.patternAfterTimeout = false;
+        
+        this.investorType1.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutinvestorType1")[0].value;  
+        
+        if(this.investorType1.patternBeforeTimeout == "on") this.investorType1.patternBeforeTimeout = true;
+        else this.investorType1.patternBeforeTimeout = false;
+        
+        this.investorType1.proof = document.getElementsByName("proofinvestorType1")[0].value;
+                
+        if(this.investorType1.proof == "on") this.investorType1.proof = true;
+        else this.investorType1.proof = false;
+        
+        this.investorType1.user = document.getElementsByName("userinvestorType1")[0].value;
+                
+        if(this.investorType1.user == "on") this.investorType1.user = true;
+        else this.investorType1.user = false;
+        
+        this.investorType1.type = "investorType1";
 }
 Template.prototype.blockGetDataFromForm = function(){
 
-     this.block.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListblock")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.block.publickeyList[i] = selList[i].value;
-     }   
+        this.block.xpubList = [];
+        let selList= document.getElementsByName("xpubListblock")[0].selectedOptions;
          
-    this.block.pattern = document.getElementsByName("patternblock")[0].value;
-    this.block.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNblock")[0].value;
-    this.block.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNblock")[0].value;
-    this.block.amountBTCMin = document.getElementsByName("amountBTCMinblock")[0].value;
-    this.block.amountBTCMinFrom = document.getElementsByName("amountBTCMinFromblock")[0].value;
-    this.block.state = document.getElementsByName("stateblock")[0].value;
-    this.block.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutblock")[0].value;
-    this.block.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutblock")[0].value;    
-    this.block.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.block.xpubList[i] = selList[i].value;
+        }   
+        this.block.pattern = document.getElementsByName("patternblock")[0].value;
+        this.block.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNblock")[0].value;                
+        this.block.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNblock")[0].value;
+        this.block.amount = document.getElementsByName("amountblock")[0].value;
+        this.block.from = document.getElementsByName("fromblock")[0].value;
+        this.block.state = document.getElementsByName("stateblock")[0].value;
+        this.block.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutblock")[0].value;
+        
+        if(this.block.patternAfterTimeout == "on") this.block.patternAfterTimeout = true;
+        else this.block.patternAfterTimeout = false;
+        
+        this.block.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutblock")[0].value;  
+        
+        if(this.block.patternBeforeTimeout == "on") this.block.patternBeforeTimeout = true;
+        else this.block.patternBeforeTimeout = false;
+        
+        this.block.proof = document.getElementsByName("proofblock")[0].value;
+                
+        if(this.block.proof == "on") this.block.proof = true;
+        else this.block.proof = false;
+        
+        this.block.user = document.getElementsByName("userblock")[0].value;
+                
+        if(this.block.user == "on") this.block.user = true;
+        else this.block.user = false;
+        
+        this.block.type = "block";
 }
 Template.prototype.pegGetDataFromForm = function(){
 
-     this.peg.publickeyList = [];
-     let selList= document.getElementsByName("publickeyListpeg")[0].selectedOptions;
-     for (var i = 0; i < selList.length; i++) {
-        this.peg.publickeyList[i] = selList[i].value;
-     }   
+        this.peg.xpubList = [];
+        let selList= document.getElementsByName("xpubListpeg")[0].selectedOptions;
          
-    this.peg.pattern = document.getElementsByName("patternpeg")[0].value;
-    this.peg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNpeg")[0].value;
-    this.peg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNpeg")[0].value;
-    this.peg.amountBTCMin = document.getElementsByName("amountBTCMinpeg")[0].value;
-    this.peg.amountBTCMinFrom = document.getElementsByName("amountBTCMinFrompeg")[0].value;
-    this.peg.state = document.getElementsByName("statepeg")[0].value;
-    this.peg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutpeg")[0].value;
-    this.peg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutpeg")[0].value;    
-    this.peg.type = "";
+        for (var i = 0; i < selList.length; i++) {
+            this.peg.xpubList[i] = selList[i].value;
+        }   
+        this.peg.pattern = document.getElementsByName("patternpeg")[0].value;
+        this.peg.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNpeg")[0].value;                
+        this.peg.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNpeg")[0].value;
+        this.peg.amount = document.getElementsByName("amountpeg")[0].value;
+        this.peg.from = document.getElementsByName("frompeg")[0].value;
+        this.peg.state = document.getElementsByName("statepeg")[0].value;
+        this.peg.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutpeg")[0].value;
+        
+        if(this.peg.patternAfterTimeout == "on") this.peg.patternAfterTimeout = true;
+        else this.peg.patternAfterTimeout = false;
+        
+        this.peg.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutpeg")[0].value;  
+        
+        if(this.peg.patternBeforeTimeout == "on") this.peg.patternBeforeTimeout = true;
+        else this.peg.patternBeforeTimeout = false;
+        
+        this.peg.proof = document.getElementsByName("proofpeg")[0].value;
+                
+        if(this.peg.proof == "on") this.peg.proof = true;
+        else this.peg.proof = false;
+        
+        this.peg.user = document.getElementsByName("userpeg")[0].value;
+                
+        if(this.peg.user == "on") this.peg.user = true;
+        else this.peg.user = false;
+        
+        this.peg.type = "peg";
 }
