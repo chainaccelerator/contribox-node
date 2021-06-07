@@ -52,14 +52,15 @@ class SdkTemplateType {
 
         $c = get_called_class();
         $optionPatterns = SdkHtml::optionHtml(self::$patterns, $this->pattern);
+        $optionFrom = SdkHtml::optionHtml(["Genesis", "from", "api", "to", "template", "ban", "baord", "member", "old", "onboard", "outboard", "cosignerOrg", "witnessOrg", "info", "investorType1", "parentstype1", "childstype1"], "from");
 
         if($this->type !== 'from') {
 
             $optionPubKeys = SdkHtml::optionHtmlMultiple($xpubList, $this->xpubList);
         }
         $checkboxState = SdkHtml::checkboxHtml('state'.$this->type, $this->state);
-        $checkboxProof = SdkHtml::checkboxHtml('proof'.$this->type, $this->state);
-        $checkboxUser = SdkHtml::checkboxHtml('user'.$this->type, $this->state);
+        $checkboxProof = SdkHtml::checkboxHtml('proofSharing'.$this->type, $this->state);
+        $checkboxUser = SdkHtml::checkboxHtml('userProofSharing'.$this->type, $this->state);
         $checkboxPatternAfterTimeout = SdkHtml::checkboxHtml('patternAfterTimeout'.$this->type, $this->patternAfterTimeout);
         $checkboxPatternBeforeTimeout = SdkHtml::checkboxHtml('patternBeforeTimeout'.$this->type, $this->patternBeforeTimeout);
         $this->htmlFieldsId = [
@@ -74,30 +75,42 @@ class SdkTemplateType {
             this.'.$this->type.'.xpubList[i] = selList[i].value;
         }   
         this.'.$this->type.'.pattern = document.getElementsByName("pattern'.$this->type.'")[0].value;
-        this.'.$this->type.'.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutN'.$this->type.'")[0].value;                
+        
+        this.'.$this->type.'.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutN'.$this->type.'")[0].value;
+        this.'.$this->type.'.patternAfterTimeoutN = parseInt(this.'.$this->type.'.patternAfterTimeoutN);
+                        
         this.'.$this->type.'.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutN'.$this->type.'")[0].value;
+        this.'.$this->type.'.patternBeforeTimeoutN = parseInt(this.'.$this->type.'.patternBeforeTimeoutN);
+        
         this.'.$this->type.'.amount = document.getElementsByName("amount'.$this->type.'")[0].value;
+        this.'.$this->type.'.amount = parseInt(this.'.$this->type.'.amount);
+        
         this.'.$this->type.'.from = document.getElementsByName("from'.$this->type.'")[0].value;
+        
         this.'.$this->type.'.state = document.getElementsByName("state'.$this->type.'")[0].value;
+        if(this.'.$this->type.'.state == "on") this.'.$this->type.'.state = true;
+        else this.'.$this->type.'.state = false;
+        
+        this.'.$this->type.'.proofSharing = document.getElementsByName("proofSharing'.$this->type.'")[0].value;
+        if(this.'.$this->type.'.proofSharing == "on") this.'.$this->type.'.proofSharing = true;
+        else this.'.$this->type.'.proofSharing = false;
+        
+        this.'.$this->type.'.userProofSharing = document.getElementsByName("userProofSharing'.$this->type.'")[0].value;
+        if(this.'.$this->type.'.userProofSharing == "on") this.'.$this->type.'.userProofSharing = true;
+        else this.'.$this->type.'.userProofSharing = false;
+        
+        if(this.'.$this->type.'.patternAfterTimeout == true) this.'.$this->type.'.patternAfterTimeout = true;
+        else this.'.$this->type.'.patternAfterTimeout = false;
+        
         this.'.$this->type.'.patternAfterTimeout = document.getElementsByName("patternAfterTimeout'.$this->type.'")[0].value;
         
-        if(this.'.$this->type.'.patternAfterTimeout == "on") this.'.$this->type.'.patternAfterTimeout = true;
+        if(this.'.$this->type.'.patternAfterTimeout == true) this.'.$this->type.'.patternAfterTimeout = true;
         else this.'.$this->type.'.patternAfterTimeout = false;
         
         this.'.$this->type.'.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeout'.$this->type.'")[0].value;  
         
-        if(this.'.$this->type.'.patternBeforeTimeout == "on") this.'.$this->type.'.patternBeforeTimeout = true;
+        if(this.'.$this->type.'.patternBeforeTimeout == true) this.'.$this->type.'.patternBeforeTimeout = true;
         else this.'.$this->type.'.patternBeforeTimeout = false;
-        
-        this.'.$this->type.'.proof = document.getElementsByName("proof'.$this->type.'")[0].value;
-                
-        if(this.'.$this->type.'.proof == "on") this.'.$this->type.'.proof = true;
-        else this.'.$this->type.'.proof = false;
-        
-        this.'.$this->type.'.user = document.getElementsByName("user'.$this->type.'")[0].value;
-                
-        if(this.'.$this->type.'.user == "on") this.'.$this->type.'.user = true;
-        else this.'.$this->type.'.user = false;
         
         this.'.$this->type.'.type = "'.$c::$name.'";
 }';
@@ -110,8 +123,7 @@ class SdkTemplateType {
 <select name="pattern'.$this->type.'">'.$optionPatterns.'</select> required <br><br>
 '.$checkboxPatternBeforeTimeout.' before <input type="number" value="'.$this->patternBeforeTimeoutN.'" min="1" name="patternBeforeTimeoutN'.$this->type.'"> bloc(s) timeout<br><br>
 '.$checkboxPatternAfterTimeout.' after <input type="number" value="'.$this->patternAfterTimeoutN.'" min="1" name="patternAfterTimeoutN'.$this->type.'"> bloc(s) timeout<br><br>
-<input type="number" name="amount'.$this->type.'" value="'.$this->amount.'"> Project-BTC rewards,<br><br> 
-paid by (if other than From) <input type="text" name="from'.$this->type.'" value="'.$this->from.'"><br><br> 
+<input type="number" name="amount'.$this->type.'" value="'.$this->amount.'"> Project-BTC rewards, paid by <select name="from'.$this->type.'">'.$optionFrom.'</select><br><br> 
 '.$checkboxProof.' Proof sharing<br><br>
 '.$checkboxUser.' User proof sharing<br><br>
 ';

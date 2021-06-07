@@ -2,12 +2,15 @@
 function RequestData() {
 
     this.request = {"timestamp":0,"peerList":[],"pow":{"nonce":0,"difficulty":4,"difficultyPatthern":"d","hash":"default","pow":"default","previousHash":"default"},"sig":{"address":"","hash":"default","hdPath":"0\/0","range":"0","signature":"","xpub":""}};
-    this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":{"xpubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"to":{"xpubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","proofSharing":false,"userProofSharing":false,"template":"","htmlFieldsId":[],"htmlScript":"","patternAfterTimeout":false,"patternAfterTimeoutN":0,"patternBeforeTimeout":false,"patternBeforeTimeoutN":0,"type":""}};
+    this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":{"xpubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"to":{"xpubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"htmlFieldsId":[],"htmlScript":""},"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","template":"","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
 RequestData.prototype.roleMsgCreate = function(tx, roleInfo, templateName) {
 
+    console.info("tx0", tx);
+    console.info("roleInfo", roleInfo);
+
     if(roleInfo.xpubList == []) return false;
-    if(roleInfo.state == "off") return false;
+    if(roleInfo.state != true) return false;
     
     tx.template = templateName;
     tx.amount = roleInfo.amount;
@@ -18,23 +21,27 @@ RequestData.prototype.roleMsgCreate = function(tx, roleInfo, templateName) {
     tx.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
     tx.type = roleInfo.type;
     
-    if(roleInfo.proof == "on") {
+    let l = [];
     
-     for(i=0; i<roleInfo.xpubList.length;i++){
+    if(roleInfo.userProofSharing == false) tx.proof = "";
+    if(roleInfo.proofSharing == false) tx.user = "";
+    
+    for(i=0; i<roleInfo.xpubList.length;i++){
         
-            if(tx.proofEncryption != "on") tx.proof =  "";
-            
-            if(tx.userEncryption != "on") tx.user =  "";
-        }
+        let test = this.encrypt(tx, roleInfo.xpubList[i]);
+        
+        console.info("test", test);
+        
+        l[l.length] = test;
     }
-    console.info("tx", tx);
-    
-    requestData.encrypt(tx, roleInfo.xpubList[i]);
-    
-    return transaction;
+    console.info("l", l);
+      
+    return l;
 }
 
 RequestData.prototype.send = function(transaction) {
+        
+     console.info("-1", transaction);
         
     this.route.transaction = transaction;
     this.route.template = transaction.template;
@@ -57,8 +64,21 @@ RequestData.prototype.send = function(transaction) {
             let transactions = [];
             let tx = {};
             
-            requestData.route.transaction.from.xpubList.forEach(function(p) { if(dest.indexOf(p) == -1) requestData.route.transaction.from.xpubList[requestData.route.transaction.from.xpubList] = p;});
-            requestData.route.transaction.to.xpubList.forEach(function(p) { if(dest.indexOf(p) == -1) requestData.route.transaction.to.xpubList[requestData.route.transaction.to.xpubList] = p;});
+            console.info("from xpublist", requestData.route.transaction.from.xpubList);
+            
+            requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList] = p;});
+            requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList] = p;});
+            
+            if(requestData.route.transaction.amount > 0)  t.to.amount = requestData.route.transaction.amount;
+            if(requestData.route.transaction.amount < 0)  t.from.amount = requestData.route.transaction.amount; 
+
+            console.info("from", t.from);
+
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
+            
+            tx = requestData.roleMsgCreate(requestData.route.transaction, t.to, t.name);
+            if(tx != false) transactions[transactions.length] = tx;
             
             tx = requestData.roleMsgCreate(requestData.route.transaction, t.backup, t.name);
             if(tx != false) transactions[transactions.length] = tx;
@@ -81,9 +101,6 @@ RequestData.prototype.send = function(transaction) {
             tx = requestData.roleMsgCreate(requestData.route.transaction, t.cosignerOrg, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
             tx = requestData.roleMsgCreate(requestData.route.transaction, t.investorType1, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
@@ -97,9 +114,6 @@ RequestData.prototype.send = function(transaction) {
             if(tx != false) transactions[transactions.length] = tx;
             
             tx = requestData.roleMsgCreate(requestData.route.transaction, t.peg, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.to, t.name);
             if(tx != false) transactions[transactions.length] = tx;
             
             tx = requestData.roleMsgCreate(requestData.route.transaction, t.witness, t.name);

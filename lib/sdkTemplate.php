@@ -23,7 +23,6 @@ class SdkTemplate {
     public static array $processesStepsAction = ['AskForConfirmationDeclaration', 'AskForConfirmationBan', 'AskForConfirmationOutboard', 'AskForConfirmationOutboard', 'AskForConfirmationShare', 'AskForTemplateUpdate', 'AskForTechnicalInfos'];
     public static array $list = [];
 
-    public int $amount = 0;
     public string $name = '';
     public string $validationName = '';
     public string $version = 'v0';
@@ -34,12 +33,6 @@ class SdkTemplate {
     public string $process = "";
     public string $processStep = '';
     public string $processStepAction = '';
-    public bool $blockSignature = false;
-    public bool $pegSignature = false;
-    public bool $declareAddressFrom = false;
-    public bool $declareAddressTo = false;
-    public bool $proofEncryption = false;
-    public bool $userEncryption = false;
     public string $templateValidation = 'CoreTemplateValidation';
 
     public SdkTemplateReferentialProof $proofValidation;
@@ -68,7 +61,7 @@ class SdkTemplate {
 
     public static function initFromJson($json){
 
-        $o = new SdkTemplate($json->role, $json->domain, $json->domainSub, $json->process, $json->processStep, $json->processStepAction, $json->about, $json->amount, $json->blockSignature, $json->pegSignature, $json->version, $json->declareAddressFrom, $json->declareAddressTo, $json->proofEncryption, $json->userEncryption, $json->templateValidation);
+        $o = new SdkTemplate($json->role, $json->domain, $json->domainSub, $json->process, $json->processStep, $json->processStepAction, $json->about, $json->version, $json->templateValidation);
 
         foreach($json as $k => $v) {
 
@@ -77,10 +70,9 @@ class SdkTemplate {
         return $o;
     }
 
-    public function __construct(string $role, string $domain, string $domainSub, string $process, string $processStep, string $processStepAction, string $about, int $amount = 0, bool $blockSignature = false, bool $pegSignature = false, string $version = 'v0', bool $declareAddressFrom = false, bool $declareAddressTo = false, bool $proofEncryption = false, bool $userEncryption = false, string $templateValidation = 'CoreTemplateValidation'){
+    public function __construct(string $role, string $domain, string $domainSub, string $process, string $processStep, string $processStepAction, string $about, string $version = 'v0', string $templateValidation = 'CoreTemplateValidation'){
 
         $this->version = $version;
-        $this->amount = $amount;
         $this->role = $role;
         $this->domain = $domain;
         $this->domainSub = $domainSub;
@@ -88,8 +80,6 @@ class SdkTemplate {
         $this->process = $process;
         $this->processStep = $processStep;
         $this->processStepAction = $processStepAction;
-        $this->blockSignature = $blockSignature;
-        $this->pegSignature = $pegSignature;
         $this->proofValidation = new SdkTemplateReferentialProof();
         $this->proofValidation->type = 'proofValidation';
         $this->fromValidation = new SdkTemplateReferentialUser();
@@ -116,10 +106,6 @@ class SdkTemplate {
         $this->investorType1 = new SdkTemplateTypeInvestorType1(SdkTemplateTypeInvestorType1::walletsList());
         $this->name = $this->role.'_'.$this->domain.'_'.$this->domainSub.'_'.$this->domainSubAbout.'_'.$this->process.'_'.$this->processStep.'_'.$this->processStepAction.'_'.$this->version;
         $this->hash = CryptoHash::get($this->name)->hash;
-        $this->declareAddressFrom = $declareAddressFrom;
-        $this->declareAddressTo = $declareAddressTo;
-        $this->proofEncryption = $proofEncryption;
-        $this->userEncryption = $userEncryption;
 
         $files = glob('../'.Conf::$env.'/data/template/*.json');
 
@@ -144,40 +130,20 @@ class SdkTemplate {
         $optionsProcesses = SdkHtml::optionHtml(self::$processes, $this->process);
         $optionsProcessesSteps = SdkHtml::optionHtml(self::$processesSteps, $this->processStep);
         $optionsProcessesStepActions = SdkHtml::optionHtml(self::$processesStepsAction, $this->processStepAction);
-        $optionsTemplates = SdkHtml::optionHtml($templateList, 'Default');
-        $checkboxBlock = SdkHtml::checkboxHtml('blockSignature', $this->blockSignature);
-        $checkboxPeg = SdkHtml::checkboxHtml('pegSignature', $this->pegSignature);
-        $checkboxAskForDeclareFrom = SdkHtml::checkboxHtml('declareAddressFrom', $this->declareAddressFrom);
-        $checkboxAskForDeclareTo = SdkHtml::checkboxHtml('declareAddressTo', $this->declareAddressTo);
-        $checkboxProofEncryption = SdkHtml::checkboxHtml('proofEncryption', $this->proofEncryption);
-        $checkboxUserEncryption = SdkHtml::checkboxHtml('userEncryption', $this->userEncryption);
+        $optionsValidation = SdkHtml::optionHtml($templateList, 'Default');
 
         $this->htmlFieldsId = [
-            'amount',
             'role',
             'domain',
             'process',
-            'blockSignature',
-            'pegSignature',
-            'declareAddressFrom',
-            'declareAddressTo',
-            'proofEncryption',
-            'userEncryption',
             'templateValidation'
         ];
 
         $form = '
-<label for="amount">For</label> <input type="number" name="amount" value="'.$this->amount.'"> Project-BTC<br><br>
 <label for="role">As</label> <select name="role">'.$optionsRoles.'</select><br><br>
 <label for="domain">Domain</label> <select name="domain">'.$optionsDomains.'</select> <select name="subdomain">'.$optionsDomainSubs.'</select> <select id="about" name="about">'.$optionsDomainSubsAbout.'</select><br><br>
 <label for="process">Process</label> <select name="process">'.$optionsProcesses.'</select> <select name="step">'.$optionsProcessesSteps.'</select> <select name="actions">'.$optionsProcessesStepActions.'</select><br><br>
-'.$checkboxBlock.' <label for="blockSignature">Ask for an immediate block signature</label><br><br>
-'.$checkboxPeg.' <label for="pegSignature">Ask for for a rapid bitcoin proof</label><br><br>
-'.$checkboxAskForDeclareFrom.' <label for="declareAddressFrom"> Require declared users (from)</label><br><br>
-'.$checkboxAskForDeclareTo.' <label for="declareAddressTo"> Require declared users (to)</label><br><br>
-'.$checkboxProofEncryption.' <label for="proofEncryption"> Proof encryption</label><br><br>
-'.$checkboxUserEncryption.' <label for="userEncryption"> User encryption</label><br><br>
-<label for="templateValidation">Template</label> <select name="templateValidation">'.$optionsTemplates.'</select>'
+<label for="templateValidation">Template</label> <select name="templateValidation">'.$optionsValidation.'</select>'
 .$this->proofValidation->conditionHtml()
 .$this->fromValidation->conditionHtml()
 .$this->toValidation->conditionHtml()
@@ -272,6 +238,7 @@ function Template('.substr($function1, 0,-2).', '.
 Template.prototype.getDataFromForm = function () {
 
 '.$function.'
+   
     this.proofValidationGetDataFromForm();
     this.proofValidation.type = "proofValidation";
     this.fromValidationGetDataFromForm();
@@ -295,7 +262,7 @@ Template.prototype.getDataFromForm = function () {
     this.pegGetDataFromForm();    
     this.name = this.role+this.domain+this.domainSub+this.domainSubAbout+this.process+this.processStep+this.processStepAction+this.version;
     this.hash = requestData.sha256(this);
-            
+                
     return true;
 }
 Template.prototype.createTemplate = function(){
@@ -303,7 +270,7 @@ Template.prototype.createTemplate = function(){
     this.getDataFromForm();
     let u = false;
     let tl = template.list;
-    let proof = template;
+    let proof = this;
     
     wallet.list.forEach(function(w) {
     
@@ -325,11 +292,11 @@ Template.prototype.createTemplate = function(){
             delete proof.patterns;
              
             let templateDefault = t;
-            proof.from = template.from;
-            proof.to = template.to;
             
-            let transaction = new Transaction(proof.from, proof.to, templateDefault.name, templateDefault.amount, proof, t.proofSharing, user, t.userSharing, t.patternAfterTimeout, t.patternAfterTimeoutN, t.patternBeforeTimeout, t.patternBeforeTimeoutN, t.type);
-
+            console.info("from 00", proof);
+            
+            let transaction = new Transaction(proof.from.xpubList, proof.to.xpubList, templateDefault.name, templateDefault.to.amount, proof, user);
+            
             template.list = tl;
             
             return requestData.send(transaction);
