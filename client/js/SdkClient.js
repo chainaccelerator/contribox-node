@@ -250,7 +250,6 @@ function loadWallet(){
                                                                                             wallet.loaded = true;
                                                                                             walletListUpade();
                                                                                             loadedWalletTest();
-
                                                                                             msgHtml();
                                                                                         });
                                                                                     });
@@ -351,6 +350,8 @@ function getLayoutData (i) {
 
         open.onupgradeneeded = function(event) {
 
+            initW = false;
+
             let store = event.target.result.createObjectStore("wallets", {keyPath: "name"});
             store.createIndex("name", "name", {unique: true});
             store.createIndex("role", "role", {unique: false});
@@ -373,10 +374,6 @@ function getLayoutData (i) {
                 document.body.insertBefore(newDiv, currentDiv);
 
                 openPopup();
-            }
-            else {
-
-                initW = true;
             }
         }
         open.onsuccess = function () {
@@ -421,7 +418,7 @@ function getLayoutData (i) {
     });
 }
 
-var initW = false;
+var initW = true;
 getLayoutData(0).then(function(result) {
 
     if(initW == true) loadWallet();
