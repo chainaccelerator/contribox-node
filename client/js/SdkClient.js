@@ -32,8 +32,6 @@ var account = new Account();
 var ret;
 var FromElm = document.getElementsByName("from")[0];
 var accountElem = document.getElementById("account");
-var fileSelectElem = document.getElementById("fileSelect");
-var dlElem = document.getElementById("upload");
 var dlElemCreate = document.getElementById("create");
 var provePay = document.getElementById("provePay");
 var createTemplate = document.getElementById("createTemplate");
@@ -278,6 +276,73 @@ function loadWallet(){
     });
 }
 
+
+function openPopup() {
+    var el = document.getElementById('popup');
+    el.style.display = 'block';
+}
+function closePopup() {
+    var el = document.getElementById('popup');
+    el.style.display = 'none';
+}
+function llu(e){
+
+    var fileSelectElem = document.getElementById("fileSelect");
+    fileSelectElem.click();
+    fileSelectElem.style.display = "initial";
+}
+function llw(e){
+
+    let file = e.files[0];
+    let reader = new FileReader();
+    var dlElem = document.getElementById("upload");
+    var fileSelectElem = document.getElementById("fileSelect");
+
+    reader.addEventListener("load", function () {
+
+        let w = reader.result;
+        let walletJ = JSON.parse(w.toString());
+        wallet.list = walletJ.list;
+
+        wallet.key = walletJ.key;
+
+        wallet.list.forEach(function(w2) {
+
+            var indexedDB2 = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+            var open2 = indexedDB2.open ("contribox", 2);
+            open2.onsuccess = function () {
+
+                var db2 = open2.result;
+                var tx2 = db2.transaction("wallets", "readwrite");
+                var store2 = tx2.objectStore("wallets");
+                let objectStoreRequest = store2.add(w2);
+
+                objectStoreRequest.onsuccess = function (event) {
+
+                    console.info("added");
+                };
+                objectStoreRequest.onerror = function (event) {
+
+                    console.info(event);
+                };
+            }
+        });
+
+        this.loaded = true;
+
+        walletListUpade();
+        loadedWalletTest();
+        initW = true;
+        ret = {msg: "Wallet uploaded", cssClass:"success"};
+        msgHtml();
+        closePopup();
+    }, false);
+
+    if (file) reader.readAsText(file);
+
+    fileSelectElem.style.display = "none";
+
+}
 function getLayoutData (i) {
 
     return new Promise (function(resolve) {
@@ -296,12 +361,27 @@ function getLayoutData (i) {
 
             if (confirm("Do you want to import a non-existent wallet? Otherwise a wallet will be created.")) {
 
-                fileSelectElem.click();
-                e.preventDefault();
-                fileSelectElem.style.display = "initial";
+                var newDiv = document.createElement("div");
+                newDiv.innerHTML += '<button class="open_button" onClick="openPopup()">Open Popup</button>' +
+                    '<div id="popup" style="  position: absolute;width: 300px;z-index: 999;display: none;top:0;background-color: #fff;  border: 1px solid #ddd;  border-radius: 5px;  box-shadow: 0 2px 8px #aaa;  overflow: hidden;   padding: 10px;">' +
+                    '   <input type="file" name="fileSelect" id="fileSelect" style="display: none" onchange="llw(this)">' +
+                    '   <button id="upload" name="upload" onclick="llu(this)">Upload your wallet</button><br><br>' +
+                    '  <button class="close_button" onClick="closePopup()">close</button' +
+                    '</div>';
+
+                var currentDiv = document.getElementById("main_container");
+                document.body.insertBefore(newDiv, currentDiv);
+
+                openPopup();
+            }
+            else {
+
+                initW = true;
             }
         }
         open.onsuccess = function () {
+
+            if(initW == false) return resolve(false);
 
             db = open.result;
             tx = db.transaction("wallets", "readwrite");
@@ -340,16 +420,12 @@ function getLayoutData (i) {
         }
     });
 }
-getLayoutData(0);
-loadWallet();
 
-dlElem.addEventListener("click", function (e) {
-    if (fileSelectElem) {
-        fileSelectElem.click();
-    }
-    e.preventDefault();
-    fileSelectElem.style.display = "initial";
-}, false);
+var initW = false;
+getLayoutData(0).then(function(result) {
+
+    if(initW == true) loadWallet();
+});
 
 createTemplate.addEventListener("click", function (e) {
 
@@ -357,53 +433,5 @@ createTemplate.addEventListener("click", function (e) {
     template.createTemplate();
     ret = {msg: "Template created", cssClass:"success"};
     msgHtml();
-
-}, false);
-
-fileSelectElem.addEventListener("change", function (e) {
-
-    let file = this.files[0];
-    let reader = new FileReader();
-
-    reader.addEventListener("load", function () {
-
-        wallet.load(reader);
-        walletListUpade();
-        loadedWalletTest();
-        ret = {msg: "Wallet uploaded", cssClass:"success"};
-        msgHtml();
-    }, false);
-
-    if (file) reader.readAsText(file);
-
-    fileSelectElem.style.display = "none";
-
-}, false);
-
-proof1.addEventListener("change", function (e) {
-
-    let file1 = this.files[0];
-    let reader1 = new FileReader();
-
-    reader1.addEventListener("load", function () {
-
-        account.setIdentityIdProof1(reader1);
-    }, false);
-
-    if (file1) reader1.readAsText(file1);
-
-}, false);
-
-proof2.addEventListener("change", function (e) {
-
-    let file2 = this.files[0];
-    let reader2 = new FileReader();
-
-    reader2.addEventListener("load", function () {
-
-        account.setPprofessionalIdProof1(reader2);
-    }, false);
-
-    if (file2) reader2.readAsText(file2);
 
 }, false);

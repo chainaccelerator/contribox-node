@@ -88,8 +88,7 @@ window.sodium = {
 </section>
 <section>
     <fieldset id="account"><legend>Account</legend>
-        <input type="file" name="fileSelect" id="fileSelect" style="display: none">
-        <button id="upload" name="upload">Upload your wallet</button><br><br>
+
         <label>First name</label> <input type="text" name="firstname" value=""><br><br>
         <label>Last name</label> <input type="text" name="lastname" value=""><br><br>
         <label>Identity Id</label> <input type="text" name="identityId" value=""><br><br>
