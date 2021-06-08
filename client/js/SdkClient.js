@@ -216,81 +216,45 @@ function walletListUpade(){
 loadedWalletTest();
 account.update();
 
-function getLayoutData (i, psw) {
+function loadWallet(){
 
-    return new Promise (function(resolve) {
-        indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-        var open = indexedDB.open ("contribox", 2);
+    getLayoutData(0).then(function (result) {
+        getLayoutData(1).then(function (result) {
+            getLayoutData(2).then(function (result) {
+                getLayoutData(3).then(function (result) {
+                    getLayoutData(4).then(function (result) {
+                        getLayoutData(5).then(function (result) {
+                            getLayoutData(6).then(function (result) {
+                                getLayoutData(7).then(function (result) {
+                                    getLayoutData(8).then(function (result) {
+                                        getLayoutData(9).then(function (result) {
+                                            getLayoutData(10).then(function (result) {
+                                                getLayoutData(11).then(function (result) {
+                                                    getLayoutData(12).then(function (result) {
+                                                        getLayoutData(13).then(function (result) {
+                                                            getLayoutData(14).then(function (result) {
+                                                                getLayoutData(15).then(function (result) {
+                                                                    getLayoutData(16).then(function (result) {
+                                                                        getLayoutData(17).then(function (result) {
+                                                                            getLayoutData(18).then(function (result) {
+                                                                                getLayoutData(19).then(function (result) {
+                                                                                    getLayoutData(20).then(function (result) {
+                                                                                        getLayoutData(21).then(function (result) {
 
-        open.onupgradeneeded = function(event) {
+                                                                                            if (result == false) {
+                                                                                                ret = {msg: "Wallet created", cssClass: "success" };
+                                                                                                wallet.download();
+                                                                                            }
+                                                                                            else {
 
-            let store = event.target.result.createObjectStore("wallets", { keyPath: "name" });
-            store.createIndex("name", "name", { unique: true });
-            store.createIndex("role", "role", { unique: false });
-            store.createIndex("pubkey0", "pubkey0", { unique: true });
-            store.createIndex("seedWords", "seedWords", { unique: true });
-            store.createIndex("xprv", "xprv", { unique: true });
-            store.createIndex("xpub", "xpub", { unique: true });
-        };
+                                                                                                ret = {msg: "Wallet loaded", cssClass: "success" };
+                                                                                            }
+                                                                                            wallet.loaded = true;
+                                                                                            walletListUpade();
+                                                                                            loadedWalletTest();
 
-        open.onsuccess = function () {
-
-            db = open.result;
-            tx = db.transaction("wallets", "readwrite");
-            var store = tx.objectStore("wallets");
-            let r = wallet.walletList[i];
-
-            store.get(r).onsuccess =  function (event) {
-
-                let w = event.target.result;
-
-                if (w == undefined) {
-
-                    w = wallet.createWallet(account, r);
-                    rs = walletdb.addNew(w, r, r, psw);
-                    wallet.list[wallet.list.length] = w;
-                    return resolve(false);
-                }
-                else {
-
-                    wallet.list[wallet.list.length] = w;
-                    return resolve(true);
-                }
-
-            }
-        }
-    });
-}
-let psw = prompt("Type your password");
-getLayoutData(0, psw).then(function(result) {
-    getLayoutData(1, psw).then(function(result) {
-        getLayoutData(2, psw).then(function(result) {
-            getLayoutData(3, psw).then(function(result) {
-                getLayoutData(4, psw).then(function(result) {
-                    getLayoutData(5, psw).then(function(result) {
-                        getLayoutData(6, psw).then(function(result) {
-                            getLayoutData(7, psw).then(function(result) {
-                                getLayoutData(8, psw).then(function(result) {
-                                    getLayoutData(9, psw).then(function(result) {
-                                        getLayoutData(10, psw).then(function(result) {
-                                            getLayoutData(11, psw).then(function(result) {
-                                                getLayoutData(12, psw).then(function(result) {
-                                                    getLayoutData(13, psw).then(function(result) {
-                                                        getLayoutData(14, psw).then(function(result) {
-                                                            getLayoutData(15, psw).then(function(result) {
-                                                                getLayoutData(16, psw).then(function(result) {
-                                                                    getLayoutData(17, psw).then(function(result) {
-                                                                        getLayoutData(18, psw).then(function(result) {
-                                                                            getLayoutData(19, psw).then(function(result) {
-                                                                                getLayoutData(20, psw).then(function(result) {
-                                                                                    getLayoutData(21, psw).then(function(result) {
-
-                                                                                        if(result == false) wallet.download();
-                                                                                        wallet.loaded = true;
-                                                                                        walletListUpade();
-                                                                                        loadedWalletTest();
-                                                                                        ret = {msg: "Wallet created", cssClass: "success"};
-                                                                                        msgHtml();
+                                                                                            msgHtml();
+                                                                                        });
                                                                                     });
                                                                                 });
                                                                             });
@@ -312,7 +276,72 @@ getLayoutData(0, psw).then(function(result) {
             });
         });
     });
-});
+}
+
+function getLayoutData (i) {
+
+    return new Promise (function(resolve) {
+        indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+        var open = indexedDB.open ("contribox", 2);
+
+        open.onupgradeneeded = function(event) {
+
+            let store = event.target.result.createObjectStore("wallets", {keyPath: "name"});
+            store.createIndex("name", "name", {unique: true});
+            store.createIndex("role", "role", {unique: false});
+            store.createIndex("pubkey0", "pubkey0", {unique: true});
+            store.createIndex("seedWords", "seedWords", {unique: true});
+            store.createIndex("xprv", "xprv", {unique: true});
+            store.createIndex("xpub", "xpub", {unique: true});
+
+            if (confirm("Do you want to import a non-existent wallet? Otherwise a wallet will be created.")) {
+
+                fileSelectElem.click();
+                e.preventDefault();
+                fileSelectElem.style.display = "initial";
+            }
+        }
+        open.onsuccess = function () {
+
+            db = open.result;
+            tx = db.transaction("wallets", "readwrite");
+            var store = tx.objectStore("wallets");
+            let r = wallet.walletList[i];
+
+            store.get(r).onsuccess =  function (event) {
+
+                let w = event.target.result;
+
+                if (w == undefined) {
+
+                    w = wallet.createWallet(account, r);
+                    w.name = r;
+
+                    let objectStoreRequest = store.add(w);
+
+                    objectStoreRequest.onsuccess = function(event) {
+
+                        console.info("added");
+                    };
+                    objectStoreRequest.onerror = function(event) {
+
+                        console.info(event);
+                    };
+                    wallet.list[wallet.list.length] = w;
+                    return resolve(false);
+                }
+                else {
+
+                    wallet.list[wallet.list.length] = w;
+                    return resolve(true);
+                }
+
+            }
+        }
+    });
+}
+getLayoutData(0);
+loadWallet();
 
 dlElem.addEventListener("click", function (e) {
     if (fileSelectElem) {
