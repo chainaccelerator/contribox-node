@@ -6,9 +6,11 @@ function RequestData() {
 }
 RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, templateName) {
 
-    let tx0 = JSON.parse(JSON.stringify(tx));
-    let toList = JSON.parse(JSON.stringify(roleInfo.xpubList));
     if(roleInfo.state != true) return false;
+    
+    let tx0 = JSON.parse(JSON.stringify(tx));
+    console.info("roleInfo.xpubList", roleInfo.xpubList);
+    let toList = JSON.parse(JSON.stringify(roleInfo.xpubList));
     if(toList.length == 0) return false;
 
     tx0.template = templateName;
@@ -113,7 +115,7 @@ RequestData.prototype.send = function(tr) {
             
             console.info("transactions", transactions);
             
-            let urlClient = "http://localhost:7001/api/index.php";            
+            let urlClient = "http://localhost:7002/api/index.php";            
             const options = {
             
                 method: "POST",

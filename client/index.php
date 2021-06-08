@@ -77,11 +77,11 @@ window.sodium = {
 };
 </script>
 <script src="js/sodium.js" async></script>
+<script defer type='text/javascript' src='js/Conf.js'></script>
 <script defer type='text/javascript' src='js/SdkTemplate.js'></script>
 <script defer type='text/javascript' src='js/SdkTransaction.js'></script>
 <script defer type='text/javascript' src='js/SdkWallet.js'></script>
 <script defer type='text/javascript' src='js/SdkRequestData.js'></script>
-<script defer type='text/javascript' src='js/Conf.js'></script>
 <!-- FIN SDK -->
 <section>
     <div id="msg"></div>

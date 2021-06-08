@@ -18,7 +18,7 @@ function Wallet(){
     this.key = ""
     this.loaded = false;
 }
-Wallet.prototype.createWallet = function(role, account){
+Wallet.prototype.createWallet = function(account, role){
 
     let w = newWallet();
     
@@ -41,16 +41,6 @@ Wallet.prototype.createWallet = function(role, account){
         account: account,
         accountSig: accountSig
     };
-}
-Wallet.prototype.createwallets = function(account){
-
-    this.walletList.forEach(function(w){
-
-        let w2 = wallet.createWallet(w, account);
-        wallet.list[wallet.list.length] = w2;
-    });
-    this.key = requestData.sha256(this.list);
-    this.loaded = true;    
 }
 Wallet.prototype.download = function() {
 

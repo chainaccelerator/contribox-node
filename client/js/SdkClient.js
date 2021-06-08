@@ -214,6 +214,105 @@ function walletListUpade(){
 }
 
 loadedWalletTest();
+account.update();
+
+function getLayoutData (i, psw) {
+
+    return new Promise (function(resolve) {
+        indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+        var open = indexedDB.open ("contribox", 2);
+
+        open.onupgradeneeded = function(event) {
+
+            let store = event.target.result.createObjectStore("wallets", { keyPath: "name" });
+            store.createIndex("name", "name", { unique: true });
+            store.createIndex("role", "role", { unique: false });
+            store.createIndex("pubkey0", "pubkey0", { unique: true });
+            store.createIndex("seedWords", "seedWords", { unique: true });
+            store.createIndex("xprv", "xprv", { unique: true });
+            store.createIndex("xpub", "xpub", { unique: true });
+        };
+
+        open.onsuccess = function () {
+
+            db = open.result;
+            tx = db.transaction("wallets", "readwrite");
+            var store = tx.objectStore("wallets");
+            let r = wallet.walletList[i];
+
+            store.get(r).onsuccess =  function (event) {
+
+                let w = event.target.result;
+
+                if (w == undefined) {
+
+                    w = wallet.createWallet(account, r);
+                    rs = walletdb.addNew(w, r, r, psw);
+                    wallet.list[wallet.list.length] = w;
+                    return resolve(false);
+                }
+                else {
+
+                    wallet.list[wallet.list.length] = w;
+                    return resolve(true);
+                }
+
+            }
+        }
+    });
+}
+let psw = prompt("Type your password");
+getLayoutData(0, psw).then(function(result) {
+    getLayoutData(1, psw).then(function(result) {
+        getLayoutData(2, psw).then(function(result) {
+            getLayoutData(3, psw).then(function(result) {
+                getLayoutData(4, psw).then(function(result) {
+                    getLayoutData(5, psw).then(function(result) {
+                        getLayoutData(6, psw).then(function(result) {
+                            getLayoutData(7, psw).then(function(result) {
+                                getLayoutData(8, psw).then(function(result) {
+                                    getLayoutData(9, psw).then(function(result) {
+                                        getLayoutData(10, psw).then(function(result) {
+                                            getLayoutData(11, psw).then(function(result) {
+                                                getLayoutData(12, psw).then(function(result) {
+                                                    getLayoutData(13, psw).then(function(result) {
+                                                        getLayoutData(14, psw).then(function(result) {
+                                                            getLayoutData(15, psw).then(function(result) {
+                                                                getLayoutData(16, psw).then(function(result) {
+                                                                    getLayoutData(17, psw).then(function(result) {
+                                                                        getLayoutData(18, psw).then(function(result) {
+                                                                            getLayoutData(19, psw).then(function(result) {
+                                                                                getLayoutData(20, psw).then(function(result) {
+                                                                                    getLayoutData(21, psw).then(function(result) {
+
+                                                                                        if(result == false) wallet.download();
+                                                                                        wallet.loaded = true;
+                                                                                        walletListUpade();
+                                                                                        loadedWalletTest();
+                                                                                        ret = {msg: "Wallet created", cssClass: "success"};
+                                                                                        msgHtml();
+                                                                                    });
+                                                                                });
+                                                                            });
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
 
 dlElem.addEventListener("click", function (e) {
     if (fileSelectElem) {
@@ -221,18 +320,6 @@ dlElem.addEventListener("click", function (e) {
     }
     e.preventDefault();
     fileSelectElem.style.display = "initial";
-}, false);
-
-dlElemCreate.addEventListener("click", function (e) {
-
-    account.update();
-    wallet.createwallets(account);
-    walletListUpade();
-    loadedWalletTest();
-    wallet.download();
-    ret = {msg: "Wallet created", cssClass:"success"};
-    msgHtml();
-
 }, false);
 
 createTemplate.addEventListener("click", function (e) {
