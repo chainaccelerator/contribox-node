@@ -100,25 +100,19 @@ function loadWallet(){
                                                                     getLayoutData(16).then(function (result) {
                                                                         getLayoutData(17).then(function (result) {
                                                                             getLayoutData(18).then(function (result) {
-                                                                                getLayoutData(19).then(function (result) {
-                                                                                    getLayoutData(20).then(function (result) {
-                                                                                        getLayoutData(21).then(function (result) {
 
-                                                                                            if (result == false) {
-                                                                                                ret = {msg: "Wallet created", cssClass: "success" };
-                                                                                                wallet.download();
-                                                                                            }
-                                                                                            else {
+                                                                                if (result == false) {
+                                                                                    ret = {msg: "Wallet created", cssClass: "success" };
+                                                                                    wallet.download();
+                                                                                }
+                                                                                else {
 
-                                                                                                ret = {msg: "Wallet loaded", cssClass: "success" };
-                                                                                            }
-                                                                                            wallet.loaded = true;
-                                                                                            walletListUpade();
-                                                                                            loadedWalletTest();
-                                                                                            msgHtml();
-                                                                                        });
-                                                                                    });
-                                                                                });
+                                                                                    ret = {msg: "Wallet loaded", cssClass: "success" };
+                                                                                }
+                                                                                wallet.loaded = true;
+                                                                                walletListUpade();
+                                                                                loadedWalletTest();
+                                                                                msgHtml();
                                                                             });
                                                                         });
                                                                     });
@@ -209,6 +203,8 @@ function llw(e){
 }
 function getLayoutData (i) {
 
+    let cpi = i;
+
     return new Promise (function(resolve) {
         indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
         var open = indexedDB.open ("contribox", 2);
@@ -248,7 +244,7 @@ function getLayoutData (i) {
             db = open.result;
             tx = db.transaction("wallets", "readwrite");
             var store = tx.objectStore("wallets");
-            let r = wallet.walletList[i];
+            let r = wallet.walletList[cpi];
 
             store.get(r).onsuccess =  function (event) {
 
