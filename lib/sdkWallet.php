@@ -2,11 +2,15 @@
 
 class SdkWallet {
 
-    public static array $wallets = [ 'api', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'peg', 'block', 'template', 'ban', 'board', 'member', 'old', 'onboard', 'outboard', 'cosignerOrg', 'witnessOrg', 'info', 'parentstype1', 'childsttype1', 'investorType1'];
+    public static array $wallets = [ 'api', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'peg', 'block', 'ban', 'board', 'member', 'old', 'onboard', 'outboard', 'cosignerOrg', 'witnessOrg', 'info', 'parentstype1', 'childsttype1', 'investorType1'];
+    public static stdClass $walletsShare;
+    public static stdClass $walletsFederation;
     public string $htmlScript = '';
 
     public function __construct(){
 
+        self::$walletsShare = json_decode(file_get_contents('../'.Conf::$env.'/conf/share.json'));
+        self::$walletsFederation = json_decode(file_get_contents('../'.Conf::$env.'/conf/federation.json'));
     }
     public function conditionHtml():string {
 
@@ -14,6 +18,8 @@ class SdkWallet {
 function Wallet(){
 
     this.walletList = '.json_encode(self::$wallets).';
+    this.walletsShare = '.json_encode(self::$walletsShare).';
+    this.walletsFederation = '.json_encode(self::$walletsFederation).';
     this.list = [];
     this.key = ""
     this.loaded = false;

@@ -32,6 +32,8 @@ require_once 'sdkTemplate.php';
 require_once 'sdkTemplateReferential.php';
 require_once 'sdkTemplateReferentialProof.php';
 require_once 'sdkTemplateReferentialUser.php';
+require_once 'sdkTemplateTypeApi.php';
+require_once 'sdkTemplateTypeInfo.php';
 require_once 'sdkTemplateTypeBackup.php';
 require_once 'sdkTemplateTypeBan.php';
 require_once 'sdkTemplateTypeBlock.php';

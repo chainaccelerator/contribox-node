@@ -21,7 +21,7 @@ class SdkHtml {
         foreach ($tab as $elm) {
 
             $selected = '';
-            $elm = $elm->wallet_name;
+            $elm = $elm->role;
 
             if (in_array($elm, $value) === true) $selected = ' selected';
 

@@ -214,6 +214,4 @@ RequestData.prototype.pow = function(data){
     
     if(this.request.pow.nonce > 800000) return false;
   } 
-  console.info("pow", requestData.request.pow.pow);
-  console.info("nonce", requestData.request.pow.nonce);
 }

@@ -13,6 +13,8 @@ class SdkTemplateType {
     public int $amount = 0;
     public string $from = 'Genesis';
     public bool $state = true;
+    public bool $proofSharing = true;
+    public bool $userProofSharing = true;
     public array $htmlFieldsId = array();
     public string $htmlScript = '';
 
@@ -35,16 +37,17 @@ class SdkTemplateType {
     }
     public static function walletsList(array $res = array()): array{
 
-        $class = get_called_class();
-        $type = $class::$name;
-        $store = 'shared';
-        $path = '/var/www/contribox-node/'.Conf::$env.'/conf/'.$store.'/e_'.$type.'_regtest_cli1_wallet*.json';
-        $fileList = glob($path);
+        $cl = get_called_class();
+        $c = $cl::$name;
+        $ac = [];
+        $af = [];
+        if(isset(SdkWallet::$walletsFederation->$c) === true) $af = SdkWallet::$walletsFederation->$c;
+        if(isset(SdkWallet::$walletsShare->$c) === true) $as = SdkWallet::$walletsShare->$c;
+        $wL = array_merge($af, $ac);
 
-        foreach($fileList as $file) {
+        foreach($wL as $l) {
 
-            $data = json_decode(file_get_contents($file));
-            $res[] = $data;
+            $res[] = $l;
         }
         return $res;
     }

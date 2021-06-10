@@ -40,6 +40,7 @@ class SdkTemplate {
     public SdkTemplateReferentialUser $toValidation;
     public SdkTemplateTypeFrom $from;
     public SdkTemplateTypeTo $to;
+    public SdkTemplateTypeApi $api;
     public SdkTemplateTypeBackup $backup;
     public SdkTemplateTypeLock $lock;
     public SdkTemplateTypeWitness $witness;
@@ -87,23 +88,16 @@ class SdkTemplate {
         $this->toValidation = new SdkTemplateReferentialUser();
         $this->toValidation->type = 'toValidation';
         $this->templateValidation = $templateValidation;
+
         $this->from = new SdkTemplateTypeFrom(SdkTemplateTypeFrom::walletsList());
-        $this->to = new SdkTemplateTypeTo(SdkTemplateTypeTo::walletsList());
-        $this->backup = new SdkTemplateTypeBackup(SdkTemplateTypeBackup::walletsList());
-        $this->lock = new SdkTemplateTypeLock(SdkTemplateTypeLock::walletsList());
-        $this->witness = new SdkTemplateTypeWitness(SdkTemplateTypeWitness::walletsList());
-        $this->cosigner = new SdkTemplateTypeCosigner(SdkTemplateTypeCosigner::walletsList());
-        $this->ban = new SdkTemplateTypeBan(SdkTemplateTypeBan::walletsList());
-        $this->old = new SdkTemplateTypeOld(SdkTemplateTypeOld::walletsList());
-        $this->member = new SdkTemplateTypeMember(SdkTemplateTypeMember::walletsList());
-        $this->board = new SdkTemplateTypeBoard(SdkTemplateTypeBoard::walletsList());
-        $this->cosignerOrg = new SdkTemplateTypeCosignerOrg(SdkTemplateTypeCosignerOrg::walletsList());
-        $this->witnessOrg = new SdkTemplateTypeWitnessOrg(SdkTemplateTypeWitnessOrg::walletsList());
-        $this->parentstype1 = new SdkTemplateTypeParents(SdkTemplateTypeParents::walletsList());
-        $this->childstype1 = new SdkTemplateTypeChilds(SdkTemplateTypeChilds::walletsList());
-        $this->block = new SdkTemplateTypeBlock(SdkTemplateTypeBlock::walletsList());
-        $this->peg = new SdkTemplateTypePeg(SdkTemplateTypePeg::walletsList());
-        $this->investorType1 = new SdkTemplateTypeInvestorType1(SdkTemplateTypeInvestorType1::walletsList());
+        $c = [];
+        foreach(SdkWallet::$walletsFederation as $d => $v) $c[$d] = $d;
+        foreach(SdkWallet::$walletsShare as $d => $v) $c[$d] = $d;
+
+        foreach($c as $t) {
+            $cc = 'SdkTemplateType'.ucfirst($t);
+            $this->$t = new $cc($cc::walletsList());
+        }
         $this->name = $this->role.'_'.$this->domain.'_'.$this->domainSub.'_'.$this->domainSubAbout.'_'.$this->process.'_'.$this->processStep.'_'.$this->processStepAction.'_'.$this->version;
         $this->hash = CryptoHash::get($this->name)->hash;
 
@@ -146,25 +140,16 @@ class SdkTemplate {
 <label for="templateValidation">Template</label> <select name="templateValidation">'.$optionsValidation.'</select>'
 .$this->proofValidation->conditionHtml()
 .$this->fromValidation->conditionHtml()
-.$this->toValidation->conditionHtml()
-.$this->from->conditionHtml(SdkTemplateTypeFrom::walletsList())
-.$this->to->conditionHtml(SdkTemplateTypeTo::walletsList())
-.$this->backup->conditionHtml(SdkTemplateTypeBackup::walletsList())
-.$this->lock->conditionHtml(SdkTemplateTypeLock::walletsList())
-.$this->witness->conditionHtml(SdkTemplateTypeWitness::walletsList())
-.$this->cosigner->conditionHtml(SdkTemplateTypeCosigner::walletsList())
-.$this->ban->conditionHtml(SdkTemplateTypeBan::walletsList())
-.$this->old->conditionHtml(SdkTemplateTypeOld::walletsList())
-.$this->member->conditionHtml(SdkTemplateTypeMember::walletsList())
-.$this->board->conditionHtml(SdkTemplateTypeBoard::walletsList())
-.$this->cosignerOrg->conditionHtml(SdkTemplateTypeCosignerOrg::walletsList())
-.$this->witnessOrg->conditionHtml(SdkTemplateTypeWitnessOrg::walletsList())
-.$this->parentstype1->conditionHtml(SdkTemplateTypeParents::walletsList())
-.$this->childstype1->conditionHtml(SdkTemplateTypeChilds::walletsList())
-.$this->investorType1->conditionHtml(SdkTemplateTypeInvestorType1::walletsList())
-.$this->block->conditionHtml(SdkTemplateTypeBlock::walletsList())
-.$this->peg->conditionHtml(SdkTemplateTypePeg::walletsList());
-        
+.$this->toValidation->conditionHtml();
+
+        $c = [];
+        foreach(SdkWallet::$walletsFederation as $d => $v) $c[$d] = $d;
+        foreach(SdkWallet::$walletsShare as $d => $v) $c[$d] = $d;
+
+        foreach($c as $t) {
+            $c = 'SdkTemplateType'.ucfirst($t);
+            $form .= $this->$t->conditionHtml($c::walletsList());
+        }
         $function = '';
         $function1 = '';
         $function2 = '';
@@ -176,32 +161,21 @@ class SdkTemplate {
             $function2 .= "\t".'this.'.$id.' = '.$id.';'."\n";
         }
         $l = array();
+        foreach(self::$list as $o) $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$o->name.'.json'));
+        $cc = '';
+        $ci = '';
+        $cl = '';
+        $cd = '';
 
-        foreach(self::$list as $o) {
-
-            $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$o->name.'.json'));
+        foreach(SdkWallet::$wallets as $w) {
+            $cc .= $w.' = {}, ';
+            $ci .= 'this.'.$w.' = '.$w.';'."\n";
+            $cl .= $this->$w->htmlScript."\n";
+            $cd .= 'this.'.$w.'GetData'.$w.'Form();'."\n";
         }
+        $cc = substr($cc, 0, -2);
         $this->htmlScript =  '
-function Template('.substr($function1, 0,-2).', '.
-'proofValidation = {}, '.
-'fromValidation = {}, '.
-'toValidation = {}, '.
-'from = {}, '.
-'to = {}, '.
-'backup = {}, '.
-'lock = {}, '.
-'witness = {}, '.
-'cosigner = {}, '.
-'ban = {}, '.
-'old = {}, '.
-'board = {}, '.
-'cosignerOrg = {}, '.
-'witnessOrg = {}, '.
-'parentstype1 = {}, '.
-'childstype1 = {}, '.
-'investorType1 = {}, '.
-'block = {}, '.
-'peg = {}) {
+function Template('.substr($function1, 0,-2).', proofValidation = {}, fromValidation = {}, toValidation = {}, '.$cc.') {
 
     this.domains = '.json_encode(self::$domains).';
     this.domainsSubs = '.json_encode(self::$domainsSubs).';
@@ -218,22 +192,7 @@ function Template('.substr($function1, 0,-2).', '.
     this.proofValidation = proofValidation;
     this.fromValidation = fromValidation;
     this.toValidation = toValidation;
-    this.from = from;
-    this.to = to;
-    this.backup = backup;
-    this.lock = lock;
-    this.witness = witness;
-    this.cosigner = cosigner;
-    this.ban = ban;
-    this.old = old;
-    this.board = board;
-    this.cosignerOrg = cosignerOrg;
-    this.witnessOrg = witnessOrg;
-    this.parentstype1 = parentstype1;
-    this.childstype1 = childstype1;
-    this.investorType1 = investorType1;
-    this.block = block;
-    this.peg = peg;
+    '.$ci.'
 }
 Template.prototype.getDataFromForm = function () {
 
@@ -244,22 +203,7 @@ Template.prototype.getDataFromForm = function () {
     this.fromValidationGetDataFromForm();
     this.fromValidation.type = "fromValidation";
     this.toValidationGetDataFromForm();
-    this.fromGetDataFromForm();
-    this.toGetDataFromForm();
-    this.backupGetDataFromForm();
-    this.lockGetDataFromForm();
-    this.witnessGetDataFromForm();
-    this.cosignerGetDataFromForm();
-    this.banGetDataFromForm();
-    this.oldGetDataFromForm();
-    this.boardGetDataFromForm();
-    this.cosignerOrgGetDataFromForm();
-    this.witnessOrgGetDataFromForm();
-    this.parentstype1GetDataFromForm();
-    this.childstype1GetDataFromForm();
-    this.investorType1GetDataFromForm();
-    this.blockGetDataFromForm();
-    this.pegGetDataFromForm();    
+    '.$cd.'
     this.name = this.role+this.domain+this.domainSub+this.domainSubAbout+this.process+this.processStep+this.processStepAction+this.version;
     this.hash = requestData.sha256(this);
                 
@@ -294,7 +238,6 @@ Template.prototype.createTemplate = function(){
             let trs = new Transaction(JSON.parse(JSON.stringify(p.from.xpubList)), [], "default", 0, JSON.parse(JSON.stringify(p)), JSON.parse(JSON.stringify(u)));
                                     
             console.info("trs", trs);
-            console.info("trsFrom", trs.from);
                     
             return requestData.send(trs);
         }
@@ -302,26 +245,7 @@ Template.prototype.createTemplate = function(){
     
     return false;
 }
-'.
-$this->proofValidation->htmlScript."\n".
-$this->fromValidation->htmlScript."\n".
-$this->toValidation->htmlScript."\n".
-$this->from->htmlScript."\n".
-$this->to->htmlScript."\n".
-$this->backup->htmlScript."\n".
-$this->lock->htmlScript."\n".
-$this->witness->htmlScript."\n".
-$this->cosigner->htmlScript."\n".
-$this->ban->htmlScript."\n".
-$this->old->htmlScript."\n".
-$this->board->htmlScript."\n".
-$this->cosignerOrg->htmlScript."\n".
-$this->witnessOrg->htmlScript."\n".
-$this->parentstype1->htmlScript."\n".
-$this->childstype1->htmlScript."\n".
-$this->investorType1->htmlScript."\n".
-$this->block->htmlScript."\n".
-$this->peg->htmlScript."\n";
+'.$this->proofValidation->htmlScript."\n".$this->fromValidation->htmlScript."\n".$this->toValidation->htmlScript."\n".$cl;
 
         $c = get_class($this);
         file_put_contents('js/'.$c.'.js', $this->htmlScript);
