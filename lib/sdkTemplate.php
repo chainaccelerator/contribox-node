@@ -51,8 +51,8 @@ class SdkTemplate {
     public SdkTemplateTypeBoard $board;
     public SdkTemplateTypeCosignerOrg $cosignerOrg;
     public SdkTemplateTypeWitnessOrg $witnessOrg;
-    public SdkTemplateTypeParents $parentstype1;
-    public SdkTemplateTypeChilds $childstype1;
+    public SdkTemplateTypeParentstype1 $parentstype1;
+    public SdkTemplateTypeChildstype1 $childstype1;
     public SdkTemplateTypeBlock $block;
     public SdkTemplateTypePeg $peg;
     public SdkTemplateTypeInvestorType1 $investorType1;

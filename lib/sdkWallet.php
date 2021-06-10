@@ -2,7 +2,7 @@
 
 class SdkWallet {
 
-    public static array $wallets = [ 'api', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'peg', 'block', 'ban', 'board', 'member', 'old', 'onboard', 'outboard', 'cosignerOrg', 'witnessOrg', 'info', 'parentstype1', 'childsttype1', 'investorType1'];
+    public static array $wallets = [ 'api', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'peg', 'block', 'ban', 'board', 'member', 'old', 'cosignerOrg', 'witnessOrg', 'info', 'parentstype1', 'childstype1', 'investorType1'];
     public static stdClass $walletsShare;
     public static stdClass $walletsFederation;
     public string $htmlScript = '';
