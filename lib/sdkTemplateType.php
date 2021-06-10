@@ -39,16 +39,12 @@ class SdkTemplateType {
 
         $cl = get_called_class();
         $c = $cl::$name;
-        $ac = [];
         $af = [];
-        if(isset(SdkWallet::$walletsFederation->$c) === true) $af = SdkWallet::$walletsFederation->$c;
-        if(isset(SdkWallet::$walletsShare->$c) === true) $as = SdkWallet::$walletsShare->$c;
-        $wL = array_merge($af, $ac);
+        if(isset(SdkWallet::$walletsFederation->$c) === true) foreach(SdkWallet::$walletsFederation->$c as $v) $af[] = $v;
+        if(isset(SdkWallet::$walletsShare->$c) === true) foreach(SdkWallet::$walletsShare->$c as $v) $af[] = $v;
 
-        foreach($wL as $l) {
+        foreach($af as $l) $res[] = $l;
 
-            $res[] = $l;
-        }
         return $res;
     }
     public function conditionHtml(array $xpubList = array(), string $optionPubKeys = ''): string {
