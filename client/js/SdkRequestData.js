@@ -4,19 +4,35 @@ function RequestData() {
     this.request = {"timestamp":0,"peerList":[],"pow":{"nonce":0,"difficulty":4,"difficultyPatthern":"d","hash":"default","pow":"default","previousHash":"default"},"sig":{"address":"","hash":"default","hdPath":"0\/0","range":"0","signature":"","xpub":""}};
     this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":[],"to":[],"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","template":"","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
-RequestData.prototype.roleMsgCreate = function(tx, fromXpubIdList, roleInfo, templateName) {
+RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
 
-    if(roleInfo.state != true) return false;
+    if(templateRole.state != true) {
     
+        console.warn("templateRole.state", templateRole);
+        return false;
+    }    
+    if(templateRole.amount == 0) {
+            
+        console.warn("roleInfo.state", roleInfo);
+        return false;
+    }
     let tx0 = JSON.parse(JSON.stringify(tx));
     console.info("roleInfo.xpubList", roleInfo.xpubList);
     let toList = JSON.parse(JSON.stringify(roleInfo.xpubList));
-    if(toList.length == 0) return false;
-
+    if(toList.length == 0) {
+    
+        console.warn("toList.length", toList);
+        return false;
+    }
     tx0.template = templateName;
     tx0.amount = roleInfo.amount;
     tx0.from = fromXpubIdList;
     tx0.to = toList;
+    
+    if(requestData.route.transaction.amount = 0)  t.parentstype1.amount = this.route.transaction.amount;
+    if(requestData.route.transaction.amount > 0)  t.parentstype1.amount = this.route.transaction.amount;
+    if(requestData.route.transaction.amount < 0)  t.from.amount = this.route.transaction.amount;    
+    
     tx0.patternAfterTimeout = roleInfo.patternAfterTimeout;
     tx0.patternAfterTimeoutN = roleInfo.patternAfterTimeoutN;
     tx0.patternBeforeTimeout = roleInfo.patternBeforeTimeout;
@@ -53,65 +69,74 @@ RequestData.prototype.send = function(tr) {
     
         if(t.name == requestData.route.template) {
                         
+            let transactionDefault = [
+                input: {
+                    "address": "",
+                };
+                output: {
+                    "address": "",
+                    "account": "",
+                }
+            }];            
             requestData.pow(requestData);
             requestData.sig(requestData);
             
-            let transactions = [];
+            requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
+            requestData.route.transaction.to.forEach(function(p) { {if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
+            
+            if(requestData.route.transaction.amount !=0) {
+                t.to.amount = requestData.route.transaction;
+                t.to.from = "from";
+                t.from.amount = requestData.route.transaction * -1;
+                t.from.from = "";
+            }
+            
+            let signList = [];
+            let txList = [];
+                        
+    "xpubList": [],
+    "pattern": "any",
+    "patternAfterTimeoutN": 300,
+    "patternBeforeTimeoutN": 1,
+    "amount": 0,
+    "from": "Genesis",
+    "state": true,
+    "patternAfterTimeout": true,
+    "patternBeforeTimeout": true,
+    "type": ""
+            
+            let from0 = requestData.route.transaction.from;
+            
+            if(from0.from.length == 0) return false;
+            if(from0.amount > 0) {
+            
+                if(from0.from == "Genesis") from.
+                
+                txList[txList.length] = from0;    
+            }
+            signList[signList.length] = from0.from;  
+             
+            
+            for(requestData.route.transaction.from            
+             
+            
             let tx = {};
             
-            requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList] = p;});
-            requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList] = p;});
             
-            if(requestData.route.transaction.amount > 0)  t.to.amount = this.route.transaction.amount;
-            if(requestData.route.transaction.amount < 0)  t.from.amount = this.route.transaction.amount;
+                
+            if(requestData.route.transaction.amount >= 0) { 
+            
+                t.from.to = requestData.route.transaction.amount; 
+            }
+            else { 
+            
+                t.to.amount = requestData.route.transaction.amount; 
+            }
+            
+            
+            
 
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.from, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.to, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.backup, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.ban, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.block, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.board, t.name);
-            if(tx != false) transactions[this.route.transaction.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.childstype1, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.cosigner, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.cosignerOrg, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.investorType1, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.lock, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.old, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.parentstype1, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.peg, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.witness, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
-            
-            tx = requestData.roleMsgCreate(requestData.route.transaction, t.from.xpubList, t.witnessOrg, t.name);
-            if(tx != false) transactions[transactions.length] = tx;
+SdkTemplateTypeParentstype1
             
             console.info("transactions", transactions);
             

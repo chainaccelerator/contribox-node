@@ -148,8 +148,8 @@ class SdkTemplate {
         foreach(SdkWallet::$walletsShare as $d => $v) $c[$d] = $d;
 
         foreach($c as $t) {
-            $c = 'SdkTemplateType'.ucfirst($t);
-            $form .= $this->$t->conditionHtml($c::walletsList());
+            $c0 = 'SdkTemplateType'.ucfirst($t);
+            $form .= $this->$t->conditionHtml($c0::walletsList());
         }
         $function = '';
         $function1 = '';
@@ -172,7 +172,7 @@ class SdkTemplate {
             $cc .= $w.' = {}, ';
             $ci .= 'this.'.$w.' = '.$w.';'."\n";
             $cl .= $this->$w->htmlScript."\n";
-            $cd .= 'this.'.$w.'GetData'.$w.'Form();'."\n";
+            $cd .= 'this.'.$w.'GetDataFromForm();'."\n";
         }
         $cc = substr($cc, 0, -2);
         $this->htmlScript =  '
@@ -237,9 +237,7 @@ Template.prototype.createTemplate = function(){
             delete p.patterns;
                         
             let trs = new Transaction(JSON.parse(JSON.stringify(p.from.xpubList)), [], "default", 0, JSON.parse(JSON.stringify(p)), JSON.parse(JSON.stringify(u)));
-                                    
-            console.info("trs", trs);
-                    
+                                                        
             return requestData.send(trs);
         }
     }); 
