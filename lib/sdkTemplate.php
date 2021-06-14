@@ -143,6 +143,7 @@ class SdkTemplate {
 .$this->toValidation->conditionHtml();
 
         $c = [];
+        $c['from'] = 'from';
         foreach(SdkWallet::$walletsFederation as $d => $v) $c[$d] = $d;
         foreach(SdkWallet::$walletsShare as $d => $v) $c[$d] = $d;
 

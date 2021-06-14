@@ -9,7 +9,7 @@ function Template(role = "owner", domain = "Core", process = "Identifier", templ
     this.processes = ["Core","Authorizations","HealthCare","Sells","Finance","Maintenance"];
     this.processesSteps = ["Proposal","Realization","Test","Validation","Advertising","InitialVersion","NewVersion"];
     this.processesStepsAction = ["AskForConfirmationDeclaration","AskForConfirmationBan","AskForConfirmationOutboard","AskForConfirmationOutboard","AskForConfirmationShare","AskForTemplateUpdate","AskForTechnicalInfos"];
-    this.list = [{"name":"default","amount":1.0e-5,"from":{"xpubList":[],"type":"from","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"proofSharing":true,"userProofSharing":true,"htmlFieldsId":[],"htmlScript":""},"to":{"xpubList":[],"type":"to","pattern":"any","patternAfterTimeout":true,"patternAfterTimeoutN":300,"patternBeforeTimeout":false,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"proofSharing":true,"userProofSharing":true,"htmlFieldsId":[],"htmlScript":""}}];
+    this.list = [{"name":"default","role":"Author","domain":"Core","process":"Core","templateValidation":"default","proofValidation":{"state":true,"definition":"","type":"proofValidation"},"fromValidation":{"state":true,"definition":"","type":"fromValidation"},"toValidation":{"state":true,"definition":"","type":""},"from":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"to":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"backup":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"lock":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"witness":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"cosigner":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"ban":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"old":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"board":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"cosignerOrg":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"witnessOrg":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"parentstype1":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"childstype1":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"investorType1":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"block":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"peg":{"xpubList":[],"pattern":"any","patternAfterTimeoutN":300,"patternBeforeTimeoutN":1,"amount":0,"from":"Genesis","state":true,"patternAfterTimeout":true,"patternBeforeTimeout":true,"type":""},"hash":""}];
     this.patterns = ["none","1%","2%","3%","4%","5%","6%","7%","8%","9%","10%","11%","12%","13%","14%","15%","16%","17%","18%","19%","20%","21%","22%","23%","24%","25%","26%","27%","28%","29%","30%","31%","32%","33%","34%","35%","36%","37%","38%","39%","40%","41%","42%","43%","44%","45%","46%","47%","48%","49%","50%","51%","52%","53%","54%","55%","56%","57%","58%","59%","60%","61%","62%","63%","64%","65%","66%","67%","68%","69%","70%","71%","72%","73%","74%","75%","76%","77%","78%","79%","80%","81%","82%","83%","84%","85%","86%","87%","88%","89%","90%","91%","92%","93%","94%","95%","96%","97%","98%","99%"];
 
 	this.role = role;
@@ -193,7 +193,54 @@ Template.prototype.apiGetDataFromForm = function(){
         
         this.api.type = "api";
 }
+Template.prototype.fromGetDataFromForm = function(){
 
+        this.from.xpubList = [];
+        let selList= document.getElementsByName("xpubListfrom")[0].selectedOptions;
+         
+        for (var i = 0; i < selList.length; i++) {
+            this.from.xpubList[i] = selList[i].value;
+        }   
+        this.from.pattern = document.getElementsByName("patternfrom")[0].value;
+        
+        this.from.patternAfterTimeoutN = document.getElementsByName("patternAfterTimeoutNfrom")[0].value;
+        this.from.patternAfterTimeoutN = parseInt(this.from.patternAfterTimeoutN);
+                        
+        this.from.patternBeforeTimeoutN = document.getElementsByName("patternBeforeTimeoutNfrom")[0].value;
+        this.from.patternBeforeTimeoutN = parseInt(this.from.patternBeforeTimeoutN);
+        
+        this.from.amount = document.getElementsByName("amountfrom")[0].value;
+        this.from.amount = parseInt(this.from.amount);
+        
+        this.from.from = document.getElementsByName("fromfrom")[0].value;
+        
+        this.from.state = document.getElementsByName("statefrom")[0].value;
+        if(this.from.state == "on") this.from.state = true;
+        else this.from.state = false;
+        
+        this.from.proofSharing = document.getElementsByName("proofSharingfrom")[0].value;
+        if(this.from.proofSharing == "on") this.from.proofSharing = true;
+        else this.from.proofSharing = false;
+        
+        this.from.userProofSharing = document.getElementsByName("userProofSharingfrom")[0].value;
+        if(this.from.userProofSharing == "on") this.from.userProofSharing = true;
+        else this.from.userProofSharing = false;
+        
+        if(this.from.patternAfterTimeout == true) this.from.patternAfterTimeout = true;
+        else this.from.patternAfterTimeout = false;
+        
+        this.from.patternAfterTimeout = document.getElementsByName("patternAfterTimeoutfrom")[0].value;
+        
+        if(this.from.patternAfterTimeout == true) this.from.patternAfterTimeout = true;
+        else this.from.patternAfterTimeout = false;
+        
+        this.from.patternBeforeTimeout = document.getElementsByName("patternBeforeTimeoutfrom")[0].value;  
+        
+        if(this.from.patternBeforeTimeout == true) this.from.patternBeforeTimeout = true;
+        else this.from.patternBeforeTimeout = false;
+        
+        this.from.type = "from";
+}
 Template.prototype.toGetDataFromForm = function(){
 
         this.to.xpubList = [];
