@@ -22,6 +22,7 @@ class SdkRequestData {
         foreach(SdkWallet::$walletsShare as $d => $v) $c[$d] = $d;
 
         foreach($c as $t) {
+
             $c1 = 'SdkTemplateType'.ucfirst($t);
             $form .=    '
  
@@ -92,13 +93,15 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
 RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, signList = [], txList = []) {
     
     let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
-    let templateFrom = t[role0.from];
-    console.info("t", t);
+    
     console.info("role0", role0);
-    console.info("role0.from", role0.from);
+    
+    if(role0.from == "") return { txList: txList, signList: signList };
+    
+    let templateFrom = t[role0.from];
     console.info("templateFrom", templateFrom);
     
-    if(templateFrom.state === false) return { txList: txList, signList: signList };
+    if(templateFrom.state == false) return { txList: txList, signList: signList };
     
     if(tx.amount > 0) {
     
@@ -181,7 +184,7 @@ RequestData.prototype.send = function(tr) {
             res.signList = [];
             res.txList = [];     
             var template0 = t;
-                        
+                        console.info("template0", template0);
             '.$res.'           
                        
             console.info("res", res);
