@@ -51,7 +51,7 @@ class SdkTemplateType {
 
         $c = get_called_class();
         $optionPatterns = SdkHtml::optionHtml(self::$patterns, $this->pattern);
-        $optionFrom = SdkHtml::optionHtml(["Genesis", "from", "api", "to", "template", "ban", "baord", "member", "old", "onboard", "outboard", "cosignerOrg", "witnessOrg", "info", "investorType1", "parentstype1", "childstype1"], "Genesis");
+        $optionFrom = SdkHtml::optionHtml(["Genesis", "from", "api", "to", "template", "ban", "board", "member", "old", "onboard", "outboard", "cosignerOrg", "witnessOrg", "info", "investorType1", "parentstype1", "childstype1"], "Genesis");
 
         $optionPubKeys = SdkHtml::optionHtmlMultiple($xpubList, $this->xpubList);
         $checkboxState = SdkHtml::checkboxHtml('state'.$this->type, $this->state);

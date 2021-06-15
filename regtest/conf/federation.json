@@ -1,4 +1,22 @@
 {
+  "Genesis": [
+    {
+      "hdPath": "0/0",
+      "pubkey0": "024e1c866541ae9feb6b0596051d08f8c5d3bcac048c20a614bf537a0ccb964f99",
+      "xpub": "tpubD6NzVbkrYhZ4WtAkFU9AXMjvpTrwZapJ61vdGVzwyEKx1wfbEB8NJ9DZHvEwVqKHmtG5sUC6rf1ELnrDc7hJhGvTe5usNk5MyJj2kywatDE",
+      "role": "api",
+      "account": {
+        "firstname": "Nicolas",
+        "lastname": "Cantu",
+        "identityId": "fs45f45sf54sdf56",
+        "professionalId": "sd5f4sd65f4s6d5f46s5df4",
+        "identityIdProof1": {},
+        "professionalIdProof1": {},
+        "identityToken": "1275581999,2561084589,2302412611,290276103,723890043,3824357725,1036104909,2467203213,253755613,3292898593"
+      },
+      "accountPubKeySig": "IMHrEIb7bz1tE2Cf4laDYnMgwD9U06xE1zVI29zZXsN7LOvFFo/sgbxoVsz9eLWaWSD6o4o2BGf31dqNWlgmwpw="
+    }
+  ],
   "api": [
     {
       "hdPath": "0/0",

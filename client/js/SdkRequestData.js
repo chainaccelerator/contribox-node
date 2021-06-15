@@ -56,6 +56,49 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
     return l;
 }
 
+RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, signList = [], txList = []) {
+    
+    let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
+    let templateFrom = t[role0.from];
+    console.info("t", t);
+    console.info("role0", role0);
+    console.info("role0.from", role0.from);
+    console.info("templateFrom", templateFrom);
+    
+    if(templateFrom.state === false) return { txList: txList, signList: signList };
+    
+    if(tx.amount > 0) {
+    
+        transaction0.inputs[0].address = role0.xpubList;
+        transaction0.outputs[0].address = templateFrom.xpubList;
+        transaction0.outputs[0].value = tx.amount;
+        transaction0.outputs[0].pattern = template0.pattern;
+        transaction0.outputs[0].patternAfterTimeoutN = role0.patternAfterTimeoutN;
+        transaction0.outputs[0].patternBeforeTimeoutN = role0.patternBeforeTimeoutN;
+        transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
+        transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
+    }
+    if(tx.amount < 0) {
+    
+        transaction0.inputs[0].address = templateFrom.xpubList;
+        transaction0.outputs[0].address = role0.xpubList;
+        transaction0.outputs[0].value =  tx.amount;
+        transaction0.outputs[0].pattern = role0.pattern;
+        transaction0.outputs[0].patternAfterTimeoutN = role0.patternAfterTimeoutN;
+        transaction0.outputs[0].patternBeforeTimeoutN = role0.patternBeforeTimeoutN;
+        transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
+        transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
+    }
+    for(xpub of role0.xpubList) signList[signList.length] = xpub;
+    for(xpub of templateFrom.xpubList) signList[signList.length] = xpub;
+    txList[txList.length] = transaction0;
+    
+    return {
+        txList: txList,
+        signList: signList
+    };
+}
+
 RequestData.prototype.send = function(tr) {
         
     this.route.transaction = JSON.parse(JSON.stringify(tr));
@@ -69,76 +112,66 @@ RequestData.prototype.send = function(tr) {
     
         if(t.name == requestData.route.template) {
                         
-            let transactionDefault = [
-                input: {
-                    "address": "",
-                };
-                output: {
-                    "address": "",
-                    "account": "",
-                }
-            }];            
             requestData.pow(requestData);
             requestData.sig(requestData);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
-            requestData.route.transaction.to.forEach(function(p) { {if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
+            requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
             
-            if(requestData.route.transaction.amount !=0) {
-                t.to.amount = requestData.route.transaction;
+            if(requestData.route.transaction.amount > 0) {
+                t.to.amount = requestData.route.transaction.amount;
                 t.to.from = "from";
-                t.from.amount = requestData.route.transaction * -1;
-                t.from.from = "";
+            }
+            if(requestData.route.transaction.amount > 0) {    
+                t.from.amount = requestData.route.transaction.amount;
+                t.from.from = "to";                
             }
             
-            let signList = [];
-            let txList = [];
+            var transactionDefault = [{
+                inputs: [ {
+                    address: "",
+                    outputIndex: 0
+                }],
+                outputs: [ {
+                    outputIndex: 0,    
+                    address: "",
+                    value: 0,
+                    script: "",                    
+                    pattern: "any",
+                    patternAfterTimeoutN: 300,
+                    patternBeforeTimeoutN: 1,
+                    patternAfterTimeout: true,
+                    patternBeforeTimeout: true
+                }]
+            }];
+            let res = {};      
+            res.signList = [];
+            res.txList = [];     
+            var template0 = t;
                         
-    "xpubList": [],
-    "pattern": "any",
-    "patternAfterTimeoutN": 300,
-    "patternBeforeTimeoutN": 1,
-    "amount": 0,
-    "from": "Genesis",
-    "state": true,
-    "patternAfterTimeout": true,
-    "patternBeforeTimeout": true,
-    "type": ""
-            
-            let from0 = requestData.route.transaction.from;
-            
-            if(from0.from.length == 0) return false;
-            if(from0.amount > 0) {
-            
-                if(from0.from == "Genesis") from.
-                
-                txList[txList.length] = from0;    
-            }
-            signList[signList.length] = from0.from;  
-             
-            
-            for(requestData.route.transaction.from            
-             
-            
-            let tx = {};
-            
-            
-                
-            if(requestData.route.transaction.amount >= 0) { 
-            
-                t.from.to = requestData.route.transaction.amount; 
-            }
-            else { 
-            
-                t.to.amount = requestData.route.transaction.amount; 
-            }
-            
-            
-            
-
-SdkTemplateTypeParentstype1
-            
-            console.info("transactions", transactions);
+            res = requestData.txPrepare(requestData.route.transaction, template0.from, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.Genesis, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.api, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.peg, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.block, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.backup, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.lock, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.info, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.to, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.cosigner, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.witness, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.ban, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.board, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.member, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.old, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.cosignerOrg, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.witnessOrg, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.investorType1, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.childstype1, template0, transactionDefault, res.signList, res.txList);
+res = requestData.txPrepare(requestData.route.transaction, template0.parentstype1, template0, transactionDefault, res.signList, res.txList);
+           
+                       
+            console.info("res", res);
             
             let urlClient = "http://localhost:7002/api/index.php";            
             const options = {

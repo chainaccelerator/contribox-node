@@ -2,7 +2,7 @@
 
 class SdkWallet {
 
-    public static array $wallets = [ 'api', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'peg', 'block', 'ban', 'board', 'member', 'old', 'cosignerOrg', 'witnessOrg', 'info', 'parentstype1', 'childstype1', 'investorType1'];
+    public static array $wallets = [ 'Genesis', 'api', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'peg', 'block', 'ban', 'board', 'member', 'old', 'cosignerOrg', 'witnessOrg', 'info', 'parentstype1', 'childstype1', 'investorType1'];
     public static stdClass $walletsShare;
     public static stdClass $walletsFederation;
     public string $htmlScript = '';
@@ -21,7 +21,7 @@ function Wallet(){
     this.walletsShare = '.json_encode(self::$walletsShare).';
     this.walletsFederation = '.json_encode(self::$walletsFederation).';
     this.list = [];
-    this.key = ""
+    this.key = "";
     this.loaded = false;
 }
 Wallet.prototype.createWallet = function(account, role){
@@ -35,7 +35,7 @@ Wallet.prototype.createWallet = function(account, role){
     }
     let walletJ = JSON.parse(w);
     let accountSig = this.sig(walletJ, account);
-            
+
     return {
     
         hdPath: walletJ.hdPath,
@@ -43,6 +43,7 @@ Wallet.prototype.createWallet = function(account, role){
         seedWords: walletJ.seedWords,
         xprv: walletJ.xprv,
         xpub: walletJ.xpub,
+        xpubHash: requestData.sha256(walletJ.xpub),
         role: role,
         account: account,
         accountSig: accountSig

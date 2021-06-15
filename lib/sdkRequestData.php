@@ -13,9 +13,11 @@ class SdkRequestData {
     }
     public function conditionHtml():string {
 
+        $form = '';
         $c1= '';
         $c = [];
         $c['from'] = 'from';
+        $res = '';
         foreach(SdkWallet::$walletsFederation as $d => $v) $c[$d] = $d;
         foreach(SdkWallet::$walletsShare as $d => $v) $c[$d] = $d;
 
@@ -26,6 +28,7 @@ class SdkRequestData {
 tx = requestData.roleMsgCreate(requestData.route.transaction, t.'.$t.');
 if(tx != false) transactions[transactions.length] = tx;
 ';
+            $res .= 'res = requestData.txPrepare(requestData.route.transaction, template0.'.$t.', template0, transactionDefault, res.signList, res.txList);'."\n";
         }
 
         $this->htmlScript =  '
@@ -86,34 +89,47 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
     return l;
 }
 
-RequestData.protype.txPrepare = function(role0) {
-
+RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, signList = [], txList = []) {
+    
     let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
+    let templateFrom = t[role0.from];
+    console.info("t", t);
+    console.info("role0", role0);
+    console.info("role0.from", role0.from);
+    console.info("templateFrom", templateFrom);
     
-    if(role0.amount > 0) {
+    if(templateFrom.state === false) return { txList: txList, signList: signList };
     
-        transaction0.inputs[0].address = template0[role0.from].xpubList;
-        transaction0.outputs[0].address = role0.xpubList;
-        transaction0.outputs[0].value = role0.amount;
-        transaction0.outputs[0].pattern = template0.;
-        transaction0.outputs[0].patternAfterTimeoutN = template0.patternAfterTimeoutN;
-        transaction0.outputs[0].patternBeforeTimeoutN = template0.patternBeforeTimeoutN;
-        transaction0.outputs[0].patternAfterTimeout = template0.patternAfterTimeout;
-        transaction0.outputs[0].patternBeforeTimeout = template0.patternBeforeTimeout;
-    }
-    if(role0.amount < 0) {
+    if(tx.amount > 0) {
     
         transaction0.inputs[0].address = role0.xpubList;
-        transaction0.outputs[0].address = template0[role0.from].xpubList;
-        transaction0.outputs[0].value =  role0.amount;
-        transaction0.outputs[0].pattern = "any";
-        transaction0.outputs[0].patternAfterTimeoutN = template0.patternAfterTimeoutN;
-        transaction0.outputs[0].patternBeforeTimeoutN = template0.patternBeforeTimeoutN;
-        transaction0.outputs[0].patternAfterTimeout = template0.patternAfterTimeout;
-        transaction0.outputs[0].patternBeforeTimeout = template0.patternBeforeTimeout;
+        transaction0.outputs[0].address = templateFrom.xpubList;
+        transaction0.outputs[0].value = tx.amount;
+        transaction0.outputs[0].pattern = template0.pattern;
+        transaction0.outputs[0].patternAfterTimeoutN = role0.patternAfterTimeoutN;
+        transaction0.outputs[0].patternBeforeTimeoutN = role0.patternBeforeTimeoutN;
+        transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
+        transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
+    }
+    if(tx.amount < 0) {
+    
+        transaction0.inputs[0].address = templateFrom.xpubList;
+        transaction0.outputs[0].address = role0.xpubList;
+        transaction0.outputs[0].value =  tx.amount;
+        transaction0.outputs[0].pattern = role0.pattern;
+        transaction0.outputs[0].patternAfterTimeoutN = role0.patternAfterTimeoutN;
+        transaction0.outputs[0].patternBeforeTimeoutN = role0.patternBeforeTimeoutN;
+        transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
+        transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
     }
     for(xpub of role0.xpubList) signList[signList.length] = xpub;
-    for(xpub of template0[role0.from].xpubList) signList[signList.length] = xpub;
+    for(xpub of templateFrom.xpubList) signList[signList.length] = xpub;
+    txList[txList.length] = transaction0;
+    
+    return {
+        txList: txList,
+        signList: signList
+    };
 }
 
 RequestData.prototype.send = function(tr) {
@@ -129,28 +145,11 @@ RequestData.prototype.send = function(tr) {
     
         if(t.name == requestData.route.template) {
                         
-            let transactionDefault = [
-                inputs:[ {
-                    "address": "",
-                    "outputIndex: 0
-                }],
-                outputs:[ {
-                    "outputIndex: 0,    
-                    "address": "",
-                    "value": 0,
-                    "script": "",                    
-                    "pattern": "any",
-                    "patternAfterTimeoutN": 300,
-                    "patternBeforeTimeoutN": 1,
-                    "patternAfterTimeout": true,
-                    "patternBeforeTimeout": true
-                }]
-            }];            
             requestData.pow(requestData);
             requestData.sig(requestData);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
-            requestData.route.transaction.to.forEach(function(p) { {if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
+            requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
             
             if(requestData.route.transaction.amount > 0) {
                 t.to.amount = requestData.route.transaction.amount;
@@ -160,15 +159,32 @@ RequestData.prototype.send = function(tr) {
                 t.from.amount = requestData.route.transaction.amount;
                 t.from.from = "to";                
             }
-            let signList = [];
-            let txList = [];     
-            let template0 = t;
-            let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
             
-            this.txPrepare(requestData.route.transaction.from);
-             
-            
-            console.info("transactions", transactions);
+            var transactionDefault = [{
+                inputs: [ {
+                    address: "",
+                    outputIndex: 0
+                }],
+                outputs: [ {
+                    outputIndex: 0,    
+                    address: "",
+                    value: 0,
+                    script: "",                    
+                    pattern: "any",
+                    patternAfterTimeoutN: 300,
+                    patternBeforeTimeoutN: 1,
+                    patternAfterTimeout: true,
+                    patternBeforeTimeout: true
+                }]
+            }];
+            let res = {};      
+            res.signList = [];
+            res.txList = [];     
+            var template0 = t;
+                        
+            '.$res.'           
+                       
+            console.info("res", res);
             
             let urlClient = "http://localhost:7002/api/index.php";            
             const options = {
