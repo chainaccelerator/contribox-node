@@ -135,11 +135,12 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
             
             transaction0.outputs[i] = {
                 xpubHash: outputAddressList[i],
+                uxtoList: [],
                 scriptpubkey: "",
                 scriptpubkey_asm: "",
+                scriptpubkey_type: "p2sh",
                 scriptpubkey_address: "",
                 value: amountOutput,
-                uxtoList: [],
                 patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
                 patternBeforeTimeoutN: templateFrom.patternBeforeTimeoutN,
                 patternAfterTimeout: templateFrom.patternAfterTimeout,
@@ -156,7 +157,7 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
                         xpubHash: inputAddressList[n],
                         scriptpubkey: "",
                         scriptpubkey_asm: "",
-                        scriptpubkey_type: "",
+                        scriptpubkey_type: "v0_p2wsh",
                         scriptpubkey_address: "",
                         value: amountInput
                     },
