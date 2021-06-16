@@ -127,13 +127,13 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
         
             inputAddressList = templateFrom.xpubList;
             outputAddressList = role0.xpubList;
-        }        
+        }
         let multisig = "";
         let all = outputAddressList.length + inputAddressList.length;
 
         if(templateFrom.pattern == "all") let multisig += "OP_PUSHNUM_"+all;
-        else if(templateFrom.pattern == "any") let multisig += "OP_PUSHNUM_1";        
-        else let multisig += "OP_PUSHNUM_"+(all*templateFrom.pattern);
+        else if(templateFrom.pattern == "any") let multisig += "OP_PUSHNUM_1";
+        else let multisig += "OP_PUSHNUM_"+Math.round(all*templateFrom.pattern);
         
         for(xpubHash of inputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
         for(xpubHash of outputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
@@ -145,7 +145,7 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
         
             let multisig = "";
         }
-        let amountOutput = tx.amount / outputAddressList.length;
+        let amountOutput = Math.round(tx.amount / outputAddressList.length);
         
         for(let i=0;i<outputAddressList.length;i++){
             
@@ -159,9 +159,8 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
                 value: amountOutput,
                 patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
                 patternAfterTimeout: templateFrom.patternAfterTimeout,
-            }  
-            
-            let amountInput = amountOutput / inputAddressList.length;
+            }            
+            let amountInput = Math.round(amountOutput / inputAddressList.length);
             
             for(let n=0;n<inputAddressList.length;n++){
                 
