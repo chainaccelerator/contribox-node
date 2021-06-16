@@ -160,7 +160,10 @@ RequestData.prototype.send = function(tr) {
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
             requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
             
-            t.backup.xpubList = wallet.walletsFederation.backup.xpub
+            t.backup.xpubList = wallet.walletsFederation.backup.xpubHash;
+            t.lock.xpubList = wallet.walletsFederation.lock.xpubHash;
+            t.wintess.xpubList = wallet.walletsFederation.wintess.xpubHash;
+            t.cosigner.xpubList = wallet.walletsFederation.cosigner.xpubHash;
             
             if(requestData.route.transaction.amount > 0) {
                 t.to.amount = requestData.route.transaction.amount;
