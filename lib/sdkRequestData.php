@@ -108,34 +108,78 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
         console.warn("templateFrom.lenght");
         return { txList: res.txList, signList: res.signList }
     }    
-    let i = transaction0.inputs
+    let inputAddressList;
+    let outputAddressList;
     
-    console.info("tx.amount", tx.amount);
+    transaction0.txid = "";
+    transaction0.version = 1;
+    transaction0.locktime = 0;
     
-    if(tx.amount > 0) {
+    if(tx.amount != 0) {
     
-        transaction0.inputs[0].address = role0.xpubList;
-        transaction0.outputs[0].address = templateFrom.xpubList;
-        transaction0.outputs[0].value = tx.amount;
-        transaction0.outputs[0].pattern = templateFrom.pattern;
-        transaction0.outputs[0].patternAfterTimeoutN = templateFrom.patternAfterTimeoutN;
-        transaction0.outputs[0].patternBeforeTimeoutN = templateFrom.patternBeforeTimeoutN;
-        transaction0.outputs[0].patternAfterTimeout = templateFrom.patternAfterTimeout;
-        transaction0.outputs[0].patternBeforeTimeout = templateFrom.patternBeforeTimeout;
-    }
-    if(tx.amount < 0) {
+        if(tx.amount > 0) {
     
-        transaction0.inputs[0].address = templateFrom.xpubList;
-        transaction0.outputs[0].address = role0.xpubList;
-        transaction0.outputs[0].value =  tx.amount;
-        transaction0.outputs[0].pattern = templateFrom.pattern;
-        transaction0.outputs[0].patternAfterTimeoutN = templateFrom.patternAfterTimeoutN;
-        transaction0.outputs[0].patternBeforeTimeoutN = templateFrom.patternBeforeTimeoutN;
-        transaction0.outputs[0].patternAfterTimeout = templateFrom.patternAfterTimeout;
-        transaction0.outputs[0].patternBeforeTimeout = templateFrom.patternBeforeTimeout;
-    }
-    if(tx.amount != 0 && res.txList.includes(transaction0) == false) res.txList[res.txList.length] = transaction0;
+            console.info("tx.amount", tx.amount);
         
+            inputAddressList = templateFrom.xpubList;
+            outputAddressList = role0.xpubList;
+        }
+        else {
+        
+            inputAddressList = role0.xpubList;
+            outputAddressList = templateFrom.xpubList;
+        }        
+        let amountOutput = tx.amount / outputAddressList.length;
+        
+        for(let i=0;i<outputAddressList.length;i++){
+            
+            transaction0.outputs[i] = {
+                xpubHash: outputAddressList[i],
+                scriptpubkey: "",
+                scriptpubkey_asm: "",
+                scriptpubkey_address: "",
+                value: amountOutput,
+                uxtoList: [],
+                patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
+                patternBeforeTimeoutN: templateFrom.patternBeforeTimeoutN,
+                patternAfterTimeout: templateFrom.patternAfterTimeout,
+                patternBeforeTimeout: templateFrom.patternBeforeTimeout
+            }        
+            let amountInput = amountOutput / inputAddressList.length;
+            
+            for(let n=0;n<inputAddressList.length;n++){
+                
+                transaction0.inputs[transaction0.inputs.length] = {                
+                    txid: "", 
+                    vout: i,  
+                    prevout: {
+                        xpubHash: inputAddressList[n],
+                        scriptpubkey: "",
+                        scriptpubkey_asm: "",
+                        scriptpubkey_type: "",
+                        scriptpubkey_address: "",
+                        value: amountInput
+                    },
+                    scriptsig: "", 
+                    scriptsig_asm: "", 
+                    witness: [], 
+                    is_coinbase: false, 
+                    sequence: 0, 
+                    inner_witnessscript_asm: ""
+                };
+            }
+        }
+        transaction0.size: 0,
+        transaction0.weight: 0,
+        transaction0.fee: 0,
+        transaction0.status: {
+            confirmed: false
+            block_height: 0,
+            block_hash: "",
+            block_time: 0
+        }        
+        res.txList[res.txList.length] = transaction0;
+    }        
     for(xpub of role0.xpubList) {
     
         if(res.signList.includes(xpub) == false) res.signList[res.signList.length] = xpub;
