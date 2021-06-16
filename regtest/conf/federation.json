@@ -76,6 +76,7 @@
       "hdPath": "0/0",
       "pubkey0": "0350dec8587a01e7c9be203219a6c8d567fdd7621acef730267b566c66d3659680",
       "xpub": "tpubD6NzVbkrYhZ4YcSmXMFwFWxdFXcsg5kVk6FLbEFjJpnYHFNxpAvY22F1MyGE8BLsXypmWrCXMYrNSCWF1jY4ktMzY5KbxbSDudvw4TpUNYN",
+      "xpubHash": "12b547648950810c320b84c372989fda55e145600135944857da9a0cd3b9477cf00163827282938f8fb2eeec31df2d284bf0fb629ed72f2ca592837af7f08db2",
       "role": "backup",
       "account": {
         "firstname": "Nicolas",
@@ -94,7 +95,46 @@
       "hdPath": "0/0",
       "pubkey0": "03a67bb286f11f5db29d7294c7d7fc073c75132752c94efe17e78de7f95dcf5d68",
       "xpub": "tpubD6NzVbkrYhZ4WQpRcw9C8xG7h5dzUqBVo7txSPN4CSuqpmGSoHzBAn45kk5x9wb8iiWRskRmDrqKC3HrBF5dxW2ujrubxG2sVV8oBDZGXJE",
+      "xpubHash": "39d5315f1feb60b8ef78cbdc5009034c6c7620d7f2ee61cc3fb52bf657c828f811f68e5dbc354238fe268097b050919fea1a0432d46b404a1e47620e3ab3e602",
       "role": "lock",
+      "account": {
+        "firstname": "Nicolas",
+        "lastname": "Cantu",
+        "identityId": "fs45f45sf54sdf56",
+        "professionalId": "sd5f4sd65f4s6d5f46s5df4",
+        "identityIdProof1": {},
+        "professionalIdProof1": {},
+        "identityToken": "1275581999,2561084589,2302412611,290276103,723890043,3824357725,1036104909,2467203213,253755613,3292898593"
+      },
+      "accountPubKeySig": "IHc1B0Y7WPtO+31ar+UQnaQVC3R/b976m0cOdkU0UzyIE9H1AIyzVsopwmzq4NwJ8AJgATDwcxqgF/G5jVx/x6k="
+    }
+  ],
+  "witness": [
+    {
+      "hdPath": "0/0",
+      "pubkey0": "03a67bb286f11f5db29d7294c7d7fc073c75132752c94efe17e78de7f95dcf5d68",
+      "xpub": "tpubD6NzVbkrYhZ4WQpRcw9C8xG7h5dzUqBVo7txSPN4CSuqpmGSoHzBAn45kk5x9wb8iiWRskRmDrqKC3HrBF5dxW2ujrubxG2sVV8oBDZGXJE",
+      "xpubHash": "39d5315f1feb60b8ef78cbdc5009034c6c7620d7f2ee61cc3fb52bf657c828f811f68e5dbc354238fe268097b050919fea1a0432d46b404a1e47620e3ab3e602",
+      "role": "witness",
+      "account": {
+        "firstname": "Nicolas",
+        "lastname": "Cantu",
+        "identityId": "fs45f45sf54sdf56",
+        "professionalId": "sd5f4sd65f4s6d5f46s5df4",
+        "identityIdProof1": {},
+        "professionalIdProof1": {},
+        "identityToken": "1275581999,2561084589,2302412611,290276103,723890043,3824357725,1036104909,2467203213,253755613,3292898593"
+      },
+      "accountPubKeySig": "IHc1B0Y7WPtO+31ar+UQnaQVC3R/b976m0cOdkU0UzyIE9H1AIyzVsopwmzq4NwJ8AJgATDwcxqgF/G5jVx/x6k="
+    }
+  ],
+  "cosigner": [
+    {
+      "hdPath": "0/0",
+      "pubkey0": "03a67bb286f11f5db29d7294c7d7fc073c75132752c94efe17e78de7f95dcf5d68",
+      "xpub": "tpubD6NzVbkrYhZ4WQpRcw9C8xG7h5dzUqBVo7txSPN4CSuqpmGSoHzBAn45kk5x9wb8iiWRskRmDrqKC3HrBF5dxW2ujrubxG2sVV8oBDZGXJE",
+      "xpubHash": "39d5315f1feb60b8ef78cbdc5009034c6c7620d7f2ee61cc3fb52bf657c828f811f68e5dbc354238fe268097b050919fea1a0432d46b404a1e47620e3ab3e602",
+      "role": "cosigner",
       "account": {
         "firstname": "Nicolas",
         "lastname": "Cantu",
