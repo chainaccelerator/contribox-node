@@ -69,7 +69,7 @@ function walletListUpade(){
 
         let elm = document.getElementsByName("xpubList"+w.role)[0];
         let option = document.createElement("option");
-        option.value = w.xpub;
+        option.value = w.xpubHash;
         option.text = w.role;
         option.selected = true;
         elm.appendChild(option);
