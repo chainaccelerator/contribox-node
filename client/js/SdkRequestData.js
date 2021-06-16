@@ -77,42 +77,86 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
     let inputAddressList;
     let outputAddressList;
     
+    transaction0.txid = "";
+    transaction0.version = 1;
+         
+    if(templateFrom.patternBeforeTimeout != false) transaction0.locktime = templateFrom.patternBeforeTimeoutN.toString(16);
+    
     if(tx.amount != 0) {
     
         if(tx.amount > 0) {
-    
-            console.info("tx.amount", tx.amount);
+        
+            inputAddressList = role0.xpubList;
+            outputAddressList = templateFrom.xpubList;
+        }
+        else {
         
             inputAddressList = templateFrom.xpubList;
             outputAddressList = role0.xpubList;
         }
-        else {
+        let multisig = "";
+        let all = outputAddressList.length + inputAddressList.length;
+
+        if(templateFrom.pattern == "all") multisig += "OP_PUSHNUM_"+all;
+        else if(templateFrom.pattern == "any") multisig += "OP_PUSHNUM_1";
+        else multisig += "OP_PUSHNUM_"+Math.round(all*templateFrom.pattern);
         
-            inputAddressList = role0.xpubList;
-            outputAddressList = templateFrom.xpubList;
-        }   
-        console.info("outputAddressList", outputAddressList);
+        for(xpubHash of inputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
+        for(xpubHash of outputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
+
+        multisig += " OP_PUSHNUM_"+all;
+         multisig += " OP_CHECKMULTISIG";   
+                
+        if(templateFrom.pattern == "none") multisig = "";
         
-        let amountOutput = tx.amount / outputAddressList.length;
+        let amountOutput = Math.round(tx.amount / outputAddressList.length);
         
         for(let i=0;i<outputAddressList.length;i++){
             
-            transaction0.outputs[i] = {};
-            transaction0.outputs[i].address = outputAddressList[i];
-            transaction0.outputs[i].amount = amountOutput;
-            transaction0.outputs[i].uxtoList = [];
-            transaction0.outputs[i].patternAfterTimeoutN = templateFrom.patternAfterTimeoutN;
-            transaction0.outputs[i].patternBeforeTimeoutN = templateFrom.patternBeforeTimeoutN;
-            transaction0.outputs[i].patternAfterTimeout = templateFrom.patternAfterTimeout;
-            transaction0.outputs[i].patternBeforeTimeout = templateFrom.patternBeforeTimeout;
-        
-            let amountInput = amountOutput / inputAddressList.length;
+            transaction0.outputs[i] = {
+                xpubHash: outputAddressList[i],
+                uxtoList: [],
+                scriptpubkey: "",
+                scriptpubkey_asm: "",
+                scriptpubkey_type: "p2sh",
+                scriptpubkey_address: "",
+                value: amountOutput,
+                patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
+                patternAfterTimeout: templateFrom.patternAfterTimeout,
+            }            
+            let amountInput = Math.round(amountOutput / inputAddressList.length);
             
             for(let n=0;n<inputAddressList.length;n++){
                 
-                transaction0.inputs[n][i] = { address: inputAddressList[n], amount: amountInput };
+                transaction0.inputs[transaction0.inputs.length] = {                
+                    txid: "", 
+                    vout: i,  
+                    prevout: {
+                        xpubHash: inputAddressList[n],
+                        scriptpubkey: "",
+                        scriptpubkey_asm: "",
+                        scriptpubkey_type: "v0_p2wsh",
+                        scriptpubkey_address: "",
+                        value: amountInput
+                    },
+                    scriptsig: "", 
+                    scriptsig_asm: "", 
+                    witness: [], 
+                    is_coinbase: false, 
+                    sequence: 0, 
+                    inner_witnessscript_asm: multisig
+                };
             }
         }
+        transaction0.size = 0;
+        transaction0.weight = 0;
+        transaction0.fee = 0;
+        transaction0.status = {
+            confirmed: false,
+            block_height: 0,
+            block_hash: "",
+            block_time: 0
+        };
         res.txList[res.txList.length] = transaction0;
     }        
     for(xpub of role0.xpubList) {
@@ -161,21 +205,8 @@ RequestData.prototype.send = function(tr) {
                 t.from.from = "to";                
             }            
             var transactionDefault = {
-                inputs: [ {
-                    address: "",
-                    outputIndex: 0
-                }],
-                outputs: [ {
-                    outputIndex: 0,    
-                    address: "",
-                    value: 0,
-                    script: "",                    
-                    pattern: "any",
-                    patternAfterTimeoutN: 300,
-                    patternBeforeTimeoutN: 1,
-                    patternAfterTimeout: true,
-                    patternBeforeTimeout: true
-                }]
+                inputs: [],
+                outputs: []
             };
             let res = {};      
             res.signList = [];
