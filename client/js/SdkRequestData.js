@@ -77,6 +77,7 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
     let inputAddressList;
     let outputAddressList;
     
+    transaction0.role = role0.type;
     transaction0.txid = "";
     transaction0.version = 1;
          
