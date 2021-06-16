@@ -114,7 +114,7 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
     transaction0.txid = "";
     transaction0.version = 1;
          
-    if(templateFrom.patternBeforeTimeout != false) transaction0.locktime: dechex(templateFrom.patternBeforeTimeoutN);
+    if(templateFrom.patternBeforeTimeout != false) transaction0.locktime: templateFrom.patternBeforeTimeoutN.toString(16);
     
     if(tx.amount != 0) {
     
