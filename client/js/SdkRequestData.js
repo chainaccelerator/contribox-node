@@ -99,17 +99,13 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
         transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
     }
     if(tx.amount != 0 && res.txList.includes(transaction0) == false) res.txList[res.txList.length] = transaction0;
-    
-    console.info("res.signList", res.signList);
-    
+        
     for(xpub of role0.xpubList) {
     
-        console.info("role0 "+role0.type, xpub);
         if(res.signList.includes(xpub) == false) res.signList[res.signList.length] = xpub;
     }
     for(xpub of templateFrom.xpubList) {
     
-        console.info("templateFrom "+role0.type, xpub);
         if(res.signList.includes(xpub) == false) res.signList[res.signList.length] = xpub;
     }   
     return res;
@@ -221,6 +217,9 @@ res = requestData.txPrepare(requestData.route.transaction, template0.childstype1
 
 res = requestData.txPrepare(requestData.route.transaction, template0.parentstype1, template0, transactionDefault, res)
 
+            requestData.validation = res;
+            
+            console.info(requestData);
             
             let urlClient = "http://localhost:7002/api/index.php";            
             const options = {
