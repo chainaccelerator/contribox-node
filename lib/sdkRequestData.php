@@ -110,27 +110,29 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
     }    
     let i = transaction0.inputs
     
+    console.info("tx.amount", tx.amount);
+    
     if(tx.amount > 0) {
     
         transaction0.inputs[0].address = role0.xpubList;
         transaction0.outputs[0].address = templateFrom.xpubList;
         transaction0.outputs[0].value = tx.amount;
-        transaction0.outputs[0].pattern = template0.pattern;
-        transaction0.outputs[0].patternAfterTimeoutN = role0.patternAfterTimeoutN;
-        transaction0.outputs[0].patternBeforeTimeoutN = role0.patternBeforeTimeoutN;
-        transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
-        transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
+        transaction0.outputs[0].pattern = templateFrom.pattern;
+        transaction0.outputs[0].patternAfterTimeoutN = templateFrom.patternAfterTimeoutN;
+        transaction0.outputs[0].patternBeforeTimeoutN = templateFrom.patternBeforeTimeoutN;
+        transaction0.outputs[0].patternAfterTimeout = templateFrom.patternAfterTimeout;
+        transaction0.outputs[0].patternBeforeTimeout = templateFrom.patternBeforeTimeout;
     }
     if(tx.amount < 0) {
     
         transaction0.inputs[0].address = templateFrom.xpubList;
         transaction0.outputs[0].address = role0.xpubList;
         transaction0.outputs[0].value =  tx.amount;
-        transaction0.outputs[0].pattern = role0.pattern;
-        transaction0.outputs[0].patternAfterTimeoutN = role0.patternAfterTimeoutN;
-        transaction0.outputs[0].patternBeforeTimeoutN = role0.patternBeforeTimeoutN;
-        transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
-        transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
+        transaction0.outputs[0].pattern = templateFrom.pattern;
+        transaction0.outputs[0].patternAfterTimeoutN = templateFrom.patternAfterTimeoutN;
+        transaction0.outputs[0].patternBeforeTimeoutN = templateFrom.patternBeforeTimeoutN;
+        transaction0.outputs[0].patternAfterTimeout = templateFrom.patternAfterTimeout;
+        transaction0.outputs[0].patternBeforeTimeout = templateFrom.patternBeforeTimeout;
     }
     if(tx.amount != 0 && res.txList.includes(transaction0) == false) res.txList[res.txList.length] = transaction0;
         
@@ -164,32 +166,22 @@ RequestData.prototype.send = function(tr) {
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
             requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
             
-            for(w0 of wallet.walletsFederation.backup) {
-                
-                t.backup.xpubList[t.backup.xpubList.length] = w0.xpubHash;
-            }
-            for(w0 of wallet.walletsFederation.lock) {
-                
-                t.lock.xpubList[t.lock.xpubList.length] = w0.xpubHash;
-            }
-            for(w0 of wallet.walletsFederation.witness) {
-                
-                t.witness.xpubList[t.witness.xpubList.length] = w0.xpubHash;
-            }
-            for(w0 of wallet.walletsFederation.cosigner) {
-                
-                t.cosigner.xpubList[t.cosigner.xpubList.length] = w0.xpubHash;
-            }
+            for(w0 of wallet.walletsFederation.backup) t.backup.xpubList[t.backup.xpubList.length] = w0.xpubHash;
+            for(w0 of wallet.walletsFederation.lock) t.lock.xpubList[t.lock.xpubList.length] = w0.xpubHash;
+            for(w0 of wallet.walletsFederation.witness) t.witness.xpubList[t.witness.xpubList.length] = w0.xpubHash;
+            for(w0 of wallet.walletsFederation.cosigner) t.cosigner.xpubList[t.cosigner.xpubList.length] = w0.xpubHash;
+            
+            console.info("requestData.route.transaction.amount", requestData.route.transaction.amount);
+            
             if(requestData.route.transaction.amount > 0) {
                 t.to.amount = requestData.route.transaction.amount;
                 t.to.from = "from";
             }
-            if(requestData.route.transaction.amount > 0) {    
+            if(requestData.route.transaction.amount < 0) {    
                 t.from.amount = requestData.route.transaction.amount;
                 t.from.from = "to";                
-            }
-            
-            var transactionDefault = [{
+            }            
+            var transactionDefault = {
                 inputs: [ {
                     address: "",
                     outputIndex: 0
@@ -205,7 +197,7 @@ RequestData.prototype.send = function(tr) {
                     patternAfterTimeout: true,
                     patternBeforeTimeout: true
                 }]
-            }];
+            };
             let res = {};      
             res.signList = [];
             res.txList = [];     

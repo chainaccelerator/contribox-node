@@ -92,7 +92,7 @@ Template.prototype.createTemplate = function(){
             if(w.role == "api" ) u = w.account;
         });    
         if(t.name == "default") {
-                    
+                            
             template.getDataFromForm();
             
             var p = JSON.parse(JSON.stringify(template));            
@@ -106,9 +106,9 @@ Template.prototype.createTemplate = function(){
             delete p.processesStepsAction;
             delete p.list;
             delete p.patterns;
-                        
-            let trs = new Transaction(JSON.parse(JSON.stringify(p.from.xpubList)), [], "default", 0, JSON.parse(JSON.stringify(p)), JSON.parse(JSON.stringify(u)));
-                                                        
+                                               
+            let trs = new Transaction(JSON.parse(JSON.stringify(p.from.xpubList)), [], "default", t.to.amount, JSON.parse(JSON.stringify(p)), JSON.parse(JSON.stringify(u)));
+                                                                               
             return requestData.send(trs);
         }
     }); 
