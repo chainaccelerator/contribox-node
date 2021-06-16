@@ -113,22 +113,38 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
     
     transaction0.txid = "";
     transaction0.version = 1;
-    transaction0.locktime = 0;
+         
+    if(templateFrom.patternBeforeTimeout != false) transaction0.locktime: dechex(templateFrom.patternBeforeTimeoutN);
     
     if(tx.amount != 0) {
     
         if(tx.amount > 0) {
-    
-            console.info("tx.amount", tx.amount);
-        
-            inputAddressList = templateFrom.xpubList;
-            outputAddressList = role0.xpubList;
-        }
-        else {
         
             inputAddressList = role0.xpubList;
             outputAddressList = templateFrom.xpubList;
+        }
+        else {
+        
+            inputAddressList = templateFrom.xpubList;
+            outputAddressList = role0.xpubList;
         }        
+        let multisig = "";
+        let all = outputAddressList.length + inputAddressList.length;
+
+        if(templateFrom.pattern == "all") let multisig += "OP_PUSHNUM_"+all;
+        else if(templateFrom.pattern == "any") let multisig += "OP_PUSHNUM_1";        
+        else let multisig += "OP_PUSHNUM_"+(all*templateFrom.pattern);
+        
+        for(xpubHash of inputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
+        for(xpubHash of outputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
+
+        let multisig += " OP_PUSHNUM_"+all;
+        let multisig += " OP_CHECKMULTISIG";   
+                
+        if(templateFrom.pattern == "none") {
+        
+            let multisig = "";
+        }
         let amountOutput = tx.amount / outputAddressList.length;
         
         for(let i=0;i<outputAddressList.length;i++){
@@ -142,10 +158,9 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
                 scriptpubkey_address: "",
                 value: amountOutput,
                 patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
-                patternBeforeTimeoutN: templateFrom.patternBeforeTimeoutN,
                 patternAfterTimeout: templateFrom.patternAfterTimeout,
-                patternBeforeTimeout: templateFrom.patternBeforeTimeout
-            }        
+            }  
+            
             let amountInput = amountOutput / inputAddressList.length;
             
             for(let n=0;n<inputAddressList.length;n++){
@@ -155,7 +170,7 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
                     vout: i,  
                     prevout: {
                         xpubHash: inputAddressList[n],
-                        scriptpubkey: "",
+                        scriptpubkey: multisig,
                         scriptpubkey_asm: "",
                         scriptpubkey_type: "v0_p2wsh",
                         scriptpubkey_address: "",
