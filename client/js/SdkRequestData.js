@@ -17,7 +17,7 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
         return false;
     }
     let tx0 = JSON.parse(JSON.stringify(tx));
-    console.info("roleInfo.xpubList", roleInfo.xpubList);
+    
     let toList = JSON.parse(JSON.stringify(roleInfo.xpubList));
     if(toList.length == 0) {
     
@@ -39,36 +39,39 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
     tx0.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
     tx0.type = roleInfo.type;    
     let l = [];
-    
-    console.info("tx0", tx0);
-    
+        
     if(roleInfo.userProofSharing != true) tx0.proof = "";
     if(roleInfo.proofSharing != true) tx0.user = "";
     
     for(i=0; i<toList.length;i++){
         
         let test = this.encrypt(tx0, toList[i]);
-        
-        console.info("test", test);
-        
         l[l.length] = test;
     }      
     return l;
 }
 
-RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, signList = [], txList = []) {
+RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res) {
     
+    console.warn("role0.type", role0.type);
     let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
-    
-    console.info("role0", role0);
-    
-    if(role0.from == "") return { txList: txList, signList: signList };
-    
+    if(role0.from == "") {
+        
+        console.warn("role0.from", role0);
+        return { txList: res.txList, signList: res.signList }
+    }    
+    if(role0.state == false) {
+        
+        console.warn("role0.state", role0);
+        return { txList: res.txList, signList: res.signList }
+    }    
     let templateFrom = t[role0.from];
-    console.info("templateFrom", templateFrom);
     
-    if(templateFrom.state == false) return { txList: txList, signList: signList };
-    
+    if(templateFrom.lenght == 0)  {
+        
+        console.warn("templateFrom.lenght", templateFrom);
+        return { txList: res.txList, signList: res.signList }
+    }    
     if(tx.amount > 0) {
     
         transaction0.inputs[0].address = role0.xpubList;
@@ -91,14 +94,13 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, sig
         transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
         transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
     }
-    for(xpub of role0.xpubList) signList[signList.length] = xpub;
-    for(xpub of templateFrom.xpubList) signList[signList.length] = xpub;
-    txList[txList.length] = transaction0;
+    for(xpub of role0.xpubList) res.signList[res.signList.length] = xpub;
+    for(xpub of templateFrom.xpubList) res.signList[res.signList.length] = xpub;
+    res.txList[res.txList.length] = transaction0;
     
-    return {
-        txList: txList,
-        signList: signList
-    };
+    console.info("res0", res);
+    
+    return res;
 }
 
 RequestData.prototype.send = function(tr) {
@@ -150,27 +152,106 @@ RequestData.prototype.send = function(tr) {
             res.signList = [];
             res.txList = [];     
             var template0 = t;
-                        console.info("template0", template0);
-            res = requestData.txPrepare(requestData.route.transaction, template0.from, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.Genesis, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.api, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.peg, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.block, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.backup, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.lock, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.info, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.to, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.cosigner, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.witness, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.ban, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.board, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.member, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.old, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.cosignerOrg, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.witnessOrg, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.investorType1, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.childstype1, template0, transactionDefault, res.signList, res.txList);
-res = requestData.txPrepare(requestData.route.transaction, template0.parentstype1, template0, transactionDefault, res.signList, res.txList);
+            
+console.info("template0.from", template0.from);
+res = requestData.txPrepare(requestData.route.transaction, template0.from, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.Genesis", template0.Genesis);
+res = requestData.txPrepare(requestData.route.transaction, template0.Genesis, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.api", template0.api);
+res = requestData.txPrepare(requestData.route.transaction, template0.api, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.peg", template0.peg);
+res = requestData.txPrepare(requestData.route.transaction, template0.peg, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.block", template0.block);
+res = requestData.txPrepare(requestData.route.transaction, template0.block, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.backup", template0.backup);
+res = requestData.txPrepare(requestData.route.transaction, template0.backup, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.lock", template0.lock);
+res = requestData.txPrepare(requestData.route.transaction, template0.lock, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.info", template0.info);
+res = requestData.txPrepare(requestData.route.transaction, template0.info, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.to", template0.to);
+res = requestData.txPrepare(requestData.route.transaction, template0.to, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.cosigner", template0.cosigner);
+res = requestData.txPrepare(requestData.route.transaction, template0.cosigner, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.witness", template0.witness);
+res = requestData.txPrepare(requestData.route.transaction, template0.witness, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.ban", template0.ban);
+res = requestData.txPrepare(requestData.route.transaction, template0.ban, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.board", template0.board);
+res = requestData.txPrepare(requestData.route.transaction, template0.board, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.member", template0.member);
+res = requestData.txPrepare(requestData.route.transaction, template0.member, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.old", template0.old);
+res = requestData.txPrepare(requestData.route.transaction, template0.old, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.cosignerOrg", template0.cosignerOrg);
+res = requestData.txPrepare(requestData.route.transaction, template0.cosignerOrg, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.witnessOrg", template0.witnessOrg);
+res = requestData.txPrepare(requestData.route.transaction, template0.witnessOrg, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.investorType1", template0.investorType1);
+res = requestData.txPrepare(requestData.route.transaction, template0.investorType1, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.childstype1", template0.childstype1);
+res = requestData.txPrepare(requestData.route.transaction, template0.childstype1, template0, transactionDefault, res);
+console.info("res", res);
+
+
+console.info("template0.parentstype1", template0.parentstype1);
+res = requestData.txPrepare(requestData.route.transaction, template0.parentstype1, template0, transactionDefault, res);
+console.info("res", res);
+
            
                        
             console.info("res", res);

@@ -17,7 +17,7 @@ class SdkTemplate {
         ]
     ];
     public static array $roles = ['Author', 'Owner', 'Contributor', 'ClientPrivate', 'ClientPublic', 'Witness', 'Provider', 'Distributor', 'Sponsor', 'Insurance'];
-    public static array $typeList = ['Genesis', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'ban', 'old', 'member', 'board', 'witnessOrg', 'cosignerOrg', 'parentstype1', 'childstype1', 'block', 'peg'];
+    public static array $typeList = ['Genesis', 'from', 'to', 'backup', 'lock', 'cosigner', 'witness', 'ban', 'old', 'member', 'board', 'witnessOrg', 'cosignerOrg', 'parentstype1', 'childstype1', 'block', 'peg', 'investorType1'];
     public static array $processes = ['Core', 'Authorizations', 'HealthCare', 'Sells', 'Finance', 'Maintenance'];
     public static array $processesSteps = ['Proposal', 'Realization', 'Test', 'Validation', 'Advertising', 'InitialVersion', 'NewVersion'];
     public static array $processesStepsAction = ['AskForConfirmationDeclaration', 'AskForConfirmationBan', 'AskForConfirmationOutboard', 'AskForConfirmationOutboard', 'AskForConfirmationShare', 'AskForTemplateUpdate', 'AskForTechnicalInfos'];
@@ -107,6 +107,7 @@ class SdkTemplate {
         foreach($files as $file) {
 
             $o = json_decode(file_get_contents($file));
+
             self::$list[] = $o;
         }
     }
@@ -163,7 +164,10 @@ class SdkTemplate {
             $function2 .= "\t".'this.'.$id.' = '.$id.';'."\n";
         }
         $l = array();
-        foreach(self::$list as $o) $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$o->name.'.json'));
+        foreach(self::$list as $o) {
+
+            $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$o->name.'.json'));
+        }
         $cc = '';
         $ci = '';
         $cl = '';

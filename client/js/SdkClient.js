@@ -221,7 +221,7 @@ function getLayoutData (i) {
             store.createIndex("xprv", "xprv", {unique: true});
             store.createIndex("xpub", "xpub", {unique: true});
 
-            if (confirm("Do you want to import a non-existent wallet? Otherwise a wallet will be created.")) {
+            if (confirm("Do you want to import a wallet? Otherwise a wallet will be created.")) {
 
                 var newDiv = document.createElement("div");
                 newDiv.innerHTML += '<button class="open_button" onClick="openPopup()">Open Popup</button>' +

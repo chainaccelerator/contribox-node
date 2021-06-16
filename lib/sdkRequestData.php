@@ -29,7 +29,11 @@ class SdkRequestData {
 tx = requestData.roleMsgCreate(requestData.route.transaction, t.'.$t.');
 if(tx != false) transactions[transactions.length] = tx;
 ';
-            $res .= 'res = requestData.txPrepare(requestData.route.transaction, template0.'.$t.', template0, transactionDefault, res.signList, res.txList);'."\n";
+            $res .= '
+console.info("template0.'.$t.'", template0.'.$t.');
+res = requestData.txPrepare(requestData.route.transaction, template0.'.$t.', template0, transactionDefault, res);
+console.info("res", res);
+'."\n";
         }
 
         $this->htmlScript =  '
@@ -51,7 +55,7 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
         return false;
     }
     let tx0 = JSON.parse(JSON.stringify(tx));
-    console.info("roleInfo.xpubList", roleInfo.xpubList);
+    
     let toList = JSON.parse(JSON.stringify(roleInfo.xpubList));
     if(toList.length == 0) {
     
@@ -73,36 +77,39 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
     tx0.patternBeforeTimeoutN = roleInfo.patternBeforeTimeoutN;
     tx0.type = roleInfo.type;    
     let l = [];
-    
-    console.info("tx0", tx0);
-    
+        
     if(roleInfo.userProofSharing != true) tx0.proof = "";
     if(roleInfo.proofSharing != true) tx0.user = "";
     
     for(i=0; i<toList.length;i++){
         
         let test = this.encrypt(tx0, toList[i]);
-        
-        console.info("test", test);
-        
         l[l.length] = test;
     }      
     return l;
 }
 
-RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, signList = [], txList = []) {
+RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res) {
     
+    console.warn("role0.type", role0.type);
     let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
-    
-    console.info("role0", role0);
-    
-    if(role0.from == "") return { txList: txList, signList: signList };
-    
+    if(role0.from == "") {
+        
+        console.warn("role0.from", role0);
+        return { txList: res.txList, signList: res.signList }
+    }    
+    if(role0.state == false) {
+        
+        console.warn("role0.state", role0);
+        return { txList: res.txList, signList: res.signList }
+    }    
     let templateFrom = t[role0.from];
-    console.info("templateFrom", templateFrom);
     
-    if(templateFrom.state == false) return { txList: txList, signList: signList };
-    
+    if(templateFrom.lenght == 0)  {
+        
+        console.warn("templateFrom.lenght", templateFrom);
+        return { txList: res.txList, signList: res.signList }
+    }    
     if(tx.amount > 0) {
     
         transaction0.inputs[0].address = role0.xpubList;
@@ -125,14 +132,13 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, sig
         transaction0.outputs[0].patternAfterTimeout = role0.patternAfterTimeout;
         transaction0.outputs[0].patternBeforeTimeout = role0.patternBeforeTimeout;
     }
-    for(xpub of role0.xpubList) signList[signList.length] = xpub;
-    for(xpub of templateFrom.xpubList) signList[signList.length] = xpub;
-    txList[txList.length] = transaction0;
+    for(xpub of role0.xpubList) res.signList[res.signList.length] = xpub;
+    for(xpub of templateFrom.xpubList) res.signList[res.signList.length] = xpub;
+    res.txList[res.txList.length] = transaction0;
     
-    return {
-        txList: txList,
-        signList: signList
-    };
+    console.info("res0", res);
+    
+    return res;
 }
 
 RequestData.prototype.send = function(tr) {
@@ -153,6 +159,8 @@ RequestData.prototype.send = function(tr) {
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
             requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
+            
+            t.backup.xpubList = wallet.walletsFederation.backup.xpub
             
             if(requestData.route.transaction.amount > 0) {
                 t.to.amount = requestData.route.transaction.amount;
@@ -184,7 +192,6 @@ RequestData.prototype.send = function(tr) {
             res.signList = [];
             res.txList = [];     
             var template0 = t;
-                        console.info("template0", template0);
             '.$res.'           
                        
             console.info("res", res);
