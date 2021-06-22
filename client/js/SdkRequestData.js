@@ -51,12 +51,11 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
     return l;
 }
 
-RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res) {
+RequestData.prototype.txPrepare = function(tx, role0, t, res) {
     
     delete role0.htmlFieldsId;
     delete role0.htmlScript;
     
-    let transaction0 = JSON.parse(JSON.stringify(transactionDefault));
     if(role0.from == "") {
         
         console.warn("role0.from");
@@ -73,101 +72,80 @@ RequestData.prototype.txPrepare = function(tx, role0, t, transactionDefault, res
         
         console.warn("templateFrom.lenght");
         return { txList: res.txList, signList: res.signList }
-    }    
-    let inputAddressList;
-    let outputAddressList;
-    
+    }
+    let transaction0 = {}
     transaction0.role = role0.type;
-    transaction0.txid = "";
-    transaction0.version = 1;
-         
+
     if(templateFrom.patternBeforeTimeout != false) transaction0.locktime = templateFrom.patternBeforeTimeoutN.toString(16);
+
+    let inputAddressListTmp = [];
+    let outputAddressListTmp = [];
     
     if(tx.amount != 0) {
     
         if(tx.amount > 0) {
         
-            inputAddressList = role0.xpubList;
-            outputAddressList = templateFrom.xpubList;
+            inputAddressListTmp = role0.xpubList;
+            outputAddressListTmp = templateFrom.xpubList;
         }
         else {
         
-            inputAddressList = templateFrom.xpubList;
-            outputAddressList = role0.xpubList;
+            inputAddressListTmp = templateFrom.xpubList;
+            outputAddressListTmp = role0.xpubList;
         }
-        let multisig = "";
-        let all = outputAddressList.length + inputAddressList.length;
-
-        if(templateFrom.pattern == "all") multisig += "OP_PUSHNUM_"+all;
-        else if(templateFrom.pattern == "any") multisig += "OP_PUSHNUM_1";
-        else multisig += "OP_PUSHNUM_"+Math.round(all*templateFrom.pattern);
+        let inputAddressList = [];
+        let outputAddressList = [];
+        let allList = [];
         
-        for(xpubHash of inputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
-        for(xpubHash of outputAddressList) multisig += " OP_PUSHBYTES_33 "+xpubHash;
-
-        multisig += " OP_PUSHNUM_"+all;
-         multisig += " OP_CHECKMULTISIG";   
-                
-        if(templateFrom.pattern == "none") multisig = "";
+        for(xpub of inputAddressListTmp) {
         
-        let amountOutput = Math.round(tx.amount / outputAddressList.length);
-        
-        for(let i=0;i<outputAddressList.length;i++){
+            if(inputAddressList.includes(xpub) == false) {
             
-            transaction0.outputs[i] = {
-                xpubHash: outputAddressList[i],
-                uxtoList: [],
-                scriptpubkey: "",
-                scriptpubkey_asm: "",
-                scriptpubkey_type: "p2sh",
-                scriptpubkey_address: "",
-                value: amountOutput,
-                patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
-                patternAfterTimeout: templateFrom.patternAfterTimeout,
-            }            
-            let amountInput = Math.round(amountOutput / inputAddressList.length);
+                inputAddressList.push(xpub);
+            } 
+            if(allList.includes(xpub) == false) {
             
-            for(let n=0;n<inputAddressList.length;n++){
-                
-                transaction0.inputs[transaction0.inputs.length] = {                
-                    txid: "", 
-                    vout: i,  
-                    prevout: {
-                        xpubHash: inputAddressList[n],
-                        scriptpubkey: "",
-                        scriptpubkey_asm: "",
-                        scriptpubkey_type: "v0_p2wsh",
-                        scriptpubkey_address: "",
-                        value: amountInput
-                    },
-                    scriptsig: "", 
-                    scriptsig_asm: "", 
-                    witness: [], 
-                    is_coinbase: false, 
-                    sequence: 0, 
-                    inner_witnessscript_asm: multisig
-                };
+                allList.push(xpub);
+            }
+        }                
+        for(xpub of allList) {
+        
+            if(res.signList.includes(xpub) == false) {
+            
+                res.signList.push(xpub);
             }
         }
-        transaction0.size = 0;
-        transaction0.weight = 0;
-        transaction0.fee = 0;
-        transaction0.status = {
-            confirmed: false,
-            block_height: 0,
-            block_hash: "",
-            block_time: 0
-        };
-        res.txList[res.txList.length] = transaction0;
-    }        
-    for(xpub of role0.xpubList) {
-    
-        if(res.signList.includes(xpub) == false) res.signList[res.signList.length] = xpub;
+        for(xpub of outputAddressListTmp) {
+        
+            if(outputAddressList.includes(xpub) == false) {
+        
+                outputAddressList.push(xpub);
+            } 
+            if(allList.includes(xpub) == false) {
+            
+                allList.push(xpub);
+            }
+        }
+        let min = 0;
+        let max = allList.length;
+
+        if(templateFrom.pattern == "all")  min = max;
+        else if(templateFrom.pattern == "any") min = 1;
+        else min = Math.round(all*templateFrom.pattern);                
+        if(templateFrom.pattern == "none") min = 0;
+           
+        transaction0.amount = templateFrom.amount;
+        transaction0.outputs = {
+            xpubHashSigmin: min,
+            xpubHashSigmax: max, 
+            xpubHashSigList: outputAddressList,
+            patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
+            patternAfterTimeout: templateFrom.patternAfterTimeout,
+        }
+        transaction0.inputXpubHashSigList = inputAddressList;        
+        
+        res.txList.push(transaction0);
     }
-    for(xpub of templateFrom.xpubList) {
-    
-        if(res.signList.includes(xpub) == false) res.signList[res.signList.length] = xpub;
-    }   
     return res;
 }
 
@@ -204,55 +182,51 @@ RequestData.prototype.send = function(tr) {
             if(requestData.route.transaction.amount < 0) {    
                 t.from.amount = requestData.route.transaction.amount;
                 t.from.from = "to";                
-            }            
-            var transactionDefault = {
-                inputs: [],
-                outputs: []
-            };
+            }
             let res = {};      
             res.signList = [];
             res.txList = [];     
             var template0 = t;
             
-res = requestData.txPrepare(requestData.route.transaction, template0.from, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.from, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.Genesis, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.Genesis, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.api, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.api, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.peg, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.peg, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.block, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.block, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.backup, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.backup, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.lock, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.lock, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.witness, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.witness, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.cosigner, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.cosigner, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.info, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.info, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.to, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.to, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.ban, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.ban, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.board, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.board, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.member, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.member, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.old, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.old, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.cosignerOrg, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.cosignerOrg, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.witnessOrg, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.witnessOrg, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.investorType1, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.investorType1, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.childstype1, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.childstype1, template0, res)
 
-res = requestData.txPrepare(requestData.route.transaction, template0.parentstype1, template0, transactionDefault, res)
+res = requestData.txPrepare(requestData.route.transaction, template0.parentstype1, template0, res)
 
             requestData.validation = res;
             
