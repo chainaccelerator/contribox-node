@@ -70,8 +70,9 @@ function walletListUpade(){
         let elm = document.getElementsByName("xpubList"+w.role)[0];
         let option = document.createElement("option");
         option.value = w.xpubHash;
-        option.text = w.role;
+        option.text = w.role+ " "+ w.xpubHash;
         option.selected = true;
+        elm.innerHTML = '';
         elm.appendChild(option);
     });
 }

@@ -29,7 +29,7 @@ tx = requestData.roleMsgCreate(requestData.route.transaction, t.'.$t.');
 if(tx != false) transactions[transactions.length] = tx;
 ';
             $res .= '
-res = requestData.txPrepare(requestData.route.transaction, template0.'.$t.', template0, res)'."\n";
+res = requestData.txPrepare(template0.'.$t.', template0, res)'."\n";
         }
 
         $this->htmlScript =  '
@@ -85,7 +85,7 @@ RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
     return l;
 }
 
-RequestData.prototype.txPrepare = function(tx, role0, t, res) {
+RequestData.prototype.txPrepare = function(role0, t, res) {
     
     delete role0.htmlFieldsId;
     delete role0.htmlScript;
@@ -101,6 +101,8 @@ RequestData.prototype.txPrepare = function(tx, role0, t, res) {
         return { txList: res.txList, signList: res.signList }
     }    
     let templateFrom = t[role0.from];
+    console.info("role", role0);
+    console.info("templateFrom", templateFrom);
     
     if(templateFrom.lenght == 0)  {
         
@@ -115,9 +117,9 @@ RequestData.prototype.txPrepare = function(tx, role0, t, res) {
     let inputAddressListTmp = [];
     let outputAddressListTmp = [];
     
-    if(tx.amount != 0) {
-    
-        if(tx.amount > 0) {
+    if(role0.amount != 0) {
+           
+        if(role0.amount > 0) {
         
             inputAddressListTmp = role0.xpubList;
             outputAddressListTmp = templateFrom.xpubList;
@@ -130,7 +132,7 @@ RequestData.prototype.txPrepare = function(tx, role0, t, res) {
         let inputAddressList = [];
         let outputAddressList = [];
         let allList = [];
-        
+                
         for(xpub of inputAddressListTmp) {
         
             if(inputAddressList.includes(xpub) == false) {
@@ -141,44 +143,47 @@ RequestData.prototype.txPrepare = function(tx, role0, t, res) {
             
                 allList.push(xpub);
             }
-        }                
-        for(xpub of allList) {
-        
-            if(res.signList.includes(xpub) == false) {
-            
-                res.signList.push(xpub);
-            }
-        }
+        } 
         for(xpub of outputAddressListTmp) {
         
             if(outputAddressList.includes(xpub) == false) {
-        
+            
                 outputAddressList.push(xpub);
             } 
             if(allList.includes(xpub) == false) {
             
                 allList.push(xpub);
             }
-        }
+        }                   
+        for(xpub of allList) {
+        
+            if(res.signList.includes(xpub) == false) {
+            
+                res.signList.push(xpub);
+            }
+        }            
         let min = 0;
         let max = allList.length;
-
+            
         if(templateFrom.pattern == "all")  min = max;
         else if(templateFrom.pattern == "any") min = 1;
         else min = Math.round(all*templateFrom.pattern);                
         if(templateFrom.pattern == "none") min = 0;
-           
-        transaction0.amount = templateFrom.amount;
-        transaction0.outputs = {
-            xpubHashSigmin: min,
-            xpubHashSigmax: max, 
-            xpubHashSigList: outputAddressList,
-            patternAfterTimeoutN: templateFrom.patternAfterTimeoutN,
-            patternAfterTimeout: templateFrom.patternAfterTimeout,
-        }
-        transaction0.inputXpubHashSigList = inputAddressList;        
         
-        res.txList.push(transaction0);
+        for(xpubOut of outputAddressList) {
+        
+            console.info("pass");
+                    
+            transaction0.amount = Math.round((role0.amount*10000000)/outputAddressList.length)/10000000;
+            transaction0.xpubHashSigmin = min;
+            transaction0.xpubHashSigmax = max; 
+            transaction0.patternAfterTimeoutN = templateFrom.patternAfterTimeoutN;
+            transaction0.patternAfterTimeout = templateFrom.patternAfterTimeout;
+            transaction0.toXpubHashSig = xpubOut;
+            transaction0.fromXpubHashSigList = inputAddressList;
+            
+            res.txList.push(transaction0);
+        }
     }
     return res;
 }
@@ -187,8 +192,7 @@ RequestData.prototype.send = function(tr) {
         
     this.route.transaction = JSON.parse(JSON.stringify(tr));
     this.route.template = JSON.parse(JSON.stringify(tr.template));
-    this.request.timestamp = new Date().getTime();
-                
+    this.request.timestamp = new Date().getTime();                
     let p = JSON.parse(JSON.stringify(requestData.route.transaction.proof));
     let u = JSON.parse(JSON.stringify(requestData.route.transaction.user));
                 
@@ -210,14 +214,16 @@ RequestData.prototype.send = function(tr) {
             console.info("requestData.route.transaction.amount", requestData.route.transaction.amount);
             
             if(requestData.route.transaction.amount > 0) {
+            
                 t.to.amount = requestData.route.transaction.amount;
                 t.to.from = "from";
             }
             if(requestData.route.transaction.amount < 0) {    
+            
                 t.from.amount = requestData.route.transaction.amount;
                 t.from.from = "to";                
             }
-            let res = {};      
+            let res = {};
             res.signList = [];
             res.txList = [];     
             var template0 = t;
