@@ -234,7 +234,7 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
             
             console.info(requestData);
             
-            let urlClient = "http://localhost:7002/api/index.php";            
+            let urlClient = "http://10.10.232.102:7002/api/index.php";            
             const options = {
             
                 method: "POST",

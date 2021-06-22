@@ -172,6 +172,8 @@ function openPopup() {
 function closePopup() {
     var el = document.getElementById('popup');
     el.style.display = 'none';
+    var el = document.getElementById('open_button');
+    el.style.display = 'none';
 }
 function llu(e){
 
@@ -207,7 +209,10 @@ function llw(e){
 
                 objectStoreRequest.onsuccess = function (event) {
 
-                    console.info("added");
+                    console.info("llw added");
+                    wallet.loaded = true;
+                    loadedWalletTest();
+                    msgHtml();
                 };
                 objectStoreRequest.onerror = function (event) {
 
@@ -239,12 +244,15 @@ function llw(e){
 function getLayoutData (i) {
 
     let cpi = i;
+    let create = false;
 
     return new Promise (function(resolve) {
         indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
         var open = indexedDB.open ("contribox", 2);
 
         open.onupgradeneeded = function(event) {
+
+            console.info('onupgradeneeded');
 
             initW = false;
 
@@ -259,11 +267,11 @@ function getLayoutData (i) {
             if (confirm("Do you want to import a wallet? Otherwise a wallet will be created.")) {
 
                 var newDiv = document.createElement("div");
-                newDiv.innerHTML += '<button class="open_button" onClick="openPopup()">Open Popup</button>' +
+                newDiv.innerHTML += '<button class="open_button" onClick="openPopup()" id="open_button">Open Popup</button>' +
                     '<div id="popup" style="  position: absolute;width: 300px;z-index: 999;display: none;top:0;background-color: #fff;  border: 1px solid #ddd;  border-radius: 5px;  box-shadow: 0 2px 8px #aaa;  overflow: hidden;   padding: 10px;">' +
                     '   <input type="file" name="fileSelect" id="fileSelect" style="display: none" onchange="llw(this)">' +
                     '   <button id="upload" name="upload" onclick="llu(this)">Upload your wallet</button><br><br>' +
-                    '  <button class="close_button" onClick="closePopup()">close</button' +
+                    '  <button id="close_button" class="close_button" onClick="closePopup()">close</button' +
                     '</div>';
 
                 var currentDiv = document.getElementById("main_container");
@@ -271,10 +279,16 @@ function getLayoutData (i) {
 
                 openPopup();
             }
+            else {
+                create = true;
+                console.info("getLayoutData not confirmed");
+            }
         }
         open.onsuccess = function () {
 
-            if(initW == false) return resolve(false);
+            console.info('getLayoutData onsuccess', initW);
+
+            if(initW == false && create == false) return resolve(false);
 
             db = open.result;
             tx = db.transaction("wallets", "readwrite");
@@ -284,23 +298,24 @@ function getLayoutData (i) {
             store.get(r).onsuccess =  function (event) {
 
                 let w = event.target.result;
+                console.info("getLayoutData", w);
 
                 if (w == undefined) {
 
                     w = wallet.createWallet(account, r);
                     w.name = r;
-
                     let objectStoreRequest = store.add(w);
 
                     objectStoreRequest.onsuccess = function(event) {
 
-                        console.info("added");
+                        console.info("getLayoutData added");
+                        initW = true;
+                        loadWallet();
                     };
-                    objectStoreRequest.onerror = function(event) {
+                    objectStoreRequest.onerror = function(event) { console.info(event); };
 
-                        console.info(event);
-                    };
                     wallet.list[wallet.list.length] = w;
+
                     return resolve(false);
                 }
                 else {
@@ -308,8 +323,15 @@ function getLayoutData (i) {
                     wallet.list[wallet.list.length] = w;
                     return resolve(true);
                 }
-
             }
+            store.get(r).onerror =  function (event) {
+
+                console.info("err2", event);
+            }
+        }
+        open.onerror =  function (event) {
+
+            console.info("err3", event);
         }
     });
 }
