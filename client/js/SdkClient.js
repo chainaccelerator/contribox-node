@@ -70,11 +70,34 @@ function walletListUpade(){
         let elm = document.getElementsByName("xpubList"+w.role)[0];
         let option = document.createElement("option");
         option.value = w.xpubHash;
-        option.text = w.role+ " "+ w.xpubHash;
+        option.text = "local "+ w.role+ " "+ w.xpubHash;
         option.selected = true;
-        elm.innerHTML = '';
         elm.appendChild(option);
     });
+    for(let wa in wallet.walletsFederation) {
+
+        for(let w of wallet.walletsFederation[wa]) {
+
+            let elm = document.getElementsByName("xpubList" + w.role)[0];
+            let option = document.createElement("option");
+            option.value = requestData.sha256(w.xpub);
+            option.text = "federation " + w.role + " " + requestData.sha256(w.xpub);
+            option.selected = true;
+            elm.appendChild(option);
+        }
+    }
+    for(let wa in wallet.walletsShare) {
+
+        for(let w of wallet.walletsShare[wa]) {
+
+            let elm = document.getElementsByName("xpubList" + w.role)[0];
+            let option = document.createElement("option");
+            option.value = requestData.sha256(w.xpub);
+            option.text = "federation " + w.role + " " + requestData.sha256(w.xpub);
+            option.selected = true;
+            elm.appendChild(option);
+        }
+    }
 }
 
 loadedWalletTest();
@@ -111,6 +134,12 @@ function loadWallet(){
                                                                                     ret = {msg: "Wallet loaded", cssClass: "success" };
                                                                                 }
                                                                                 wallet.loaded = true;
+
+                                                                                wallet.walletList.forEach(function (w) {
+
+                                                                                    let elm = document.getElementsByName("xpubList" + w)[0];
+                                                                                    elm.innerHTML = '';
+                                                                                });
                                                                                 walletListUpade();
                                                                                 loadedWalletTest();
                                                                                 msgHtml();
@@ -189,6 +218,11 @@ function llw(e){
 
         this.loaded = true;
 
+        wallet.walletList.forEach(function (w) {
+
+            let elm = document.getElementsByName("xpubList"+w)[0];
+            elm.innerHTML = '';
+        });
         walletListUpade();
         loadedWalletTest();
         initW = true;

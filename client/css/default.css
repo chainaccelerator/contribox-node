@@ -6,6 +6,9 @@ body {
 textarea, input, select, button {
     width: 200px;
 }
+option {
+    overflow-x: scroll;
+}
 input[type=checkbox] {
     width: initial;
 }

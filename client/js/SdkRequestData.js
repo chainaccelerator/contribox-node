@@ -67,9 +67,7 @@ RequestData.prototype.txPrepare = function(role0, t, res) {
         return { txList: res.txList, signList: res.signList }
     }    
     let templateFrom = t[role0.from];
-    console.info("role", role0);
-    console.info("templateFrom", templateFrom);
-    
+        
     if(templateFrom.lenght == 0)  {
         
         console.warn("templateFrom.lenght");
@@ -137,9 +135,7 @@ RequestData.prototype.txPrepare = function(role0, t, res) {
         if(templateFrom.pattern == "none") min = 0;
         
         for(xpubOut of outputAddressList) {
-        
-            console.info("pass");
-                    
+                            
             transaction0.amount = Math.round((role0.amount*10000000)/outputAddressList.length)/10000000;
             transaction0.xpubHashSigmin = min;
             transaction0.xpubHashSigmax = max; 

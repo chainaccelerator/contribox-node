@@ -4,7 +4,7 @@
       "hdPath": "0/0",
       "pubkey0": "024e1c866541ae9feb6b0596051d08f8c5d3bcac048c20a614bf537a0ccb964f99",
       "xpub": "tpubD6NzVbkrYhZ4WtAkFU9AXMjvpTrwZapJ61vdGVzwyEKx1wfbEB8NJ9DZHvEwVqKHmtG5sUC6rf1ELnrDc7hJhGvTe5usNk5MyJj2kywatDE",
-      "role": "api",
+      "role": "Genesis",
       "account": {
         "firstname": "Nicolas",
         "lastname": "Cantu",
