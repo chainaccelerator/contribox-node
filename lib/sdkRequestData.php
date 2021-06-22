@@ -228,7 +228,7 @@ RequestData.prototype.send = function(tr) {
             
             console.info(requestData);
             
-            let urlClient = "http://10.10.232.102:7002/api/index.php";            
+            let urlClient = "http://10.10.232.102:7002/index.php";            
             const options = {
             
                 method: "POST",

@@ -242,11 +242,11 @@ function llw(e){
 
 }
 function getLayoutData (i) {
-
     let cpi = i;
     let create = false;
 
     return new Promise (function(resolve) {
+
         indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
         var open = indexedDB.open ("contribox", 2);
 
@@ -255,8 +255,8 @@ function getLayoutData (i) {
             console.info('onupgradeneeded');
 
             initW = false;
-
             let store = event.target.result.createObjectStore("wallets", {keyPath: "name"});
+
             store.createIndex("name", "name", {unique: true});
             store.createIndex("role", "role", {unique: false});
             store.createIndex("pubkey0", "pubkey0", {unique: true});
@@ -306,10 +306,12 @@ function getLayoutData (i) {
                     w.name = r;
                     let objectStoreRequest = store.add(w);
 
+
                     objectStoreRequest.onsuccess = function(event) {
 
                         console.info("getLayoutData added");
                         initW = true;
+
                         loadWallet();
                     };
                     objectStoreRequest.onerror = function(event) { console.info(event); };
@@ -335,9 +337,10 @@ function getLayoutData (i) {
         }
     });
 }
-
 var initW = true;
 getLayoutData(0).then(function(result) {
+
+
 
     if(initW == true) loadWallet();
 });
