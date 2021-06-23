@@ -10,6 +10,8 @@ class ApiRequest {
 
     public function __construct(stdClass $data){
 
+        self::$peerList = array_merge(json_decode(file_get_contents($data->peerList)), self::$peerList);
+
         if(isset($data->timestamp) === false) {exit('No timestamp');} else $this->timestamp = $data->timestamp;
         if(isset($data->peerList) === false) {exit('No peerList');} else self::$peerList = array_merge($data->peerList, self::$peerList);
 

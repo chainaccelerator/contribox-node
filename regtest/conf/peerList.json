@@ -1,0 +1,19 @@
+[
+  {
+    "rpcBitcoin": {
+      "connect": "",
+      "user": "",
+      "pwd": ""
+    },
+    "rpcElements": {
+      "connect": "",
+      "user": "",
+      "pwd": ""
+    },
+    "api": {
+      "connect": "10.10.214.21:7001",
+      "user": "",
+      "pwd": ""
+    }
+  }
+]

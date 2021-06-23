@@ -35,6 +35,7 @@ res = requestData.txPrepare(template0.'.$t.', template0, res)'."\n";
         $this->htmlScript =  '
 function RequestData() {
 
+    this.peerList = '.json_encode(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), self::$peerList).'
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
@@ -228,7 +229,7 @@ RequestData.prototype.send = function(tr) {
             
             console.info(requestData);
             
-            let urlClient = "http://10.10.232.102:7002/index.php";            
+            let urlClient = "http://"+requestData.peerList[0].connect+"/index.php";            
             const options = {
             
                 method: "POST",
