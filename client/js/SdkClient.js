@@ -209,14 +209,13 @@ function llw(e){
 
                 objectStoreRequest.onsuccess = function (event) {
 
-                    console.info("llw added");
                     wallet.loaded = true;
                     loadedWalletTest();
                     msgHtml();
                 };
                 objectStoreRequest.onerror = function (event) {
 
-                    console.info(event);
+                    console.warn(event);
                 };
             }
         });
@@ -252,8 +251,6 @@ function getLayoutData (i) {
 
         open.onupgradeneeded = function(event) {
 
-            console.info('onupgradeneeded');
-
             initW = false;
             let store = event.target.result.createObjectStore("wallets", {keyPath: "name"});
 
@@ -281,12 +278,9 @@ function getLayoutData (i) {
             }
             else {
                 create = true;
-                console.info("getLayoutData not confirmed");
             }
         }
         open.onsuccess = function () {
-
-            console.info('getLayoutData onsuccess', initW);
 
             if(initW == false && create == false) return resolve(false);
 
@@ -298,7 +292,6 @@ function getLayoutData (i) {
             store.get(r).onsuccess =  function (event) {
 
                 let w = event.target.result;
-                console.info("getLayoutData", w);
 
                 if (w == undefined) {
 
@@ -309,13 +302,14 @@ function getLayoutData (i) {
 
                     objectStoreRequest.onsuccess = function(event) {
 
-                        console.info("getLayoutData added");
                         initW = true;
 
                         loadWallet();
                     };
-                    objectStoreRequest.onerror = function(event) { console.info(event); };
+                    objectStoreRequest.onerror = function(event) {
 
+                        console.warn(event);
+                    };
                     wallet.list[wallet.list.length] = w;
 
                     return resolve(false);
@@ -328,12 +322,12 @@ function getLayoutData (i) {
             }
             store.get(r).onerror =  function (event) {
 
-                console.info("err2", event);
+                console.warn("err2", event);
             }
         }
         open.onerror =  function (event) {
 
-            console.info("err3", event);
+            console.warn("err3", event);
         }
     });
 }
