@@ -35,7 +35,7 @@ res = requestData.txPrepare(template0.'.$t.', template0, res)'."\n";
         $this->htmlScript =  '
 function RequestData() {
 
-    this.peerList = '.json_encode(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), self::$peerList).'
+    this.peerList = '.json_encode(array_merge(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), ApiRequest::$peerList)).'
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }

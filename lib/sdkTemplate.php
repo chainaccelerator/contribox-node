@@ -166,7 +166,7 @@ class SdkTemplate {
         $l = array();
         foreach(self::$list as $o) {
 
-            $l[] = json_decode(file_get_contents('../'.Conf::$env.'/data/template/'.$o->name.'.json'));
+            $l[] = $o;
         }
         $cc = '';
         $ci = '';
@@ -216,14 +216,18 @@ Template.prototype.getDataFromForm = function () {
     return true;
 }
 Template.prototype.createTemplate = function(){
-            
-    template.list.forEach(function(t) {
     
+    console.info("create");
+    template.list.forEach(function(t) {
+     console.info("t", t);
         var u = {};
     
         wallet.list.forEach(function(w) {
-        
-            if(w.role == "api" ) u = w.account;
+        console.info("w", w);
+            if(w.role == "api" ) {
+                console.info("api account found");
+                u = w.account;
+            }
         });    
         if(t.name == "default") {
                             
@@ -242,7 +246,7 @@ Template.prototype.createTemplate = function(){
             delete p.patterns;
                                                
             let trs = new Transaction(JSON.parse(JSON.stringify(p.from.xpubList)), [], "default", t.to.amount, JSON.parse(JSON.stringify(p)), JSON.parse(JSON.stringify(u)));
-                                                                               
+                                                                           
             return requestData.send(trs);
         }
     }); 
