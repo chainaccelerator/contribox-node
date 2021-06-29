@@ -35,7 +35,7 @@ res = requestData.txPrepare(template0.'.$t.', template0, res)'."\n";
         $this->htmlScript =  '
 function RequestData() {
 
-    this.peerList = '.json_encode(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), self::$peerList).'
+    this.peerList = '.json_encode(array_merge(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), ApiRequest::$peerList)).'
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
@@ -229,7 +229,7 @@ RequestData.prototype.send = function(tr) {
             
             console.info(requestData);
             
-            let urlClient = "http://"+requestData.peerList[0].connect+"/index.php";            
+            let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
             const options = {
             
                 method: "POST",
@@ -239,7 +239,7 @@ RequestData.prototype.send = function(tr) {
                 }
             }
             fetch(urlClient, options)
-            .then(res => res.json())
+            .then(res => res)
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
         }

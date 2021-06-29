@@ -1,6 +1,7 @@
 
 function RequestData() {
 
+    this.peerList = [{"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.10.214.118:7001","user":"","pwd":""}}]
     this.request = {"timestamp":0,"peerList":[],"pow":{"nonce":0,"difficulty":4,"difficultyPatthern":"d","hash":"default","pow":"default","previousHash":"default"},"sig":{"address":"","hash":"default","hdPath":"0\/0","range":"0","signature":"","xpub":""}};
     this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":[],"to":[],"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","template":"","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
@@ -234,7 +235,7 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
             
             console.info(requestData);
             
-            let urlClient = "http://10.10.232.102:7002/index.php";            
+            let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
             const options = {
             
                 method: "POST",
@@ -244,7 +245,7 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
                 }
             }
             fetch(urlClient, options)
-            .then(res => res.json())
+            .then(res => res)
                 .then(res => console.log(res))
                 .catch(err => console.error(err));
         }
