@@ -197,8 +197,8 @@ RequestData.prototype.send = function(tr) {
     
         if(t.name == requestData.route.template) {
                         
-            requestData.pow(requestData);
-            requestData.sig(requestData);
+            requestData.pow(requestData.route);
+            requestData.sig(requestData.route);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
             requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
@@ -207,9 +207,7 @@ RequestData.prototype.send = function(tr) {
             for(w0 of wallet.walletsFederation.lock) t.lock.xpubList[t.lock.xpubList.length] = w0.xpubHash;
             for(w0 of wallet.walletsFederation.witness) t.witness.xpubList[t.witness.xpubList.length] = w0.xpubHash;
             for(w0 of wallet.walletsFederation.cosigner) t.cosigner.xpubList[t.cosigner.xpubList.length] = w0.xpubHash;
-            
-            console.info("requestData.route.transaction.amount", requestData.route.transaction.amount);
-            
+                        
             if(requestData.route.transaction.amount > 0) {
             
                 t.to.amount = requestData.route.transaction.amount;
@@ -228,6 +226,10 @@ RequestData.prototype.send = function(tr) {
             requestData.validation = res;
             
             console.info(requestData);
+            
+            delete requestData.request.peerList;
+            delete requestData.request.sig.hdPath;
+            delete requestData.request.sig.range;
             
             let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
             const options = {

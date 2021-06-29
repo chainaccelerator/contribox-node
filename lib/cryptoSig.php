@@ -4,6 +4,8 @@ class CryptoSig {
 
     public string $sig = '';
     public string $publicAddress = '';
+    public string $hdPath = '0/0';
+    public int $range = 100;
 
     public function __construct(stdClass $data){
 

@@ -3,19 +3,44 @@
 class CryptoPow {
 
     public static int $difficulty = 4;
-    public static string $difficultyPatthern = 'c';
+    public static string $difficultyPatthern = 'd';
 
-    public CryptoHash $hash;
+    public string $hash = '';
     public int $nonce = 0;
+    public string $pow = '';
+    public string $previousHash = '';
+    public int $timestamp = 0;
 
-    public function __construct(stdClass $data, bool|stdClass $dataToHash = false){
+    public function __construct(stdClass $data, int $timestamp){
 
-        if(isset($data->nonce) === false) {exit('No nonce');} else $this->nonce = $data->nonce;
+        $this->timestamp = $timestamp;
+        $this->hash = CryptoHash::hash(json_decode($data));
+    }
+    public function powVerify($pattern = ''): bool{
 
-        if(isset($data->difficulty ) === false) {exit('No difficulty');} elseif(self::$difficulty !== $this->difficulty) exit('Bad difficulty');
-        if(isset($data->difficultyPatthern ) === false) {exit('No difficultyPathern');} elseif(self::$ddifficultyPatthern !== $this->difficultyPatthern) exit('Bad difficultyPatthern');
+        for($i = 0;$i < $this->difficulty; $i++) $pattern .= $this->difficultyPatthern;
 
-        if(isset($data->hash) === false) {exit('No hash');} else $this->hash = new CryptoHash($data->hash);
-        if($dataToHash !== false && $this->hash->verif(json_encode($dataToHash)) === false) exit('Bad Hash');
+        $p = $this->sha256($this->previousHash + $this->timestamp + $this->hash + $this->nonce);
+
+        if(substring($p, 0, $this->difficulty) !== $pattern) return false;
+
+        return true;
+    }
+    public function pow(stdClass $data, int $timestamp, string $pattern = ''): bool{
+
+        for($i = 0;$i < self::$difficulty; $i++) $pattern .= self::$difficultyPatthern;
+
+        $this->timestamp = $timestamp;
+        $this->hash = CryptoHash::hash(json_encode($data));
+        $this->pow = "";
+
+        while (substring($this->pow, 0, $this->difficulty) != $pattern) {
+
+            $this->nonce++;
+            $this->pow = $this->sha256($this->previousHash + $this->timestamp + $this->hash + $this->nonce);
+
+            if($this->nonce > 800000) return false;
+        }
+        return true;
     }
 }

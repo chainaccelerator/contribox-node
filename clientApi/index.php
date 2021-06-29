@@ -7,8 +7,6 @@ header("Access-Control-Allow-Headers: *");
 
 SdkReceived::run();
 
-echo '{}';
-
 /*
 
 {

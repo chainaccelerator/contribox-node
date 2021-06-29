@@ -7,36 +7,37 @@ class SdkReceived {
     public static SdkRequestRoute $route;
     public static SdkReceiveValidation $validation;
 
-    public static function run(){
+    public static function run():void{
+
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData);
+        self::$peerList = array_merge(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), $data->peerList);
+
+        $pow = new CryptoPow($data->request->route, $data->request->timestamp);
+
+        if($pow->hash !== $data->request->hash) return self::err(500, 'error pow hash');
+
+        $pow->nonce = $data->request->pow->nonce;
+        $pow->pow = $data->request->pow->pow;
+        $pow->previousHash = $data->request->pow->previousHash;
+
+        $pow->powVerify();
+
+        $sig =new CryptoSig($data->sig);
+
+        self::send();
+    }
+    public static function err():void {
 
     }
-    public static function send(){
+    public static function send():void {
 
         header('Content-Type: application/json');
 
         echo '{
-  "peerList": [
-    {
-      "rpcBitcoin": {
-        "connect": "",
-        "user": "",
-        "pwd": ""
-      },
-      "rpcElements": {
-        "connect": "",
-        "user": "",
-        "pwd": ""
-      },
-      "api": {
-        "connect": "10.10.214.118:7002",
-        "user": "",
-        "pwd": ""
-      }
-    }
-  ],
+  "peerList": '.json_encode(self::$peerList).',
   "request": {
-    "timestamp": 1624975306845,
-    "peerList": [],
+    "timestamp": '.mktime().',
     "pow": {
       "nonce": 31692,
       "difficulty": 4,
@@ -49,7 +50,7 @@ class SdkReceived {
       "hash": "a52c5a4e3064cb4d32d16ba663b1ce00d5f2c8480a03cd2f619d5d6ee25aa77417a59f68704b6631a830711d2ed336f22a288c81d758df17127c5dff8d81783b",
       "xpub": "tpubD6NzVbkrYhZ4YSHpPfgiqFd75jEGeMit2L4xPKs2373mWWChBjGaHov6DMVLqXB8WAKbX2JQAd81Bi8nU5uiFvHmwWjRsJtuMJApQcynY9i",
       "hdPath": "0/0",
-      "range": 0,
+      "range": 100,
       "address": "2dq3kYsVxdu4cJGVwSZvxe3TsGfgyunAn95",
       "signature": "IGj5O14aeefIzmyjJQtTR4NJyiUBwnW9/m3JqWGo0EW6eq53UjcFV2EcxE8uGTxYWa/XIzY36+lARMZMr8/zrFk="
     }

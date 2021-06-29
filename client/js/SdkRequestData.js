@@ -235,6 +235,8 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
             
             console.info(requestData);
             
+            delete requestData.request.peerList;
+            
             let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
             const options = {
             
@@ -248,7 +250,6 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
             .then(res => res.json())
                 .then(
                 res => {
-                        console.log("ok");
                         console.log(res);
                     }
                 )
