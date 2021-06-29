@@ -239,8 +239,12 @@ RequestData.prototype.send = function(tr) {
                 }
             }
             fetch(urlClient, options)
-            .then(res => res)
-                .then(res => console.log(res))
+            .then(res => res.json())
+                .then(
+                res => {
+                        console.log(res);
+                    }
+                )
                 .catch(err => console.error(err));
         }
     });                                        

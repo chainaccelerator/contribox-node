@@ -2,6 +2,9 @@
 
 require_once '../lib/_require.php';
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+
 $data = '{
     "env": "regtest",
     "role": "owner",

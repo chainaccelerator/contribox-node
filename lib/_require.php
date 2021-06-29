@@ -54,6 +54,9 @@ require_once 'sdkTemplateTypeWitnessOrg.php';
 require_once 'sdkTemplateTypeInvestorType1.php';
 require_once 'sdkTransaction.php';
 
+require_once 'sdkReceive.php';
+require_once 'sdkReceiveValidation.php';
+
 require_once 'templateCondition.php';
 require_once 'templateConditionBackup.php';
 require_once 'templateConditionBan.php';
