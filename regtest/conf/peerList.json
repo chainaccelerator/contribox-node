@@ -15,6 +15,12 @@
       "user": "",
       "pwd": "",
       "pubAddress": ""
+    },
+    "apiData": {
+      "connect": "10.10.214.118:7003",
+      "user": "",
+      "pwd": "",
+      "pubAddress": ""
     }
   }
 ]

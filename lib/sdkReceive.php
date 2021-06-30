@@ -7,7 +7,7 @@ class SdkReceived {
 
     public static array $peerList = [];
     public static SdkRequest $request;
-    public static SdkRequestRoute $route;
+    public static string $route;
     public static SdkReceiveValidation $validation;
 
     public stdClass $conf;
@@ -24,13 +24,14 @@ class SdkReceived {
 
         if ($r::$request === false) $r->err();
 
-        $r::$route = new SdkRequestRoute($data);
+        $r::$route = json_encode($data->route);
 
         if ($r::$route === false) $r->err();
 
-        $r::$validation = new SdkReceiveValidation();
+        $r::$validation = new SdkReceiveValidation($data->validation, $r::$route);
 
         if ($r::$validation === false) $r->err();
+        if ($r::$validation->ask() === false) $r->err();
 
         $r->send();
     }
