@@ -8,7 +8,7 @@ class SdkRequestRoute {
     public string $template = 'default';
     public SdkTransaction $transaction;
 
-    public function __construct($data){
+    public function __construct(stdClass $data){
 
         $this->template = $data->route->template;
         $this->id = $data->route->id;

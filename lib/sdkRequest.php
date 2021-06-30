@@ -20,7 +20,7 @@ class SdkRequest {
         }
         $pow = new CryptoPow($route, $data->request->timestamp);
 
-        if($pow->hash !== $data->request->hash) {
+        if($pow->hash !== $data->request->pow->hash) {
 
             SdkReceived::$message = 'bad hash';
             SdkReceived::$code =  504;
