@@ -12,26 +12,25 @@ class SdkReceived {
 
     public stdClass $conf;
 
-    public static function run():void{
+    public static function run():void {
 
         $rawData = file_get_contents('php://input');
         $data = json_decode($rawData);
         Conf::$env = $data->route->env;
         $r = new SdkReceived();
-        $r->conf = json_decode(file_get_contents('../'.Conf::$env.'/conf/contribox/conf.json'));
-
-        self::$peerList = array_merge(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), $data->peerList);
-
+        $r->conf = json_decode(file_get_contents('../' . Conf::$env . '/conf/contribox/conf.json'));
+        self::$peerList = array_merge(json_decode(file_get_contents('../' . Conf::$env . '/conf/peerList.json')), $data->peerList);
         $r->request = new SdkRequest($data);
 
-        if()
+        if ($r->request === false) $r->err();
 
         $r->route = new SdkRequestRoute($data);
 
-    public static SdkReceiveValidation $validation;
+        if ($r->route === false) $r->err();
 
-        // $data->validation
+        $r->validation = new SdkReceiveValidation();
 
+        if ($r->validation === false) $r->err();
 
         $r->send();
     }
