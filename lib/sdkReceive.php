@@ -2,73 +2,80 @@
 
 class SdkReceived {
 
+    public static int $code = 0;
+    public static string $message = '';
+
     public static array $peerList = [];
     public static SdkRequest $request;
     public static SdkRequestRoute $route;
     public static SdkReceiveValidation $validation;
 
+    public stdClass $conf;
+
     public static function run():void{
 
-        $rawData = file_get_contents("php://input");
+        $rawData = file_get_contents('php://input');
         $data = json_decode($rawData);
+        Conf::$env = $data->route->env;
+        $r = new SdkReceived();
+        $r->conf = json_decode(file_get_contents('../'.Conf::$env.'/conf/contribox/conf.json'));
+
         self::$peerList = array_merge(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), $data->peerList);
 
-        $pow = new CryptoPow($data->request->route, $data->request->timestamp);
+        $r->request = new SdkRequest($data);
 
-        if($pow->hash !== $data->request->hash) return self::err(500, 'error pow hash');
+        if()
 
-        $pow->nonce = $data->request->pow->nonce;
-        $pow->pow = $data->request->pow->pow;
-        $pow->previousHash = $data->request->pow->previousHash;
+        $r->route = new SdkRequestRoute($data);
 
-        $pow->powVerify();
+    public static SdkReceiveValidation $validation;
 
-        $sig =new CryptoSig($data->sig);
+        // $data->validation
 
-        self::send();
+
+        $r->send();
     }
-    public static function err():void {
+    public function getApiPublicKey(){
 
     }
-    public static function send():void {
+    public function getApiPrivKey(){
+
+    }
+    public function err():void {
+
+        self::send($code, $message, false);
+    }
+    public function send(bool $state = true):void {
 
         header('Content-Type: application/json');
+
+        $pow = new CryptoPow($this->data, mktime());
+        $pow->pow($this->data, mktime());
+
+        foreach(self::$peerList as $k => $v) {
+
+            if($v->api->connect === $this->conf->IP_HOST) $publicAddress = $v->api->pubAddress;
+        }
+        $sig = new CryptoSig($publicAddress, '');
+        $sig->sig();
 
         echo '{
   "peerList": '.json_encode(self::$peerList).',
   "request": {
     "timestamp": '.mktime().',
-    "pow": {
-      "nonce": 31692,
-      "difficulty": 4,
-      "difficultyPatthern": "d",
-      "hash": "7e5cebffe6b88b8c49600845a3c06e5296014b114213ee5a35f666c7bed41bc2c853ea576c0f0c2ede63ab225146aed2b0a8da832b2c72590904b770e25be45d",
-      "pow": "dddd073085ca6cbef3886ca63da32d8f1ecbd04fbeccce0bd32aff051134b632ffe603e60d112dabec0458e58e09a37f7eb4b0a3d3c63fa56b6927a15f9d2fea",
-      "previousHash": "default"
-    },
-    "sig": {
-      "hash": "a52c5a4e3064cb4d32d16ba663b1ce00d5f2c8480a03cd2f619d5d6ee25aa77417a59f68704b6631a830711d2ed336f22a288c81d758df17127c5dff8d81783b",
-      "xpub": "tpubD6NzVbkrYhZ4YSHpPfgiqFd75jEGeMit2L4xPKs2373mWWChBjGaHov6DMVLqXB8WAKbX2JQAd81Bi8nU5uiFvHmwWjRsJtuMJApQcynY9i",
-      "hdPath": "0/0",
-      "range": 100,
-      "address": "2dq3kYsVxdu4cJGVwSZvxe3TsGfgyunAn95",
-      "signature": "IGj5O14aeefIzmyjJQtTR4NJyiUBwnW9/m3JqWGo0EW6eq53UjcFV2EcxE8uGTxYWa/XIzY36+lARMZMr8/zrFk="
-    }
+    "pow": '.json_encode($pow).',
+    "sig": '.json_encode($sig).'
   },
-  "route": {
-    "id": "default",
-    "version": "0.1",
-    "env": "regtest",
-    "template": "default"
-  },
+  "route": '.json_encode($this->route).',
   "result": {
-    "status": true,
-    "code": 0,
-    "message": "",
-    "hash": "",
-    "data": {}
+    "status": '.$state.',
+    "code": '.$code.',
+    "message": "'.$message.'",
+    "hash": "'.$this->hash.'",
+    "data": "'.json_encode($this->data).'"
   }
 }';
+        exit();
     }
 }
 

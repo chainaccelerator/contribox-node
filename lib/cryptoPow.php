@@ -22,8 +22,12 @@ class CryptoPow {
 
         $p = $this->sha256($this->previousHash + $this->timestamp + $this->hash + $this->nonce);
 
-        if(substring($p, 0, $this->difficulty) !== $pattern) return false;
+        if(substring($p, 0, $this->difficulty) !== $pattern) {
 
+            SdkReceived::$message = 'bad pow';
+            SdkReceived::$code =  505;
+            return false;
+        }
         return true;
     }
     public function pow(stdClass $data, int $timestamp, string $pattern = ''): bool{
@@ -39,7 +43,12 @@ class CryptoPow {
             $this->nonce++;
             $this->pow = $this->sha256($this->previousHash + $this->timestamp + $this->hash + $this->nonce);
 
-            if($this->nonce > 800000) return false;
+            if($this->nonce > 800000) {
+
+                SdkReceived::$message = 'pow fail';
+                SdkReceived::$code =  506;
+                return false;
+            }
         }
         return true;
     }

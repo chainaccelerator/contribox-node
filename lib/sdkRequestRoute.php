@@ -5,12 +5,15 @@ class SdkRequestRoute {
     public string $id = 'default';
     public string $version = '0.1';
     public string $env = 'regtest';
-    public string $template;
+    public string $template = 'default';
     public SdkTransaction $transaction;
 
-    public function __construct(string $role = '', string $domain = '', string $domainSub = '', string $process = '', string $processStep = '', string $processStepAction = '', string $about = '', int $amount = 0, bool $blockSignature = false, bool $pegSignature = false, string $version = 'v0', bool $declareAddressFrom = false, bool $declareAddressTo = false, bool $proofEncryption = false, bool $userEncryption = false, array $form = [], array $to = [], string $template = '', string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
+    public function __construct($data){
 
-        $this->template = $template;
-        $this->transaction = new SdkTransaction([], [], $template, $amount, $proof, $user);
+        $this->template = $data->route->template;
+        $this->id = $data->route->id;
+        $this->version = $data->route->version;
+        $this->env = $data->route->env;
+        $this->transaction = new SdkTransaction($data->route->transaction->from, $data->route->transaction->to, $this->template, $data->route->transaction->amount, $data->route->transaction->proof, $data->route->transaction->user);
     }
 }

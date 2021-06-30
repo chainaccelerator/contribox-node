@@ -7,15 +7,24 @@ class CryptoSig {
     public string $hdPath = '0/0';
     public int $range = 100;
 
-    public function __construct(stdClass $data){
+    public function __construct(string $publicAddress, string $sig){
 
-        if(isset($data->sig) === false) {exit('No sig');} else $this->sig = $data->sig;
-        if(isset($data->publicAddress) === false) {exit('No publicAddress');} else $this->publicAddress = $data->publicAddress;
+        $this->publicAddress = $publicAddress;
+        $this->sig = $sig;
+    }
+    public function sig(){
 
-        if($this->verif() === false) exit('Bad sig');
     }
     public function verif():bool{
 
+        $original_msg = crypto_sign_open($data->sig, $data->publicAddress);
+
+        if ($original_msg === false)  {
+
+            SdkReceived::$message = 'bad sig';
+            SdkReceived::$code =  507;
+            return false;
+        }
         return true;
     }
 }
