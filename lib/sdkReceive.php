@@ -20,7 +20,7 @@ class SdkReceived {
         $r = new SdkReceived();
         $r->conf = json_decode(file_get_contents('../' . Conf::$env . '/conf/contribox/conf.json'));
         self::$peerList = array_merge(json_decode(file_get_contents('../' . Conf::$env . '/conf/peerList.json')), $data->peerList);
-        $r->request = new SdkRequest($data);
+        $r->request = new SdkRequest($data, $data->route);
 
         if ($r->request === false) $r->err();
 

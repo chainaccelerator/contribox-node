@@ -2,8 +2,11 @@
 
 class CryptoPow {
 
-    public static int $difficulty = 4;
-    public static string $difficultyPatthern = 'd';
+    public static int $difficultyDefault = 4;
+    public static string $difficultyPatthernDefault = 'd';
+
+    public int $difficulty = 4;
+    public string $difficultyPatthern = 'd';
 
     public string $hash = '';
     public int $nonce = 0;
@@ -18,11 +21,11 @@ class CryptoPow {
     }
     public function powVerify($pattern = ''): bool{
 
-        for($i = 0;$i < self::$difficulty; $i++) $pattern .=  self::$difficultyPatthern;
+        for($i = 0;$i < $this->difficulty; $i++) $pattern .=  $this->difficultyPatthern;
 
         $p = CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$this->nonce);
 
-        if(substr($p, 0, self::$difficulty) !== $pattern) {
+        if(substr($p, 0, $this->difficulty) !== $pattern) {
 
             SdkReceived::$message = 'bad pow';
             SdkReceived::$code =  505;
@@ -32,13 +35,13 @@ class CryptoPow {
     }
     public function pow(stdClass $data, int $timestamp, string $pattern = ''): bool{
 
-        for($i = 0;$i < self::$difficulty; $i++) $pattern .= self::$difficultyPatthern;
+        for($i = 0;$i < $this->difficulty; $i++) $pattern .= $this->difficultyPatthern;
 
         $this->timestamp = $timestamp;
         $this->hash = CryptoHash::hash(json_encode($data));
         $this->pow = "";
 
-        while (substr($this->pow, 0, self::$difficulty) != $pattern) {
+        while (substr($this->pow, 0, $this->difficulty) != $pattern) {
 
             $this->nonce++;
             $this->pow =  CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$this->nonce);

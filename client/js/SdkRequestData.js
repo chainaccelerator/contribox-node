@@ -2,7 +2,7 @@
 function RequestData() {
 
     this.peerList = [{"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.10.214.118:7002","user":"","pwd":"","pubAddress":""}}]
-    this.request = {"timestamp":1625063532};
+    this.request = {"timestamp":1625066776,"pow":{"difficulty":4,"difficultyPatthern":"d","hash":"ea71aa24f63d2f341198a5bcfc89d259f194620e99aa2e23c938a05622c20ba9","nonce":10271,"pow":"dddd5a428bd75ed546e0d42b94a87a48fea2e63b6600b552884eaa3113ad5198","previousHash":"","timestamp":1625066776},"sig":{"sig":"","publicAddress":"","hdPath":"0\/0","range":100}};
     this.route = {"id":"0","version":"v0","env":"regtest","template":"default","transaction":{"amount":0,"from":[],"to":[],"proof":"","user":"","template":"default","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
 RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
@@ -247,13 +247,13 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
                 }
             }
             fetch(urlClient, options)
-            .then(res => res.json())
+            .then(res => res)
                 .then(
                 res => {
-                        console.log(res);
+                        console.log(res.text());
                     }
                 )
-                .catch(err => console.error(err));
+                .catch(err => console.error("error", err));
         }
     });                                        
 }

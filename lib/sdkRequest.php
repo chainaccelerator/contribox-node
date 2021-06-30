@@ -5,10 +5,10 @@ class SdkRequest {
     public static $timeout = 10800;
 
     public int $timestamp = 0;
-    public SdkRequestPow $pow;
-    public SdkRequestSig $sig;
+    public CryptoPow $pow;
+    public CryptoSig $sig;
 
-    public function __construct(stdClass $data){
+    public function __construct(stdClass $data, stdClass $route){
 
         $this->timestamp = time();
 
@@ -18,7 +18,7 @@ class SdkRequest {
             SdkReceived::$code =  504;
             return false;
         }
-        $pow = new CryptoPow($data->request->route, $data->request->timestamp);
+        $pow = new CryptoPow($route, $data->request->timestamp);
 
         if($pow->hash !== $data->request->hash) {
 
@@ -31,9 +31,12 @@ class SdkRequest {
         $pow->previousHash = $data->request->pow->previousHash;
 
         if($pow->powVerify() === false) return false;
+        $this->pow = $pow;
 
         $sig = new CryptoSig($data->request->sig->address, $data->request->sig->signature);
 
         if($sig->verif() === false) return false;
+
+        $this->sig = $sig;
     }
 }
