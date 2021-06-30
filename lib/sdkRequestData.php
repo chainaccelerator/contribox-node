@@ -28,6 +28,10 @@ class SdkRequestData {
         $data->request->pow = new CryptoPow($data->request->route, $data->request->timestamp);
         $data->request->pow->pow($data->request->route, $data->request->timestamp);
         $data->request->hash = $data->request->pow->hash;
+
+        $data->request->sig = new stdClass();
+        $data->request->sig->address = '';
+        $data->request->sig->signature = '';
         $this->request = new SdkRequest($data);
         $this->route = new SdkRequestRoute($dataRoute);
     }
