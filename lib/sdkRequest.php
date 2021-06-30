@@ -10,9 +10,9 @@ class SdkRequest {
 
     public function __construct(stdClass $data){
 
-        $this->timestamp = mktime();
+        $this->timestamp = time();
 
-        if(($this->timestamp -$data->request->timestamp) > self::$timeout) {
+        if(($this->timestamp - $data->request->timestamp) > self::$timeout) {
 
             SdkReceived::$message = 'timeout';
             SdkReceived::$code =  504;

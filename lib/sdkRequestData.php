@@ -8,8 +8,28 @@ class SdkRequestData {
 
     public function __construct(string $role = '', string $domain = '', string $domainSub = '', string $process = '', string $processStep = '', string $processStepAction = '', string $about = '', int $amount = 0, bool $blockSignature = false, bool $pegSignature = false, string $version = 'v0', bool $declareAddressFrom = false, bool $declareAddressTo = false, bool $proofEncryption = false, bool $userEncryption = false, array $form = [], array $to = [], string $template = '', string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
 
-        $this->request = new SdkRequest();
-        $this->route = new SdkRequestRoute($role, $domain, $domainSub, $process, $processStep, $processStepAction, $about, $amount, $blockSignature, $pegSignature, $version, $declareAddressFrom, $declareAddressTo, $proofEncryption, $userEncryption, $form, $to, $template, $proof, $user);
+        $dataRoute = new stdClass();
+        $dataRoute->route = new stdClass();
+        $dataRoute->route->template = 'default';
+        $dataRoute->route->id = '0';
+        $dataRoute->route->version = 'v0';
+        $dataRoute->route->env = 'regtest';
+        $dataRoute->route->transaction = new stdClass();
+        $dataRoute->route->transaction->from = [];
+        $dataRoute->route->transaction->to = [];
+        $dataRoute->route->transaction->amount = 0;
+        $dataRoute->route->transaction->proof = '';
+        $dataRoute->route->transaction->user = '';
+
+        $data = new stdClass();
+        $data->request = new stdClass();
+        $data->request->timestamp = time();
+        $data->request->route = $dataRoute->route;
+        $data->request->pow = new CryptoPow($data->request->route, $data->request->timestamp);
+        $data->request->pow->pow($data->request->route, $data->request->timestamp);
+        $data->request->hash = $data->request->pow->hash;
+        $this->request = new SdkRequest($data);
+        $this->route = new SdkRequestRoute($dataRoute);
     }
     public function conditionHtml():string {
 

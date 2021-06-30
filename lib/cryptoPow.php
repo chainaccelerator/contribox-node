@@ -14,15 +14,15 @@ class CryptoPow {
     public function __construct(stdClass $data, int $timestamp){
 
         $this->timestamp = $timestamp;
-        $this->hash = CryptoHash::hash(json_decode($data));
+        $this->hash = CryptoHash::hash(json_encode($data));
     }
     public function powVerify($pattern = ''): bool{
 
-        for($i = 0;$i < $this->difficulty; $i++) $pattern .= $this->difficultyPatthern;
+        for($i = 0;$i < self::$difficulty; $i++) $pattern .=  self::$difficultyPatthern;
 
-        $p = $this->sha256($this->previousHash + $this->timestamp + $this->hash + $this->nonce);
+        $p = CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$this->nonce);
 
-        if(substring($p, 0, $this->difficulty) !== $pattern) {
+        if(substr($p, 0, self::$difficulty) !== $pattern) {
 
             SdkReceived::$message = 'bad pow';
             SdkReceived::$code =  505;
@@ -38,10 +38,10 @@ class CryptoPow {
         $this->hash = CryptoHash::hash(json_encode($data));
         $this->pow = "";
 
-        while (substring($this->pow, 0, $this->difficulty) != $pattern) {
+        while (substr($this->pow, 0, self::$difficulty) != $pattern) {
 
             $this->nonce++;
-            $this->pow = $this->sha256($this->previousHash + $this->timestamp + $this->hash + $this->nonce);
+            $this->pow =  CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$this->nonce);
 
             if($this->nonce > 800000) {
 
