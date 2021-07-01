@@ -20,6 +20,21 @@ class SdkReceivedData extends SdkReceived{
 
         SdkReceived::peerListMerge($data->peerList);
 
+        /*
+        $d->id = uniqid();
+                $d->timestamp = time();
+                $d->peerList = SdkReceived::$peerList;
+                $d->version = 'v0';
+                $d->method = 'dataPush';
+                $d->data = $data;
+                $d->pow = new CryptoPow($d->data, $d->timestamp);
+                $d->pow->pow();
+                $d->file = $file;
+                $d->lasthash = $lasthash;
+                $d->hashRoot = CryptoHash::hash($lasthash.$data);
+
+        */
+
         $r->send();
     }
     public function send(bool $state = true):void {
@@ -37,20 +52,15 @@ class SdkReceivedData extends SdkReceived{
         $sig->sig();
 
         echo '{
-  "peerList": '.json_encode(self::$peerList).',
-  "request": {
-    "timestamp": '.mktime().',
-    "pow": '.json_encode($pow).',
-    "sig": '.json_encode($sig).'
-  },
-  "route": '.json_encode($this->route).',
-  "result": {
-    "status": '.$state.',
-    "code": '.$code.',
-    "message": "'.$message.'",
-    "hash": "'.$this->hash.'",
-    "data": "'.json_encode($this->data).'"
-  }
+    "timestamp": '.time().',
+    "peerList": '.json_encode(self::$peerList).',
+    "version": "v0",
+    "result": {
+        "state": '.$state.',
+        "result": {
+            "data": ""
+        }
+    }
 }';
         exit();
     }
