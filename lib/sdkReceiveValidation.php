@@ -17,7 +17,9 @@ class SdkReceiveValidation {
 
         foreach($this->signList as $xpub) {
 
-            $this->multicast($file, SdkReceived::$route, 'contribution', $xpub);
+            $res = $this->multicast($file, SdkReceived::$route, 'contribution', $xpub);
+
+            if($res === false) return false;
         }
         foreach($this->txList as $tx) {
 
@@ -27,11 +29,15 @@ class SdkReceiveValidation {
 
             foreach($tx->toXpubHashSig as $xpub) {
 
-                $this->multicast($file2, $data, 'reward', $xpub);
+                $res = $this->multicast($file2, $data, 'reward', $xpub);
+
+                if($res === false) return false;
             }
             foreach($tx->fromXpubHashSigList as $xpub) {
 
-                $this->multicast($file2, $data, 'reward', $xpub);
+                $res = $this->multicast($file2, $data, 'reward', $xpub);
+
+                if($res === false) return false;
             }
         }
         return true;
