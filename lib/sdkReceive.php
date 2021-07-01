@@ -19,7 +19,9 @@ class SdkReceived {
         Conf::$env = $data->route->env;
         $r = new SdkReceived();
         $r->conf = json_decode(file_get_contents('../' . Conf::$env . '/conf/contribox/conf.json'));
-        self::$peerList = array_merge(json_decode(file_get_contents('../' . Conf::$env . '/conf/peerList.json')), $data->peerList);
+
+        SdkReceived::peerListMerge($data->peerList);
+
         $r::$request = new SdkRequest($data, $data->route);
 
         if ($r::$request == false) $r->err();
@@ -43,7 +45,7 @@ class SdkReceived {
 
             $peer->hash = '';
             $hash = CrypoHash::hash(json_encode($peer));
-            self::$peerList[$k]->hash = $hash);
+            self::$peerList[$k]->hash = $hash;
             $hashList[$hash] = $hash;
         }
         foreach($list as $k => $peer){
@@ -66,7 +68,7 @@ class SdkReceived {
     }
     public function err():void {
 
-        self::send($code, $message, false);
+        self::send(self::$code, self::$message, false);
     }
     public function send(bool $state = true):void {
 

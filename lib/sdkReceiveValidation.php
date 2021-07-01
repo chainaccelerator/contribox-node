@@ -13,46 +13,39 @@ class SdkReceiveValidation {
     }
     public function ask():bool{
 
-        foreach($this->signList as $xpubHash) {
+        foreach($this->signList as $xpub) {
 
-            $dir = '../'.Conf::$env.'/conf/data/contribox/contribution/'.$xpubHash;
+            $dir = '../'.Conf::$env.'/conf/data/contribox/contribution/'.$xpub;
 
             if(is_dir($dir) === false) mkdir($dir);
 
             $file = $dir.'/'.SdkReceived::$request->pow->hash.'.'.time();
 
-            if(is_file($file) === false) {
-
-                file_put_contents($file, SdkReceived::$route);
-            }
+            $this->multicast($file, SdkReceived::$route);
         }
         foreach($this->txList as $tx) {
 
+            $tx->hash = SdkReceived::$request->pow->hash;
+
             foreach($tx->toXpubHashSig as $xpub) {
 
-                $dir = '../' . Conf::$env . '/conf/data/contribox/reward/to/'.$xpub;
+                $dir = '../' . Conf::$env . '/conf/data/contribox/reward/'.$xpub;
 
                 if (is_dir($dir) === false) mkdir($dir);
 
                 $file = $dir . '/' . SdkReceived::$request->pow->hash.'.'.time();
 
-                if(is_file($file) === false) {
-
-                    file_put_contents($file, json_encode($tx));
-                }
+                $this->multicast($file, json_encode($tx));
             }
             foreach($tx->fromXpubHashSigList as $xpub) {
 
-                $dir = '../' . Conf::$env . '/conf/data/contribox/reward/from/'.$xpub;
+                $dir = '../' . Conf::$env . '/conf/data/contribox/reward/'.$xpub;
 
                 if (is_dir($dir) === false) mkdir($dir);
 
                 $file = $dir . '/' . SdkReceived::$request->pow->hash.'.'.time();
 
-                if(is_file($file) === false) {
-
-                    file_put_contents($file, json_encode($tx));
-                }
+                $this->multicast($file, json_encode($tx));
             }
         }
         return true;
@@ -81,13 +74,39 @@ class SdkReceiveValidation {
                 $d->lasthash = $lasthash;
                 $d->hashRoot = CryptoHash::hash($lasthash.$data);
 
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($d));
+                curl_setopt($ch, CURLOPT_HEADER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+                curl_setopt($ch, CURLOPT_MAXREDIRS, 1);
+
+                $response = curl_exec($ch);
+
+                if (curl_errno($ch)) {
+                    echo curl_error($ch);
+                    die();
+                }
+
+                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                if($http_code == intval(200)){
+                    echo "Ressource valide";
+                }
+                else{
+                    echo "Ressource introuvable : " . $http_code;
+                }
+
                 if($result->state === false) continue;
 
                 if(isset($res[$result->result->data->hashRoot]) === false) $res[$result->result->data->hashRoot] = 0;
 
                 $res[$result->result->data->hashRoot]++;
-            }
-            SdkReceived::peerListMerge($result->peerList);
+
+                SdkReceived::peerListMerge($result->peerList);
+            };
         }
         file_put_contents($file, max($res));
     }
