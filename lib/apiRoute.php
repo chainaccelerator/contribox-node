@@ -2,7 +2,7 @@
 
 class ApiRoute {
 
-    public static string $version = '0.1';
+    public static string $version = 'v0';
     public static string $env = 'regtest';
     public static stdClass $conf;
 

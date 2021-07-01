@@ -6,7 +6,6 @@ class SdkReceivedData extends SdkReceived{
     public static string $message = '';
 
     public static array $peerList = [];
-    public static SdkRequest $request;
 
     public stdClass $conf;
 
@@ -20,23 +19,46 @@ class SdkReceivedData extends SdkReceived{
 
         SdkReceived::peerListMerge($data->peerList);
 
+        if((time() - $data->timestamp) > SdkRequest::$timeout){
+
+            SdkReceived::$message = 'timeout';
+            SdkReceived::$code =  605;
+            $r->err();
+        }
+        if($data->version !== SdkRequestRoute::$version) {
+
+            SdkReceived::$message = 'bad version';
+            SdkReceived::$code =  606;
+            $r->err();
+        }
         /*
-        $d->id = uniqid();
-                $d->timestamp = time();
-                $d->peerList = SdkReceived::$peerList;
-                $d->version = 'v0';
-                $d->method = 'dataPush';
-                $d->data = $data;
                 $d->pow = new CryptoPow($d->data, $d->timestamp);
                 $d->pow->pow();
-                $d->file = $file;
-                $d->lasthash = $lasthash;
-                $d->hashRoot = CryptoHash::hash($lasthash.$data);
-
         */
 
+        switch ($data->method) {
+
+            case 'dataPush':
+
+                $r->dataPush($data);
+                break;
+            default:
+
+                SdkReceived::$message = 'bad method';
+                SdkReceived::$code =  607;
+                $r->err();
+                break;
+        }
         $r->send();
     }
+    public function dataPush(stdClass $data){
+
+        $this->                $d->data = $data;
+        $d->file = $file;
+        $d->lasthash = $lasthash;
+        $d->hashRoot = CryptoHash::hash($lasthash.$data);
+    }
+
     public function send(bool $state = true):void {
 
         header('Content-Type: application/json');

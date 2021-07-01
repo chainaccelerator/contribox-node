@@ -3,7 +3,7 @@
 class SdkRequestRoute {
 
     public string $id = 'default';
-    public string $version = '0.1';
+    public string $version = 'v0';
     public string $env = 'regtest';
     public string $template = 'default';
     public SdkTransaction $transaction;

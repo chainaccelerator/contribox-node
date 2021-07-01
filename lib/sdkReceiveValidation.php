@@ -2,7 +2,7 @@
 
 class SdkReceiveValidation {
 
-    public static int $timeout = 0;
+    public static int $timeout = 10800;
     public array $txList = [];
     public array $signList = [];
 

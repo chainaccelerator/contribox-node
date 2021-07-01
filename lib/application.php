@@ -82,7 +82,7 @@ class App
     public string $envIndex = '';
     public string $user = '';
     public int $instanceIndex = 0;
-    public string $version = '';
+    public string $version = 'v0';
     public string $portPrefix = '';
     public string $rpcPassword = '';
     public bool $qtState = true;
