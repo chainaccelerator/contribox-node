@@ -72,6 +72,11 @@ class SdkReceiveValidation {
 
                 if (curl_errno($ch)) continue;
                 if ($result->status === false) continue;
+
+                $pow = new CryptoPow($result->result->hash, $result->timestamp);
+
+                if($pow->powVerify($result->pow->nonce) === false) continue;
+
                 if (isset($res[$result->data->hash]) === false) $res[$result->data->hash] = 0;
 
                 $res[$result->result->data->hash]++;

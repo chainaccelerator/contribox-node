@@ -33,7 +33,7 @@ class SdkReceivedData extends SdkReceived{
         }
         $pow = new CryptoPow($data->data, $data->timestamp);
 
-        if($pow->powVerify($pow->nonce) === false) {
+        if($pow->powVerify($data->nonce) === false) {
 
             SdkReceived::$message = 'bad nonce';
             SdkReceived::$code =  607;
@@ -83,6 +83,12 @@ class SdkReceivedData extends SdkReceived{
             self::$message = 'Bad type';
             $this->err();
         }
+        if(strstr('.', $data->xpub) ) {
+
+            self::$code = 612;
+            self::$message = 'Bad xpub';
+            $this->err();
+        }
         $dir = '../'.Conf::$env.'/conf/data/contribox/'.$data->type.'/'.$data->xpub;
 
         if (is_dir($dir) === false) mkdir($dir);
@@ -105,7 +111,7 @@ class SdkReceivedData extends SdkReceived{
 
         header('Content-Type: application/json');
 
-        $pow = new CryptoPow($this->data, mktime());
+        $pow = new CryptoPow($this->hash, mktime());
         $pow->pow();
 
         foreach(self::$peerList as $k => $v) {
@@ -116,9 +122,10 @@ class SdkReceivedData extends SdkReceived{
         $sig->sig();
 
         echo '{
-    "timestamp": '.time().',
     "peerList": '.json_encode(self::$peerList).',
+    "timestamp": '.time().',
     "version": "v0",
+    "pow": '.$pow.',
     "result": {
         "status": '.$state.',
         "code": '.self::$code.',
