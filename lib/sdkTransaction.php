@@ -21,7 +21,6 @@ class SdkTransaction {
         $this->proof = $proof;
         $this->user = $user;
     }
-
     public function conditionHtml(array $listFrom = array(), array $listTo = array()){
 
         $optionsFrom = sdkHtml::optionHtmlMultiple($listFrom);

@@ -8,8 +8,30 @@ class SdkRequestData {
 
     public function __construct(string $role = '', string $domain = '', string $domainSub = '', string $process = '', string $processStep = '', string $processStepAction = '', string $about = '', int $amount = 0, bool $blockSignature = false, bool $pegSignature = false, string $version = 'v0', bool $declareAddressFrom = false, bool $declareAddressTo = false, bool $proofEncryption = false, bool $userEncryption = false, array $form = [], array $to = [], string $template = '', string $proof = '{data: "", version: "v0"}', string $user = '{data: "", version: "v0"}'){
 
-        $this->request = new SdkRequest();
-        $this->route = new SdkRequestRoute($role, $domain, $domainSub, $process, $processStep, $processStepAction, $about, $amount, $blockSignature, $pegSignature, $version, $declareAddressFrom, $declareAddressTo, $proofEncryption, $userEncryption, $form, $to, $template, $proof, $user);
+        $dataRoute = new stdClass();
+        $dataRoute->route = new stdClass();
+        $dataRoute->route->template = 'default';
+        $dataRoute->route->id = '0';
+        $dataRoute->route->version = 'v0';
+        $dataRoute->route->env = 'regtest';
+        $dataRoute->route->transaction = new stdClass();
+        $dataRoute->route->transaction->from = [];
+        $dataRoute->route->transaction->to = [];
+        $dataRoute->route->transaction->amount = 0;
+        $dataRoute->route->transaction->proof = '';
+        $dataRoute->route->transaction->user = '';
+
+        $data = new stdClass();
+        $data->request = new stdClass();
+        $data->request->timestamp = time();
+        $data->request->pow = new CryptoPow($dataRoute->route, $data->request->timestamp);
+        $data->request->pow->pow($dataRoute->route, $data->request->timestamp);
+        $data->request->hash = $data->request->pow->hash;
+        $data->request->sig = new stdClass();
+        $data->request->sig->address = '';
+        $data->request->sig->signature = '';
+        $this->request = new SdkRequest($data, $dataRoute->route);
+        $this->route = new SdkRequestRoute($dataRoute);
     }
     public function conditionHtml():string {
 
@@ -197,8 +219,8 @@ RequestData.prototype.send = function(tr) {
     
         if(t.name == requestData.route.template) {
                         
-            requestData.pow(requestData);
-            requestData.sig(requestData);
+            requestData.pow(requestData.route);
+            requestData.sig(requestData.route);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
             requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
@@ -207,9 +229,7 @@ RequestData.prototype.send = function(tr) {
             for(w0 of wallet.walletsFederation.lock) t.lock.xpubList[t.lock.xpubList.length] = w0.xpubHash;
             for(w0 of wallet.walletsFederation.witness) t.witness.xpubList[t.witness.xpubList.length] = w0.xpubHash;
             for(w0 of wallet.walletsFederation.cosigner) t.cosigner.xpubList[t.cosigner.xpubList.length] = w0.xpubHash;
-            
-            console.info("requestData.route.transaction.amount", requestData.route.transaction.amount);
-            
+                        
             if(requestData.route.transaction.amount > 0) {
             
                 t.to.amount = requestData.route.transaction.amount;
@@ -229,7 +249,11 @@ RequestData.prototype.send = function(tr) {
             
             console.info(requestData);
             
-            let urlClient = "http://"+requestData.peerList[0].connect+"/index.php";            
+            delete requestData.request.peerList;
+            delete requestData.request.sig.hdPath;
+            delete requestData.request.sig.range;
+            
+            let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
             const options = {
             
                 method: "POST",
@@ -239,9 +263,13 @@ RequestData.prototype.send = function(tr) {
                 }
             }
             fetch(urlClient, options)
-            .then(res => res.json())
-                .then(res => console.log(res))
-                .catch(err => console.error(err));
+            .then(res => res)
+                .then(
+                res => {
+                        console.log(res.text());
+                    }
+                )
+                .catch(err => console.error("error", err));
         }
     });                                        
 }

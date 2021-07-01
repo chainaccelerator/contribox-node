@@ -1,9 +1,9 @@
 
 function RequestData() {
 
-    this.peerList = [{"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.10.214.21:7001","user":"","pwd":""}}]
-    this.request = {"timestamp":0,"peerList":[],"pow":{"nonce":0,"difficulty":4,"difficultyPatthern":"d","hash":"default","pow":"default","previousHash":"default"},"sig":{"address":"","hash":"default","hdPath":"0\/0","range":"0","signature":"","xpub":""}};
-    this.route = {"id":"default","version":"0.1","env":"regtest","template":"","transaction":{"amount":0,"from":[],"to":[],"proof":"{data: \"\", version: \"v0\"}","user":"{data: \"\", version: \"v0\"}","template":"","htmlFieldsId":[],"htmlScript":"","type":""}};
+    this.peerList = [{"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.10.214.118:7002","user":"","pwd":"","pubAddress":""}}]
+    this.request = {"timestamp":1625066776,"pow":{"difficulty":4,"difficultyPatthern":"d","hash":"ea71aa24f63d2f341198a5bcfc89d259f194620e99aa2e23c938a05622c20ba9","nonce":10271,"pow":"dddd5a428bd75ed546e0d42b94a87a48fea2e63b6600b552884eaa3113ad5198","previousHash":"","timestamp":1625066776},"sig":{"sig":"","publicAddress":"","hdPath":"0\/0","range":100}};
+    this.route = {"id":"0","version":"v0","env":"regtest","template":"default","transaction":{"amount":0,"from":[],"to":[],"proof":"","user":"","template":"default","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
 RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
 
@@ -163,8 +163,8 @@ RequestData.prototype.send = function(tr) {
     
         if(t.name == requestData.route.template) {
                         
-            requestData.pow(requestData);
-            requestData.sig(requestData);
+            requestData.pow(requestData.route);
+            requestData.sig(requestData.route);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
             requestData.route.transaction.to.forEach(function(p) { if(t.to.xpubList.indexOf(p) == -1) t.to.xpubList[t.to.xpubList.length] = p;});
@@ -173,9 +173,7 @@ RequestData.prototype.send = function(tr) {
             for(w0 of wallet.walletsFederation.lock) t.lock.xpubList[t.lock.xpubList.length] = w0.xpubHash;
             for(w0 of wallet.walletsFederation.witness) t.witness.xpubList[t.witness.xpubList.length] = w0.xpubHash;
             for(w0 of wallet.walletsFederation.cosigner) t.cosigner.xpubList[t.cosigner.xpubList.length] = w0.xpubHash;
-            
-            console.info("requestData.route.transaction.amount", requestData.route.transaction.amount);
-            
+                        
             if(requestData.route.transaction.amount > 0) {
             
                 t.to.amount = requestData.route.transaction.amount;
@@ -235,7 +233,11 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
             
             console.info(requestData);
             
-            let urlClient = "http://"+requestData.peerList[0].connect+"/index.php";            
+            delete requestData.request.peerList;
+            delete requestData.request.sig.hdPath;
+            delete requestData.request.sig.range;
+            
+            let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
             const options = {
             
                 method: "POST",
@@ -245,9 +247,13 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
                 }
             }
             fetch(urlClient, options)
-            .then(res => res.json())
-                .then(res => console.log(res))
-                .catch(err => console.error(err));
+            .then(res => res)
+                .then(
+                res => {
+                        console.log(res.text());
+                    }
+                )
+                .catch(err => console.error("error", err));
         }
     });                                        
 }

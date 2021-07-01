@@ -4,7 +4,7 @@ use JetBrains\PhpStorm\Pure;
 
 class CryptoHash {
 
-    public static string $algo = 'sha384';
+    public static string $algo = 'sha256';
     public string $data = '';
     public string $hash = '';
 
