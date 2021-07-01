@@ -7,6 +7,7 @@ class SdkReceivedData extends SdkReceived{
     public static array $peerList = [];
 
     public stdClass $conf;
+    public stdClass $data;
 
     public static function run():void {
 
@@ -55,10 +56,48 @@ class SdkReceivedData extends SdkReceived{
     }
     public function dataPush(stdClass $data):bool{
 
-        $data->data;
-        $data->file;
-        $data->lasthash;
-        $data->hashRoot;
+        $hash = '';
+
+        foreach(blob('../' . Conf::$env . '/conf/contribox/contribution/*') as $f){
+
+            $d = file_get_contents($f);
+            $hash = CryptoHash::hash($hash.CryptoHash::hash($d));
+        }
+        foreach(blob('../' . Conf::$env . '/conf/contribox/reward/*') as $f){
+
+            $d = file_get_contents($f);
+            $hash = CryptoHash::hash($hash.CryptoHash::hash($d));
+        }
+        $file = '../' . Conf::$env . '/conf/data/lastHash.hash';
+        $lastHash = file_get_contents($file);
+
+        if($hash !== $lastHash) {
+
+            self::$code = 610;
+            self::$message = 'Hash error';
+            $this->err();
+        }
+        if($data->type !== 'reward' && $data->type !== 'contribution') {
+
+            self::$code = 611;
+            self::$message = 'Bad type';
+            $this->err();
+        }
+        $dir = '../'.Conf::$env.'/conf/data/contribox/'.$data->type.'/'.$data->xpub;
+
+        if (is_dir($dir) === false) mkdir($dir);
+
+        $file = $dir . '/'.$data->file;
+
+        file_put_contents($file, $data->data);
+
+        $hash = CryptoHash::hash($hash.CryptoHash::hash($data->data));
+        $file = '../' . Conf::$env . '/conf/data/lastHash.hash';
+
+        file_put_contents($file, $hash);
+
+        $this->data = new stdClass();
+        $this->data->lastHash = $hash;
 
         return true;
     }
@@ -81,10 +120,10 @@ class SdkReceivedData extends SdkReceived{
     "peerList": '.json_encode(self::$peerList).',
     "version": "v0",
     "result": {
-        "state": '.$state.',
-        "result": {
-            "data": ""
-        }
+        "status": '.$state.',
+        "code": '.self::$code.',
+        "message": "'.self::$message.'",
+        "hash": "'.$this->hash.'",
     }
 }';
         exit();

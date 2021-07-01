@@ -15,45 +15,29 @@ class SdkReceiveValidation {
 
         foreach($this->signList as $xpub) {
 
-            $dir = '../'.Conf::$env.'/conf/data/contribox/contribution/'.$xpub;
+            $file = SdkReceived::$request->pow->hash.'.'.time();
 
-            if(is_dir($dir) === false) mkdir($dir);
-
-            $file = $dir.'/'.SdkReceived::$request->pow->hash.'.'.time();
-
-            $this->multicast($file, SdkReceived::$route);
+            $this->multicast($file, SdkReceived::$route, 'contribution', $xpub);
         }
         foreach($this->txList as $tx) {
 
             $tx->hash = SdkReceived::$request->pow->hash;
+            $data = json_encode($tx);
+            $file = SdkReceived::$request->pow->hash.'.'.time();
 
             foreach($tx->toXpubHashSig as $xpub) {
 
-                $dir = '../' . Conf::$env . '/conf/data/contribox/reward/'.$xpub;
-
-                if (is_dir($dir) === false) mkdir($dir);
-
-                $file = $dir . '/' . SdkReceived::$request->pow->hash.'.'.time();
-
-                $this->multicast($file, json_encode($tx));
+                $this->multicast($file, $data, 'reward', $xpub);
             }
             foreach($tx->fromXpubHashSigList as $xpub) {
 
-                $dir = '../' . Conf::$env . '/conf/data/contribox/reward/'.$xpub;
-
-                if (is_dir($dir) === false) mkdir($dir);
-
-                $file = $dir . '/' . SdkReceived::$request->pow->hash.'.'.time();
-
-                $this->multicast($file, json_encode($tx));
+                $this->multicast($file, $data, 'reward', $xpub);
             }
         }
         return true;
     }
-    public function multicast(string $file, string $data){
+    public function multicast(string $file, string $data, string $type, string $xpub):bool{
 
-        $file = '../' . Conf::$env . '/conf/data/lastHash.hash';
-        $lasthash = file_get_contents($file);
         $res = array();
 
         foreach(SdkReceived::$peerList->apiData as $peer) {
@@ -67,12 +51,12 @@ class SdkReceiveValidation {
                 $d->peerList = SdkReceived::$peerList;
                 $d->version = 'v0';
                 $d->method = 'dataPush';
+                $d->type = $type;
                 $d->data = $data;
                 $d->pow = new CryptoPow($d->data, $d->timestamp);
                 $d->pow->pow();
                 $d->file = $file;
-                $d->lasthash = $lasthash;
-                $d->hashRoot = CryptoHash::hash($lasthash.$data);
+                $d->xpub = $xpub;
 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -87,14 +71,17 @@ class SdkReceiveValidation {
                 $result = curl_exec($ch);
 
                 if (curl_errno($ch)) continue;
-                if ($result->state === false) continue;
-                if (isset($res[$result->result->data->hashRoot]) === false) $res[$result->result->data->hashRoot] = 0;
+                if ($result->status === false) continue;
+                if (isset($res[$result->data->hash]) === false) $res[$result->data->hash] = 0;
 
-                $res[$result->result->data->hashRoot]++;
+                $res[$result->result->data->hash]++;
 
                 SdkReceived::peerListMerge($result->peerList);
             };
         }
+        $file = '../' . Conf::$env . '/conf/data/lastHash.hash';
         file_put_contents($file, max($res));
+
+        return true;
     }
 }
