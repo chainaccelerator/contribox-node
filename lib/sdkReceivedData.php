@@ -4,7 +4,6 @@ class SdkReceivedData extends SdkReceived{
 
     public static int $code = 0;
     public static string $message = '';
-
     public static array $peerList = [];
 
     public stdClass $conf;
@@ -31,11 +30,14 @@ class SdkReceivedData extends SdkReceived{
             SdkReceived::$code =  606;
             $r->err();
         }
-        /*
-                $d->pow = new CryptoPow($d->data, $d->timestamp);
-                $d->pow->pow();
-        */
+        $pow = new CryptoPow($data->data, $data->timestamp);
 
+        if($pow->powVerify($pow->nonce) === false) {
+
+            SdkReceived::$message = 'bad nonce';
+            SdkReceived::$code =  607;
+            $r->err();
+        }
         switch ($data->method) {
 
             case 'dataPush':
@@ -51,14 +53,15 @@ class SdkReceivedData extends SdkReceived{
         }
         $r->send();
     }
-    public function dataPush(stdClass $data){
+    public function dataPush(stdClass $data):bool{
 
-        $this->                $d->data = $data;
-        $d->file = $file;
-        $d->lasthash = $lasthash;
-        $d->hashRoot = CryptoHash::hash($lasthash.$data);
+        $data->data;
+        $data->file;
+        $data->lasthash;
+        $data->hashRoot;
+
+        return true;
     }
-
     public function send(bool $state = true):void {
 
         header('Content-Type: application/json');

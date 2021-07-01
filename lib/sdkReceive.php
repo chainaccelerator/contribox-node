@@ -77,25 +77,17 @@ class SdkReceived {
         $pow = new CryptoPow($this->data, mktime());
         $pow->pow();
 
-        foreach(self::$peerList as $k => $v) {
-
-            if($v->api->connect === $this->conf->IP_HOST) $publicAddress = $v->api->pubAddress;
-        }
-        $sig = new CryptoSig($publicAddress, '');
-        $sig->sig();
-
         echo '{
   "peerList": '.json_encode(self::$peerList).',
   "request": {
     "timestamp": '.mktime().',
     "pow": '.json_encode($pow).',
-    "sig": '.json_encode($sig).'
   },
   "route": '.json_encode($this->route).',
   "result": {
     "status": '.$state.',
-    "code": '.$code.',
-    "message": "'.$message.'",
+    "code": '.self::$code.',
+    "message": "'.self::$message.'",
     "hash": "'.$this->hash.'",
     "data": "'.json_encode($this->data).'"
   }

@@ -19,11 +19,11 @@ class CryptoPow {
         $this->timestamp = $timestamp;
         $this->hash = CryptoHash::hash(json_encode($data));
     }
-    public function powVerify($pattern = ''): bool{
+    public function powVerify(int $nonce, $pattern = ''): bool{
 
         for($i = 0;$i < $this->difficulty; $i++) $pattern .=  $this->difficultyPatthern;
 
-        $p = CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$this->nonce);
+        $p = CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$nonce);
 
         if(substr($p, 0, $this->difficulty) !== $pattern) {
 

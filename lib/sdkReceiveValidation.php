@@ -84,24 +84,11 @@ class SdkReceiveValidation {
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
                 curl_setopt($ch, CURLOPT_MAXREDIRS, 1);
 
-                $response = curl_exec($ch);
+                $result = curl_exec($ch);
 
-                if (curl_errno($ch)) {
-                    echo curl_error($ch);
-                    die();
-                }
-
-                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                if($http_code == intval(200)){
-                    echo "Ressource valide";
-                }
-                else{
-                    echo "Ressource introuvable : " . $http_code;
-                }
-
-                if($result->state === false) continue;
-
-                if(isset($res[$result->result->data->hashRoot]) === false) $res[$result->result->data->hashRoot] = 0;
+                if (curl_errno($ch)) continue;
+                if ($result->state === false) continue;
+                if (isset($res[$result->result->data->hashRoot]) === false) $res[$result->result->data->hashRoot] = 0;
 
                 $res[$result->result->data->hashRoot]++;
 
