@@ -13,9 +13,9 @@ class SdkReceiveValidation {
     }
     public function ask():bool{
 
-        foreach($this->signList as $xpub) {
+        $file = SdkReceived::$request->pow->hash.'.'.time();
 
-            $file = SdkReceived::$request->pow->hash.'.'.time();
+        foreach($this->signList as $xpub) {
 
             $this->multicast($file, SdkReceived::$route, 'contribution', $xpub);
         }
@@ -23,15 +23,15 @@ class SdkReceiveValidation {
 
             $tx->hash = SdkReceived::$request->pow->hash;
             $data = json_encode($tx);
-            $file = SdkReceived::$request->pow->hash.'.'.time();
+            $file2 = $file.'.'.CryptoHash::hash($data);
 
             foreach($tx->toXpubHashSig as $xpub) {
 
-                $this->multicast($file, $data, 'reward', $xpub);
+                $this->multicast($file2, $data, 'reward', $xpub);
             }
             foreach($tx->fromXpubHashSigList as $xpub) {
 
-                $this->multicast($file, $data, 'reward', $xpub);
+                $this->multicast($file2, $data, 'reward', $xpub);
             }
         }
         return true;
