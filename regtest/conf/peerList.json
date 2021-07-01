@@ -1,5 +1,7 @@
 [
   {
+    "hash": "",
+    "ping": 0,
     "rpcBitcoin": {
       "connect": "",
       "user": "",
@@ -18,6 +20,32 @@
     },
     "apiData": {
       "connect": "10.10.214.118:7003",
+      "user": "",
+      "pwd": "",
+      "pubAddress": ""
+    }
+  },
+  {
+    "hash": "",
+    "ping": 0,
+    "rpcBitcoin": {
+      "connect": "",
+      "user": "",
+      "pwd": ""
+    },
+    "rpcElements": {
+      "connect": "",
+      "user": "",
+      "pwd": ""
+    },
+    "api": {
+      "connect": "10.0.0.5:7002",
+      "user": "",
+      "pwd": "",
+      "pubAddress": ""
+    },
+    "apiData": {
+      "connect": "10.0.0.5:7003",
       "user": "",
       "pwd": "",
       "pubAddress": ""

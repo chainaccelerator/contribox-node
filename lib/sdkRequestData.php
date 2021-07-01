@@ -25,7 +25,7 @@ class SdkRequestData {
         $data->request = new stdClass();
         $data->request->timestamp = time();
         $data->request->pow = new CryptoPow($dataRoute->route, $data->request->timestamp);
-        $data->request->pow->pow($dataRoute->route, $data->request->timestamp);
+        $data->request->pow->pow();
         $data->request->hash = $data->request->pow->hash;
         $data->request->sig = new stdClass();
         $data->request->sig->address = '';
@@ -57,7 +57,7 @@ res = requestData.txPrepare(template0.'.$t.', template0, res)'."\n";
         $this->htmlScript =  '
 function RequestData() {
 
-    this.peerList = '.json_encode(array_merge(json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')), ApiRequest::$peerList)).'
+    this.peerList = '.json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')).'
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
@@ -115,19 +115,19 @@ RequestData.prototype.txPrepare = function(role0, t, res) {
     
     if(role0.from == "") {
         
-        console.warn("role0.from");
+        // console.warn("role0.from");
         return { txList: res.txList, signList: res.signList }
     }    
     if(role0.state == false) {
         
-        console.warn("role0.state");
+        // console.warn("role0.state");
         return { txList: res.txList, signList: res.signList }
     }    
     let templateFrom = t[role0.from];
         
     if(templateFrom.lenght == 0)  {
         
-        console.warn("templateFrom.lenght");
+        // console.warn("templateFrom.lenght");
         return { txList: res.txList, signList: res.signList }
     }
     let transaction0 = {}
@@ -253,23 +253,33 @@ RequestData.prototype.send = function(tr) {
             delete requestData.request.sig.hdPath;
             delete requestData.request.sig.range;
             
-            let urlClient = "http://"+requestData.peerList[0].api.connect+"/index.php";            
-            const options = {
+            let ok=false;
             
-                method: "POST",
-                body: JSON.stringify(requestData),
-                headers: {
-                    "Content-Type": "application/json"
+            for(let peer of requestData.peerList){
+            
+                if(ok === false) {
+            
+                    let urlClient = "http://"+peer.api.connect+"/index.php";            
+                    const options = {
+                    
+                        method: "POST",
+                        body: JSON.stringify(requestData),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                    fetch(urlClient, options)
+                    .then(res => {
+                        ok=true;
+                        res.json();
+                    })
+                    .then(
+                        res => {
+                                console.log(res);
+                            }
+                        ).catch(err => console.warn("error"));
                 }
             }
-            fetch(urlClient, options)
-            .then(res => res)
-                .then(
-                res => {
-                        console.log(res.text());
-                    }
-                )
-                .catch(err => console.error("error", err));
         }
     });                                        
 }

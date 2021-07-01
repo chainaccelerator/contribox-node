@@ -2,7 +2,7 @@
 
 class SdkReceiveValidation {
 
-    public static int $timeout = [];
+    public static int $timeout = 0;
     public array $txList = [];
     public array $signList = [];
 
@@ -59,7 +59,7 @@ class SdkReceiveValidation {
     }
     public function multicast(string $file, string $data){
 
-        $file = '../' . Conf::$env . '/conf/data/contribox/lastHash.hash';
+        $file = '../' . Conf::$env . '/conf/data/lastHash.hash';
         $lasthash = file_get_contents($file);
         $res = array();
 
@@ -70,23 +70,24 @@ class SdkReceiveValidation {
                 $url = $peer->connect;
                 $d = new stdClass();
                 $d->id = uniqid();
+                $d->timestamp = time();
+                $d->peerList = SdkReceived::$peerList;
                 $d->version = 'v0';
                 $d->method = 'dataPush';
                 $d->data = $data;
+                $d->pow = new CryptoPow($d->data, $d->timestamp);
+                $d->pow->pow();
                 $d->file = $file;
                 $d->lasthash = $lasthash;
-                $d->hashRoot = CryptoHash::hash($lasthash . $data);
+                $d->hashRoot = CryptoHash::hash($lasthash.$data);
 
                 if($result->state === false) continue;
 
                 if(isset($res[$result->result->data->hashRoot]) === false) $res[$result->result->data->hashRoot] = 0;
 
                 $res[$result->result->data->hashRoot]++;
-
-
             }
-            SdkReceived::$peerList = array_merge(SdkReceived::$peerList, $result->peerList);
-            file_get_contents('../' . Conf::$env . '/conf/peerList.json', json_encore(SdkReceived::$peerList));
+            SdkReceived::peerListMerge($result->peerList);
         }
         file_put_contents($file, max($res));
     }

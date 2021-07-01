@@ -33,12 +33,12 @@ class CryptoPow {
         }
         return true;
     }
-    public function pow(stdClass $data, int $timestamp, string $pattern = ''): bool{
+    public function pow(string $pattern = ''): bool{
 
         for($i = 0;$i < $this->difficulty; $i++) $pattern .= $this->difficultyPatthern;
 
-        $this->timestamp = $timestamp;
-        $this->hash = CryptoHash::hash(json_encode($data));
+        $this->timestamp = $this->timestamp;
+        $this->hash = CryptoHash::hash(json_encode($this->data));
         $this->pow = "";
 
         while (substr($this->pow, 0, $this->difficulty) != $pattern) {

@@ -19,6 +19,8 @@ class ApiRequest {
 
         $dataToHash = $this;
         unset($dataToHash->pow);
-        if(isset($data->pow) === false) {exit('No pow');} else $this->pow = new CryptoPow($data->pow, $dataToHash);
+        if(isset($data->pow) === false) {exit('No pow');} else {
+            $this->pow = new CryptoPow($data->pow, $dataToHash);
+        }
     }
 }

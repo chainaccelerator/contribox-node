@@ -22,7 +22,7 @@ class SdkReceived {
         self::$peerList = array_merge(json_decode(file_get_contents('../' . Conf::$env . '/conf/peerList.json')), $data->peerList);
         $r::$request = new SdkRequest($data, $data->route);
 
-        if ($r::$request === false) $r->err();
+        if ($r::$request == false) $r->err();
 
         $r::$route = json_encode($data->route);
 
@@ -30,10 +30,33 @@ class SdkReceived {
 
         $r::$validation = new SdkReceiveValidation($data->validation, $r::$route);
 
-        if ($r::$validation === false) $r->err();
+        if ($r::$validation == false) $r->err();
         if ($r::$validation->ask() === false) $r->err();
 
         $r->send();
+    }
+    public static function peerListMerge(array $list):bool{
+
+        $hashList = [];
+
+        foreach(self::$peerList as $k => $peer){
+
+            $peer->hash = '';
+            $hash = CrypoHash::hash(json_encode($peer));
+            self::$peerList[$k]->hash = $hash);
+            $hashList[$hash] = $hash;
+        }
+        foreach($list as $k => $peer){
+
+            $peer->hash = '';
+            $hash = CrypoHash::hash(json_encode($peer));
+            $peer->hash = $hash;
+
+            if(isset($hashList[$hash]) === false) self::$peerList[] = $peer;
+        }
+        file_put_contents('../' . Conf::$env . '/conf/peerList.json', json_encore(self::$peerList));
+
+        return true;
     }
     public function getApiPublicKey(){
 
@@ -50,7 +73,7 @@ class SdkReceived {
         header('Content-Type: application/json');
 
         $pow = new CryptoPow($this->data, mktime());
-        $pow->pow($this->data, mktime());
+        $pow->pow();
 
         foreach(self::$peerList as $k => $v) {
 
