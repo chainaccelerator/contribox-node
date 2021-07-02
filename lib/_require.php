@@ -55,7 +55,7 @@ require_once 'sdkTemplateTypeInvestorType1.php';
 require_once 'sdkTransaction.php';
 
 require_once 'sdkReceive.php';
-require_once 'sdkReceiveData.php';
+require_once 'sdkReceivedData.php';
 require_once 'sdkReceiveValidation.php';
 
 require_once 'templateCondition.php';

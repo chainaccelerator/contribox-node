@@ -38,8 +38,7 @@ class CryptoPow {
         for($i = 0;$i < $this->difficulty; $i++) $pattern .= $this->difficultyPatthern;
 
         $this->timestamp = $this->timestamp;
-        $this->hash = CryptoHash::hash(json_encode($this->data));
-        $this->pow = "";
+        $this->pow = '';
 
         while (substr($this->pow, 0, $this->difficulty) != $pattern) {
 

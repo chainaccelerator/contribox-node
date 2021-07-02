@@ -8,7 +8,7 @@ class SdkRequest {
     public CryptoPow $pow;
     public CryptoSig $sig;
 
-    public function __construct(stdClass $data, stdClass $route){
+    public function init(stdClass $data, stdClass $route):bool{
 
         $this->timestamp = time();
 
@@ -38,5 +38,7 @@ class SdkRequest {
         if($sig->verif() === false) return false;
 
         $this->sig = $sig;
+
+        return true;
     }
 }

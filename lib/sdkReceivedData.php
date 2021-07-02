@@ -8,12 +8,15 @@ class SdkReceivedData extends SdkReceived{
 
     public stdClass $conf;
     public stdClass $data;
+    public string $hash = '';
 
     public static function run():void {
 
         $rawData = file_get_contents('php://input');
+
         $data = json_decode($rawData);
         Conf::$env = $data->route->env;
+
         $r = new SdkReceivedData();
         $r->conf = json_decode(file_get_contents('../' . Conf::$env . '/conf/contribox/conf.json'));
 
@@ -39,6 +42,7 @@ class SdkReceivedData extends SdkReceived{
             SdkReceived::$code =  607;
             $r->err();
         }
+
         switch ($data->method) {
 
             case 'dataPush':
@@ -103,7 +107,7 @@ class SdkReceivedData extends SdkReceived{
         file_put_contents($file, $hash);
 
         $this->data = new stdClass();
-        $this->data->lastHash = $hash;
+        $this->hash = $hash;
 
         return true;
     }
@@ -113,13 +117,6 @@ class SdkReceivedData extends SdkReceived{
 
         $pow = new CryptoPow($this->hash, mktime());
         $pow->pow();
-
-        foreach(self::$peerList as $k => $v) {
-
-            if($v->api->connect === $this->conf->IP_HOST) $publicAddress = $v->api->pubAddress;
-        }
-        $sig = new CryptoSig($publicAddress, '');
-        $sig->sig();
 
         echo '{
     "peerList": '.json_encode(self::$peerList).',

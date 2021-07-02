@@ -30,7 +30,13 @@ class SdkRequestData {
         $data->request->sig = new stdClass();
         $data->request->sig->address = '';
         $data->request->sig->signature = '';
-        $this->request = new SdkRequest($data, $dataRoute->route);
+        $this->request = new SdkRequest();
+        $res = $this->request->init($data, $dataRoute->route);
+
+        if($res === false) {
+            echo 'err';
+            return false;
+        }
         $this->route = new SdkRequestRoute($dataRoute);
     }
     public function conditionHtml():string {
