@@ -83,13 +83,12 @@ this.investorType1GetDataFromForm();
 }
 Template.prototype.createTemplate = function(){
     
-    console.info("create");
     template.list.forEach(function(t) {
-     console.info("t", t);
+    
         var u = {};
     
         wallet.list.forEach(function(w) {
-        console.info("w", w);
+        
             if(w.role == "api" ) {
                 console.info("api account found");
                 u = w.account;

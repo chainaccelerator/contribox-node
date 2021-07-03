@@ -1,8 +1,8 @@
 
 function RequestData() {
 
-    this.peerList = [{"hash":"","ping":0,"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.10.214.118:7002","user":"","pwd":"","pubAddress":""},"apiData":{"connect":"10.10.214.118:7003","user":"","pwd":"","pubAddress":""}},{"hash":"","ping":0,"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.0.0.5:7002","user":"","pwd":"","pubAddress":""},"apiData":{"connect":"10.0.0.5:7003","user":"","pwd":"","pubAddress":""}}]
-    this.request = {"timestamp":1625126151,"pow":{"difficulty":4,"difficultyPatthern":"d","hash":"ea71aa24f63d2f341198a5bcfc89d259f194620e99aa2e23c938a05622c20ba9","nonce":111556,"pow":"dddd8c79367aeb6e3f8922d8a79393478a4c7b50b7b15d778a8bebdb94b711b6","previousHash":"","timestamp":1625126151},"sig":{"sig":"","publicAddress":"","hdPath":"0\/0","range":100}};
+    this.peerList = [{"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.10.214.118:7002","user":"","pwd":"","pubAddress":""},"apiData":{"connect":"10.10.214.118:7003","user":"","pwd":"","pubAddress":""},"hash":"fbcbf26f606e2bcce2c49352960fd01f2a678a3722d50338c07d843cf1573890"},{"rpcBitcoin":{"connect":"","user":"","pwd":""},"rpcElements":{"connect":"","user":"","pwd":""},"api":{"connect":"10.0.0.5:7002","user":"","pwd":"","pubAddress":""},"apiData":{"connect":"10.0.0.5:7003","user":"","pwd":"","pubAddress":""},"hash":"e32ffda7b8e570b7e8714c1f86d252d23882b963d572388a4ba25bfd23ef728e"}]
+    this.request = {"timestamp":1625238911,"pow":{"difficulty":4,"difficultyPatthern":"d","hash":"ea71aa24f63d2f341198a5bcfc89d259f194620e99aa2e23c938a05622c20ba9","nonce":117910,"pow":"dddd9745c709f58955fadaf77c7e9aed65f453e8818c84652e1cc166e94d4334","previousHash":"","timestamp":1625238911},"sig":{"sig":"","publicAddress":"","hdPath":"0\/0","range":100}};
     this.route = {"id":"0","version":"v0","env":"regtest","template":"default","transaction":{"amount":0,"from":[],"to":[],"proof":"","user":"","template":"default","htmlFieldsId":[],"htmlScript":"","type":""}};
 }
 RequestData.prototype.roleMsgCreate = function(tx, templateRole) {
@@ -59,19 +59,19 @@ RequestData.prototype.txPrepare = function(role0, t, res) {
     
     if(role0.from == "") {
         
-        console.warn("role0.from");
+        // console.warn("role0.from");
         return { txList: res.txList, signList: res.signList }
     }    
     if(role0.state == false) {
         
-        console.warn("role0.state");
+        // console.warn("role0.state");
         return { txList: res.txList, signList: res.signList }
     }    
     let templateFrom = t[role0.from];
         
     if(templateFrom.lenght == 0)  {
         
-        console.warn("templateFrom.lenght");
+        // console.warn("templateFrom.lenght");
         return { txList: res.txList, signList: res.signList }
     }
     let transaction0 = {}
@@ -164,6 +164,7 @@ RequestData.prototype.send = function(tr) {
         if(t.name == requestData.route.template) {
                         
             requestData.pow(requestData.route);
+            console.info(requestData.sha256("toto", false));
             requestData.sig(requestData.route);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
@@ -267,9 +268,17 @@ res = requestData.txPrepare(template0.parentstype1, template0, res)
         }
     });                                        
 }
-RequestData.prototype.sha256 = function(message) {
+RequestData.prototype.sha256 = function(message, stringify = true) {
 
-    let m = JSON.stringify(message);
+    let m = "";
+
+    if(stringify == true) {
+        
+        m = JSON.stringify(message);
+    }
+    else {
+        m = message;
+    }    
     let s = sodium.from_string(m);
     let h = sodium.crypto_generichash(64, s);
     let hex = sodium.to_hex(h);
@@ -337,16 +346,16 @@ RequestData.prototype.sig = function(data){
     });
     return false;
 }
-RequestData.prototype.pow = function(data){
+RequestData.prototype.pow = function(data, stringify = true){
 
   let pattern = Array(this.request.pow.difficulty + 1).join(this.request.pow.difficultyPatthern);
-  this.request.pow.hash = this.sha256(data);
+  this.request.pow.hash = this.sha256(data, stringify);
   this.request.pow.pow = "";
   
   while (this.request.pow.pow.substring(0, this.request.pow.difficulty) != pattern) {
      
     this.request.pow.nonce++;
-    this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce);
+    this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce, false);
     
     if(this.request.pow.nonce > 800000) return false;
   } 

@@ -71,6 +71,7 @@ function main() {
 </script>
 <script async type="text/javascript" src="js/contribox.js"></script>
 <script async type='text/javascript' src='js/main.js'></script>
+<script async type='text/javascript' src='js/sjcl.js'></script>
 <script>
 window.sodium = {
     onload: function (sodium) {

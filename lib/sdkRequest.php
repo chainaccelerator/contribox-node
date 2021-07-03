@@ -18,19 +18,16 @@ class SdkRequest {
             SdkReceived::$code =  504;
             return false;
         }
+
         $pow = new CryptoPow($route, $data->request->timestamp);
+        echo CryptoHash::hash('toto');
+        if($pow->powVerify($data->request->pow->hash, $data->request->pow->nonce) === false) {
 
-        if($pow->hash !== $data->request->pow->hash) {
-
-            SdkReceived::$message = 'bad hash';
-            SdkReceived::$code =  504;
             return false;
         }
         $pow->nonce = $data->request->pow->nonce;
         $pow->pow = $data->request->pow->pow;
         $pow->previousHash = $data->request->pow->previousHash;
-
-        if($pow->powVerify() === false) return false;
         $this->pow = $pow;
 
         $sig = new CryptoSig($data->request->sig->address, $data->request->sig->signature);

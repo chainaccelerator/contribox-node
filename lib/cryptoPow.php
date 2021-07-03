@@ -19,8 +19,14 @@ class CryptoPow {
         $this->timestamp = $timestamp;
         $this->hash = CryptoHash::hash(json_encode($data));
     }
-    public function powVerify(int $nonce, $pattern = ''): bool{
+    public function powVerify(string $hash, int $nonce, $pattern = ''): bool{
 
+        if($hash !== $this->hash){
+
+            SdkReceived::$message = 'bad hash';
+            SdkReceived::$code =  505;
+            return false;
+        }
         for($i = 0;$i < $this->difficulty; $i++) $pattern .=  $this->difficultyPatthern;
 
         $p = CryptoHash::hash($this->previousHash.$this->timestamp.$this->hash.$nonce);

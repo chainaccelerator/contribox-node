@@ -42,7 +42,6 @@ class SdkReceivedData extends SdkReceived{
             SdkReceived::$code =  607;
             $r->err();
         }
-
         switch ($data->method) {
 
             case 'dataPush':

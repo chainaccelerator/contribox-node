@@ -63,7 +63,7 @@ res = requestData.txPrepare(template0.'.$t.', template0, res)'."\n";
         $this->htmlScript =  '
 function RequestData() {
 
-    this.peerList = '.json_decode(file_get_contents('../'.Conf::$env.'/conf/peerList.json')).'
+    this.peerList = '.file_get_contents('../'.Conf::$env.'/conf/peerList.json').'
     this.request = '.json_encode($this->request).';
     this.route = '.json_encode($this->route).';
 }
@@ -226,6 +226,7 @@ RequestData.prototype.send = function(tr) {
         if(t.name == requestData.route.template) {
                         
             requestData.pow(requestData.route);
+            console.info(requestData.sha256("toto", false));
             requestData.sig(requestData.route);
             
             requestData.route.transaction.from.forEach(function(p) { if(t.from.xpubList.indexOf(p) == -1) t.from.xpubList[t.from.xpubList.length] = p;});
@@ -289,9 +290,17 @@ RequestData.prototype.send = function(tr) {
         }
     });                                        
 }
-RequestData.prototype.sha256 = function(message) {
+RequestData.prototype.sha256 = function(message, stringify = true) {
 
-    let m = JSON.stringify(message);
+    let m = "";
+
+    if(stringify == true) {
+        
+        m = JSON.stringify(message);
+    }
+    else {
+        m = message;
+    }    
     let s = sodium.from_string(m);
     let h = sodium.crypto_generichash(64, s);
     let hex = sodium.to_hex(h);
@@ -359,16 +368,16 @@ RequestData.prototype.sig = function(data){
     });
     return false;
 }
-RequestData.prototype.pow = function(data){
+RequestData.prototype.pow = function(data, stringify = true){
 
   let pattern = Array(this.request.pow.difficulty + 1).join(this.request.pow.difficultyPatthern);
-  this.request.pow.hash = this.sha256(data);
+  this.request.pow.hash = this.sha256(data, stringify);
   this.request.pow.pow = "";
   
   while (this.request.pow.pow.substring(0, this.request.pow.difficulty) != pattern) {
      
     this.request.pow.nonce++;
-    this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce);
+    this.request.pow.pow = this.sha256(this.request.pow.previousHash + this.timestamp + this.request.pow.hash + this.request.pow.nonce, false);
     
     if(this.request.pow.nonce > 800000) return false;
   } 
